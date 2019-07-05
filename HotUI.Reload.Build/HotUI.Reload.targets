@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Project>
+    <UsingTask TaskName="HotUI.Build.Tasks.AssemblyWeaver" AssemblyFile="$(MSBuildThisFileDirectory)HotUI.Build.Tasks.dll" />
+    <Choose>
+        <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework'">
+            <PropertyGroup>
+                <HotUIAssemblyPath>$(MSBuildThisFileDirectory)..\lib\net47\HotUI.Reload.dll</HotUIAssemblyPath>
+            </PropertyGroup>
+        </When>
+        <When Condition="$(TargetFrameworkIdentifier) == 'Xamarin.iOS'">
+            <PropertyGroup>
+                <HotUIAssemblyPath>$(MSBuildThisFileDirectory)..\lib\xamarinios10\HotUI.Reload.dll</HotUIAssemblyPath>
+            </PropertyGroup>
+        </When>
+        <When Condition="$(TargetFrameworkIdentifier) == 'MonoAndroid'">
+            <PropertyGroup>
+                <HotUIAssemblyPath>$(MSBuildThisFileDirectory)..\lib\monoandroid81\HotUI.Reload.dll</HotUIAssemblyPath>
+            </PropertyGroup>
+        </When>
+        <When Condition="$(TargetFrameworkIdentifier) == 'Xamarin.Mac'">
+            <PropertyGroup>
+                 <HotUIAssemblyPath>$(MSBuildThisFileDirectory)..\lib\Xamarin.Mac\HotUI.Reload.dll</HotUIAssemblyPath>
+            </PropertyGroup>
+        </When>
+    </Choose>
+    <!-- this will automatically run after the 'Build' target -->
+    <Target Name="WeaveHotUI" BeforeTargets="_CopyFilesMarkedCopyLocal">
+        <AssemblyWeaver Path="$(HotUIAssemblyPath)" />
+    </Target>
+</Project>

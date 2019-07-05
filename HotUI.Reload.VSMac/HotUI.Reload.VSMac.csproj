@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net471</TargetFramework>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="MonoDevelop.Addins" Version="0.4.6" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\HotUI.Reload.Core\HotUI.Reload.Core.csproj" />
+  </ItemGroup>
+  <Import Project="..\HotUI.Reload.IDE\HotUI.Reload.IDE.projitems" Label="Shared" Condition="Exists('..\HotUI.Reload.IDE\HotUI.Reload.IDE.projitems')" />
+</Project>
