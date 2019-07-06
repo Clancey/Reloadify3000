@@ -2,12 +2,12 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
   <metadata>
     <id>HotUI.Reload</id>
-    <version>0.0.1</version>
+    <version>0.0.1-alpha</version>
     <title>HotUI HotReload</title>
     <authors>James Clancey</authors>
     <owners>Clancey</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>Hot Reload plugin for HoUI</description>
+    <description>Hot Reload plugin for HotUI</description>
     <summary>This is the </summary>
     <copyright>James Clancey</copyright>
     <projectUrl>https://github.com/clancey/hotui</projectUrl>
@@ -30,6 +30,7 @@
     <file src="HotUI.Reload.Net/bin/Debug/HotUI.Reload.dll" target="lib/net461/HotUI.Reload.dll" />
     <file src="HotUI.Reload.Net/bin/Debug/HotUI.Reload.pdb" target="lib/net461/HotUI.Reload.pdb" />
     <file src="HotUI.Reload.Net/bin/Debug/HotUI.Reload.Core.dll" target="lib/net461/HotUI.Reload.Core.dll" />
+    <file src="HotUI.Reload.Net/bin/Debug/Mono.CSharp.dll" target="lib/net461/Mono.CSharp.dll" />
     <!-- <file src="HotUI.Reload.Standard/bin/Debug/HotUI.Reload.dll" target="lib/netstandard2.0/HotUI.Reload.dll" />
     <file src="HotUI.Reload.Standard/bin/Debug/HotUI.Reload.pdb" target="lib/netstandard2.0/HotUI.Reload.pdb" />
     <file src="HotUI.Reload.Core/bin/Debug/HotUI.Reload.Core.dll" target="lib/netstandard2.0/HotUI.Reload.Core.dll" /> -->
