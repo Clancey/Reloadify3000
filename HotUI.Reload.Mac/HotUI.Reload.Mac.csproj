@@ -52,9 +52,7 @@
     <Reference Include="Xamarin.Mac" />
     <Reference Include="Mono.CSharp" />
     <Reference Include="netstandard" />
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\..\..\packages\Newtonsoft.Json.12.0.2\lib\netstandard2.0\Newtonsoft.Json.dll</HintPath>
-    </Reference>
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -69,9 +67,6 @@
       <Project>{DE1BA22F-7E7B-40EC-9301-8E02A9A25E0A}</Project>
       <Name>HotUI</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="..\HotUI.Reload.Client\HotUI.Reload.Client.projitems" Label="Shared" Condition="Exists('..\HotUI.Reload.Client\HotUI.Reload.Client.projitems')" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Mac\Xamarin.Mac.CSharp.targets" />
