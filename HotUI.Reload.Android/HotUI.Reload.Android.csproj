@@ -64,15 +64,12 @@
     <Folder Include="Resources\drawable\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\HotUI.Reload.Core\HotUI.Reload.Core.csproj">
-      <Project>{0F1D7663-8215-4A36-9702-351CB9287DE7}</Project>
-      <Name>HotUI.Reload.Core</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\HotUI\src\HotUI\HotUI.csproj">
       <Project>{DE1BA22F-7E7B-40EC-9301-8E02A9A25E0A}</Project>
       <Name>HotUI</Name>
     </ProjectReference>
   </ItemGroup>
+  <Import Project="..\HotUI.Reload.Core\HotUI.Reload.Core.projitems" Label="Shared" Condition="Exists('..\HotUI.Reload.Core\HotUI.Reload.Core.projitems')" />
   <Import Project="..\HotUI.Reload.Client\HotUI.Reload.Client.projitems" Label="Shared" Condition="Exists('..\HotUI.Reload.Client\HotUI.Reload.Client.projitems')" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

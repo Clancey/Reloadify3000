@@ -5,8 +5,6 @@
   <ItemGroup>
     <PackageReference Include="MonoDevelop.Addins" Version="0.4.6" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\HotUI.Reload.Core\HotUI.Reload.Core.csproj" />
-  </ItemGroup>
+  <Import Project="..\HotUI.Reload.Core\HotUI.Reload.Core.projitems" Label="Shared" Condition="Exists('..\HotUI.Reload.Core\HotUI.Reload.Core.projitems')" />
   <Import Project="..\HotUI.Reload.IDE\HotUI.Reload.IDE.projitems" Label="Shared" Condition="Exists('..\HotUI.Reload.IDE\HotUI.Reload.IDE.projitems')" />
 </Project>

@@ -13,11 +13,12 @@
     <DefineConstants>TRACE;RELEASE;NETSTANDARD;NETSTANDARD2_0;ROSLYN;</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\HotUI.Reload.Core\HotUI.Reload.Core.csproj" />
     <ProjectReference Include="..\..\HotUI\src\HotUI\HotUI.csproj" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Scripting" Version="3.1.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
   </ItemGroup>
+  <Import Project="..\HotUI.Reload.Core\HotUI.Reload.Core.projitems" Label="Shared" Condition="Exists('..\HotUI.Reload.Core\HotUI.Reload.Core.projitems')" />
   <Import Project="..\HotUI.Reload.Client\HotUI.Reload.Client.projitems" Label="Shared" Condition="Exists('..\HotUI.Reload.Client\HotUI.Reload.Client.projitems')" />
 </Project>

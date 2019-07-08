@@ -149,10 +149,6 @@
       <Project>{F86E3A30-8D79-4E77-BB8A-F05A904DC942}</Project>
       <Name>HotUI.Samples</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\HotUI.Reload.Core\HotUI.Reload.Core.csproj">
-      <Project>{0F1D7663-8215-4A36-9702-351CB9287DE7}</Project>
-      <Name>HotUI.Reload.Core</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\HotUI.Reload.iOS\HotUI.Reload.iOS.csproj">
       <Project>{CC766EBA-D4BC-4460-805D-5041C10A70EE}</Project>
       <Name>HotUI.Reload.iOS</Name>

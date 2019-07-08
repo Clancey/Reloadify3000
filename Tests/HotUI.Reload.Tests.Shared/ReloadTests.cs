@@ -8,6 +8,10 @@ using System.Threading.Tasks;
 namespace HotUI.Tests {
 	[TestFixture ()]
 	public class ReloadTests {
+		static ReloadTests ()
+		{
+			var view = new HotUI.View ();
+		}
 		IEvaluator eval;
 
 		[Test ()]
@@ -49,6 +53,23 @@ namespace HotUI.Tests {
 			var newView = view.GetView ();
 			var newViewtype = newView?.GetType ();
 			Assert.AreSame (newViewtype, typeof (Text));
+		}
+
+
+		[Test ()]
+		public async Task CanReloadTuples ()
+		{
+			eval = new Evaluator ();
+			var request = new EvalRequestMessage {
+				Code = File.ReadAllText ("TupleTestView.txt"),
+				FileName = "MainPage.cs",
+				Classes = new System.Collections.Generic.List<(string NameSpace, string ClassName)> {
+					("HotUI.Samples","MainPage")
+				},
+			};
+			var result = new EvalResult ();
+			var s = await eval.EvaluateCode (request, result);
+			Assert.IsTrue (s);
 		}
 	}
 }
