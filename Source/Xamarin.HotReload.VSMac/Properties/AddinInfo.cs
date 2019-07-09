@@ -28,9 +28,9 @@ using Mono.Addins;
 using Mono.Addins.Description;
 
 [assembly: Addin (
-	"Xamarin.HotReload.VSMac",
-	Namespace = "Xamarin.HotReload.VSMac",
-	Version = "1.0"
+	"Xamarin.HotReload.HotUI.VSMac",
+	Namespace = "Xamarin.HotUI.HotReload.VSMac",
+	Version = "0.0.2"
 )]
 
 [assembly: AddinName ("Xamarin.HotReload.HotUI")]

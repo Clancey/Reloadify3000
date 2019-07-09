@@ -20,6 +20,7 @@ namespace Xamarin.HotReload.Ide
         Dictionary<string, List<string>> referencesForProjects = new Dictionary<string, List<string>>();
         Dictionary<string, Assembly> currentAssemblies = new Dictionary<string, Assembly>();
         Dictionary<string, string> replacedClasses = new Dictionary<string, string>();
+        Dictionary<string, string> GeneratedAssemblies = new Dictionary<string, string>();
 
         public bool ShouldHotReload(string project)
         {
@@ -38,16 +39,20 @@ namespace Xamarin.HotReload.Ide
             currentAssemblies.Clear();
             newClasses.Clear();
             replacedClasses.Clear();
+            foreach(var file in GeneratedAssemblies)
+            {
+                if (File.Exists(file.Value))
+                    File.Delete(file.Value);
+            }
+            GeneratedAssemblies.Clear();
         }
 
         public void PrimeProject(string project, string dll)
         {
             var assembly = Assembly.LoadFile(dll);
             currentAssemblies[dll] = assembly;
-            Task.Run(() =>
-            {
-                GetReferences(project, dll);
-            });
+            GetReferences(project, dll);
+            
         }
 
         public void HandleFileChange(FileIdentity file)
@@ -95,6 +100,11 @@ namespace Xamarin.HotReload.Ide
                 }
             }
 
+            if(GeneratedAssemblies.TryGetValue(file.SourcePath, out var oldAssembly))
+            {
+                File.Delete(oldAssembly);
+                GeneratedAssemblies.Remove(file.SourcePath);
+            }
             code = Replace(code, replacedClasses);
             file.Classes = renamedClasses;
 
@@ -104,6 +114,8 @@ namespace Xamarin.HotReload.Ide
             var references = GetReferences(file.RelativePath, file.CurrentAssemblyLocation);
 
             var assembly = Compile(tree, references, code);
+            if(!string.IsNullOrWhiteSpace(assembly))
+                GeneratedAssemblies[file.SourcePath] = assembly;
             file.NewAssembly = assembly;
 
 
@@ -120,7 +132,8 @@ namespace Xamarin.HotReload.Ide
         {
             string assemblyName = System.IO.Path.GetRandomFileName();
             var metaReferences = references.Select(x => MetadataReference.CreateFromFile(x)).ToList();
-
+            if(GeneratedAssemblies.Count > 0)
+                metaReferences.AddRange(GeneratedAssemblies.Select(x => MetadataReference.CreateFromFile(x.Value)));
             CSharpCompilation compilation = CSharpCompilation.Create(
                 assemblyName,
                 references: metaReferences,
