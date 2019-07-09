@@ -1,4 +1,5 @@
-﻿using Microsoft.CodeAnalysis;
+﻿using System.Collections.Generic;
+using Microsoft.CodeAnalysis;
 
 namespace HotUI.Reload {
 	/// <summary>
@@ -23,5 +24,9 @@ namespace HotUI.Reload {
 		/// </summary>
 		/// <value>The text.</value>
 		public string Text { get; set; }
+
+		public string ProjectFilePath { get; set; }
+
+		public string CurrentAssembly { get; set; }
 	}
 }

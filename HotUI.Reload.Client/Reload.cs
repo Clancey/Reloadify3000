@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
+using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using HotUI.Internal.Reload;
@@ -17,7 +19,7 @@ namespace HotUI
 	{
 		static readonly Reload serverInstance = new Reload ();
 
-		IEvaluator eval;
+		//IEvaluator eval;
 		TaskScheduler mainScheduler;
 		bool isRunning;
 		ITcpCommunicatorClient client;
@@ -55,7 +57,7 @@ namespace HotUI
 			mainScheduler = TaskScheduler.FromCurrentSynchronizationContext();
 			await RegisterDevice(ideIP, idePort);
 			
-			eval = new Evaluator();
+			//eval = new Evaluator();
 			isRunning = true;
 			return true;
 		}
@@ -121,24 +123,36 @@ namespace HotUI
 		{
 			Debug.WriteLine ($"Handling request");
 			EvalResponse evalResponse = new EvalResponse();
-			EvalResult result = new EvalResult ();
+			//EvalResult result = new EvalResult ();
 			try {
-				var s = await eval.EvaluateCode (request, result);
-				Debug.WriteLine ($"Evaluating: {s} - {result.FoundClasses.Count}");
-				if (s && result.FoundClasses.Count > 0) {
-					foreach (var r in result.FoundClasses)
+				//var s = await eval.EvaluateCode (request, result);
+				//Debug.WriteLine ($"Evaluating: {s} - {result.FoundClasses.Count}");
+				var tempPath = System.IO.Path.GetTempFileName ();
+				File.WriteAllBytes (tempPath, request.NewAssembly);
+				var assembly = Assembly.LoadFile (tempPath);
+				var types = request.Classes.Select (x => (ClassName: ToFullName (x), Type: assembly.GetType (ToFullName (x)))).ToList ();
+
+
+				if (types.Count > 0) {
+					foreach (var r in types)
 						HotReloadHelper.RegisterReplacedView (r.ClassName, r.Type);
 					Debug.WriteLine ($"Triggering Reload");
 					HotReloadHelper.TriggerReload ();
 				} else {
-					foreach (var m in result.Messages)
-						Debug.Write (m.Text);
+					//foreach (var m in result.Messages)
+					//	Debug.Write (m.Text);
 				}
 			}
 			catch (Exception ex)
 			{
 				Debug.WriteLine (ex);
 			}
+		}
+		static string ToFullName ((string NameSpace, string ClassName) data) => ToFullName (data.NameSpace, data.ClassName);
+		static string ToFullName (string NameSpace, string ClassName)
+		{
+			var name = string.IsNullOrWhiteSpace (NameSpace) ? "" : $"{NameSpace}.";
+			return $"{name}{ClassName}";
 		}
 	}
 }

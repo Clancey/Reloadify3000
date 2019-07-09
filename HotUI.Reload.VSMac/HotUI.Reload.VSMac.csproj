@@ -5,6 +5,20 @@
   <ItemGroup>
     <PackageReference Include="MonoDevelop.Addins" Version="0.4.6" />
   </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Build" />
+    <Reference Include="Microsoft.Build.Framework" />
+    <Reference Include="Mono.Debugging">
+      <HintPath>..\libs\Mono.Debugging.dll</HintPath>
+    </Reference>
+    <Reference Include="Mono.Debugger.Soft">
+      <HintPath>..\libs\Mono.Debugger.Soft.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <AddinReference Include="MonoDevelop.Debugger" />
+    <AddinReference Include="MonoDevelop.Debugger.Soft" />
+  </ItemGroup>
   <Import Project="..\HotUI.Reload.Core\HotUI.Reload.Core.projitems" Label="Shared" Condition="Exists('..\HotUI.Reload.Core\HotUI.Reload.Core.projitems')" />
   <Import Project="..\HotUI.Reload.IDE\HotUI.Reload.IDE.projitems" Label="Shared" Condition="Exists('..\HotUI.Reload.IDE\HotUI.Reload.IDE.projitems')" />
 </Project>

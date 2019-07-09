@@ -25,8 +25,9 @@ namespace HotUI.Internal.Reload {
 	}
 
 	public class EvalRequestMessage : Message {
+		public byte[] NewAssembly { get; set; }
 		public string FileName { get; set; }
-		public string Code { get; set; }
+		//public string Code { get; set; }
 		public List<(string NameSpace, string ClassName)> Classes { get; set; }
 	}
 
