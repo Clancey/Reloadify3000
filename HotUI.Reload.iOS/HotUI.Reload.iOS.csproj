@@ -50,6 +50,11 @@
       <Name>HotUI</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json">
+      <Version>12.0.2</Version>
+    </PackageReference>
+  </ItemGroup>
   <Import Project="..\HotUI.Reload.Core\HotUI.Reload.Core.projitems" Label="Shared" Condition="Exists('..\HotUI.Reload.Core\HotUI.Reload.Core.projitems')" />
   <Import Project="..\HotUI.Reload.Client\HotUI.Reload.Client.projitems" Label="Shared" Condition="Exists('..\HotUI.Reload.Client\HotUI.Reload.Client.projitems')" />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
