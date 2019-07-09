@@ -13,5 +13,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)DocumentChangedEventArgs.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ClassCollector.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SyntaxNodeHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FixedSizeDictionary.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FixedSizedQueue.cs" />
   </ItemGroup>
 </Project>

@@ -7,16 +7,19 @@ namespace HotUI.Reload {
 		public static void Init()
 		{
 			IDEManager.Shared.DataRecieved = Shared.OnDataReceived;
-			Shared.MonitorEditorChanges ();
-			IDEManager.Shared.StartMonitoring ();
 		}
-		void MonitorEditorChanges()
+		void DebuggingStarted()
 		{
+            IDEManager.Shared.StartMonitoring();
+        }
+        void DebuggingStopped()
+        {
 
-		}
-		void OnDataReceived(object message)
-		{
-
-		}
+            IDEManager.Shared.StartMonitoring();
+        }
+        void OnDataReceived(object message)
+        {
+            Console.WriteLine("Data recieved");
+        }
 	}
 }

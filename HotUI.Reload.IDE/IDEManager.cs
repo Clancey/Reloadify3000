@@ -19,7 +19,7 @@ namespace HotUI.Reload {
 			server.DataReceived = (o) => DataRecieved?.Invoke (o);
 		}
 		//TODO: change to fixed size dictionary
-		Dictionary<string, string> currentFiles = new Dictionary<string, string> ();
+		FixedSizeDictionary<string, string> currentFiles = new FixedSizeDictionary<string, string> (10);
 		public async void HandleDocumentChanged (DocumentChangedEventArgs e)
 		{
 			if (server.ClientsCount == 0)
@@ -43,7 +43,8 @@ namespace HotUI.Reload {
 			var collector = new ClassCollector ();
 			collector.Visit (root);
 			var classes = collector.Classes.Select (x => x.GetClassNameWithNamespace ()).ToList();
-			await server.Send (new EvalRequestMessage { Classes = classes, Code = e.Text, FileName = e.Filename });
+            if(classes.Count > 0)
+			    await server.Send (new EvalRequestMessage { Classes = classes, Code = e.Text, FileName = e.Filename });
 		}
 
 		public Action<object> DataRecieved { get; set; }
@@ -57,5 +58,10 @@ namespace HotUI.Reload {
 		{
 			server.StartListening (port);
 		}
-	}
+        public void StopMonitoring()
+        {
+            server.StopListening();
+            currentFiles.Clear();
+        }
+    }
 }

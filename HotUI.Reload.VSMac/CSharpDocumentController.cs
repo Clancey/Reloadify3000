@@ -15,11 +15,7 @@ namespace HotUI.Reload.VSMac {
 				IDEManager.Shared.HandleDocumentChanged (new DocumentChangedEventArgs (doc?.FileName, doc?.Editor?.Text));
 			}
 		}
-		protected override void OnContentChanged ()
-		{
-			base.OnContentChanged ();
-			HandledChanges ();
-		}
+		
 		async void HandledChanges()
 		{
 			var doc = Controller?.Document;
