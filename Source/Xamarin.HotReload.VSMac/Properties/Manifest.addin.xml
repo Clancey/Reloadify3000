@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ExtensionModel>
+    <Runtime>
+    </Runtime>
+    <Extension path="/MonoDevelop/Ide/StartupHandlers">
+        <Class class="Xamarin.HotReload.VSMac.StartupHandler" />
+    </Extension>
+  
+  <Extension path="/MonoDevelop/Ide/GlobalOptionsDialog/Projects">
+    <Section id="Xamarin.HotReload.HotUI" _label="Xamarin Hot Reload HotUI">
+      <Panel id="XamarinHotReloadOptionsPanel" class="Xamarin.HotReload.VSMac.HotReloadOptionsPanel" />
+    </Section>
+  </Extension>
+  
+  <Extension path="/MonoDevelop/Ide/Composition">
+    <Assembly file="Xamarin.HotReload.Ide.dll" />
+    <Assembly file="Xamarin.HotReload.VSMac.dll" />
+  </Extension>
+</ExtensionModel>

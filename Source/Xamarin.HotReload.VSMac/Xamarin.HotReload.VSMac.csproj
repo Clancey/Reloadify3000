@@ -1,0 +1,79 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net472</TargetFramework>
+    <LangVersion>7.2</LangVersion>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="MonoDevelop.Addins" Version="0.4.7" />
+    <PackageReference Include="Microsoft.Build.Framework" Version="16.0.461" />
+    <PackageReference Include="Microsoft.Build.Utilities.Core" Version="16.0.461" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="ICSharpCode.NRefactory.CSharp">
+      <HintPath>..\libs\ICSharpCode.NRefactory.CSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="Mono.Cecil">
+      <HintPath>..\libs\Mono.Cecil.dll</HintPath>
+    </Reference>
+    <Reference Include="Mono.Cecil.Mdb">
+      <HintPath>..\libs\Mono.Cecil.Mdb.dll</HintPath>
+    </Reference>
+    <Reference Include="ICSharpCode.NRefactory">
+      <HintPath>..\libs\ICSharpCode.NRefactory.dll</HintPath>
+    </Reference>
+    <Reference Include="Mono.Cecil.Pdb">
+      <HintPath>..\libs\Mono.Cecil.Pdb.dll</HintPath>
+    </Reference>
+    <Reference Include="Mono.Cecil.Rocks">
+      <HintPath>..\libs\Mono.Cecil.Rocks.dll</HintPath>
+    </Reference>
+    <Reference Include="Mono.Debugger.Soft">
+      <HintPath>..\libs\Mono.Debugger.Soft.dll</HintPath>
+    </Reference>
+    <Reference Include="Mono.Debugging">
+      <HintPath>..\libs\Mono.Debugging.dll</HintPath>
+    </Reference>
+    <Reference Include="Mono.Debugging.Soft">
+      <HintPath>..\libs\Mono.Debugging.Soft.dll</HintPath>
+    </Reference>
+    <Reference Include="Mono.Debugger.Soft">
+      <HintPath>..\..\libs\Mono.Debugger.Soft.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ComponentModel.Composition" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Xamarin.HotReload.Agent\Xamarin.HotReload.Agent.csproj" />
+    <ProjectReference Include="..\Xamarin.HotReload.Bridge\Xamarin.HotReload.Bridge.csproj" />
+    <ProjectReference Include="..\Xamarin.HotReload.Ide\Xamarin.HotReload.Ide.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <AddinReference Include="MonoDevelop.Debugger" />
+    <AddinReference Include="MonoDevelop.Debugger.Soft" />
+  </ItemGroup>
+
+  <!-- Allows us to update the version in CI -->
+  <UsingTask TaskName="RegexFileUpdate" TaskFactory="CodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.v4.0.dll">
+    <ParameterGroup>
+      <FilePath ParameterType="System.String" Required="true" />
+      <RegexPattern ParameterType="System.String" Required="true" />
+      <ReplacementText ParameterType="System.String" Required="true" />
+    </ParameterGroup>
+    <Task>
+      <Reference Include="System.Xml" />
+      <Using Namespace="System" />
+      <Using Namespace="System.IO" />
+      <Using Namespace="System.Text.RegularExpressions" />
+      <Code Type="Fragment" Language="cs">
+<![CDATA[
+var f = File.ReadAllText(FilePath);
+var r = Regex.Replace(f, RegexPattern.Replace('/', '\\'), ReplacementText);
+File.WriteAllText(FilePath, r);
+]]>
+      </Code>
+    </Task>
+  </UsingTask>
+
+  <Target Name="UpdateExtensionVersion">
+    <RegexFileUpdate FilePath="$(MSBuildProjectDirectory)\Properties\AddinInfo.cs" RegexPattern="Version\s?=\s?&quot;[0-9\.]+&quot;" ReplacementText="Version = &quot;$(ExtensionVersion)&quot;" />
+  </Target>
+</Project>

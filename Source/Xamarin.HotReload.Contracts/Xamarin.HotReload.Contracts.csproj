@@ -1,0 +1,11 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <RootNamespace>Xamarin.HotReload</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Telemetry\" />
+  </ItemGroup>
+</Project>

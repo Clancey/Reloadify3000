@@ -1,0 +1,196 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MinimumVisualStudioVersion>16.0</MinimumVisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectTypeGuids>{82b43b9b-a64c-4715-b499-d71e9ca2bd60};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <ProjectGuid>{BADFFAA6-2753-4AB2-9099-8EF7D75E9FC4}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Xamarin.HotReload.Vsix</RootNamespace>
+    <AssemblyName>Xamarin.HotReload.Vsix</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <GeneratePkgDefFile>true</GeneratePkgDefFile>
+    <UseCodebase>true</UseCodebase>
+    <IncludeAssemblyInVSIXContainer>true</IncludeAssemblyInVSIXContainer>
+    <CopyBuildOutputToOutputDirectory>true</CopyBuildOutputToOutputDirectory>
+    <CopyOutputSymbolsToOutputDirectory>true</CopyOutputSymbolsToOutputDirectory>
+    <StartAction>Program</StartAction>
+    <StartProgram Condition="'$(DevEnvDir)' != ''">$(DevEnvDir)devenv.exe</StartProgram>
+    <StartArguments>/rootsuffix Exp</StartArguments>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;VSIX</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <IncludeDebugSymbolsInVSIXContainer>true</IncludeDebugSymbolsInVSIXContainer>
+    <IncludeDebugSymbolsInLocalVSIXDeployment>true</IncludeDebugSymbolsInLocalVSIXDeployment>
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE;VSIX</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <IncludeDebugSymbolsInVSIXContainer>false</IncludeDebugSymbolsInVSIXContainer>
+    <IncludeDebugSymbolsInLocalVSIXDeployment>false</IncludeDebugSymbolsInLocalVSIXDeployment>
+  </PropertyGroup>
+  <Target Name="_ResolveCopyLocalNuGetPackagePdbs" Condition="$(CopyLocalLockFileAssemblies) == true" AfterTargets="ResolveReferences" BeforeTargets="GetVsixSourceItems">
+    <ItemGroup>
+      <VSIXCopyLocalReferenceSourceItem Include="@(ReferenceCopyLocalPaths->'%(RootDir)%(Directory)%(Filename).pdb')" Condition="Exists('%(RootDir)%(Directory)%(Filename).pdb')" />
+    </ItemGroup>
+  </Target>
+  <ItemGroup>
+    <Compile Include="CompositionManager.cs" />
+    <Compile Include="Constants.cs" />
+    <Compile Include="HotReloadOptionsControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="HotReloadOptionsControl.Designer.cs">
+      <DependentUpon>HotReloadOptionsControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="HotReloadOptionsPage.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="HotReloadStatusAdornmentFactory.cs" />
+    <Compile Include="HotReloadStatusControl.xaml.cs">
+      <DependentUpon>HotReloadStatusControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ProjectExtensions.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="VSErrorListProvider.cs" />
+    <Compile Include="VSInfoBarProvider.cs" />
+    <Compile Include="VSLogger.cs" />
+    <Compile Include="VSSettingsProvider.cs" />
+    <Compile Include="XamarinHotReloadExtensionPackage.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="source.extension.vsixmanifest">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="ICSharpCode.NRefactory">
+      <HintPath>..\..\libs\ICSharpCode.NRefactory.dll</HintPath>
+    </Reference>
+    <Reference Include="ICSharpCode.NRefactory.CSharp">
+      <HintPath>..\..\libs\ICSharpCode.NRefactory.CSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="Mono.Cecil">
+      <HintPath>..\..\libs\Mono.Cecil.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Mono.Cecil.Mdb">
+      <HintPath>..\..\libs\Mono.Cecil.Mdb.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Mono.Cecil.Pdb">
+      <HintPath>..\..\libs\Mono.Cecil.Pdb.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Mono.Cecil.Rocks">
+      <HintPath>..\..\libs\Mono.Cecil.Rocks.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Mono.Debugger.Soft">
+      <HintPath>..\..\libs\Mono.Debugger.Soft.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Mono.Debugging">
+      <HintPath>..\..\libs\Mono.Debugging.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Mono.Debugging.Soft">
+      <HintPath>..\..\libs\Mono.Debugging.Soft.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xaml" />
+    <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Language.Xml">
+      <Version>1.1.20</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.VisualStudio.SDK" Version="16.0.200" ExcludeAssets="runtime">
+      <IncludeAssets>compile; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.VSSDK.BuildTools" Version="16.1.1071">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="System.Diagnostics.Tracer">
+      <Version>2.0.8</Version>
+    </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="HotReloadStatusControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\hrdisabled.png" />
+    <Resource Include="Resources\hrfailed.png" />
+    <Resource Include="Resources\hrneutral.png" />
+    <Resource Include="Resources\hrenabled.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="HotReloadOptionsControl.resx">
+      <DependentUpon>HotReloadOptionsControl.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="hricon.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Xamarin.HotReload.Agent\Xamarin.HotReload.Agent.csproj">
+      <Project>{f25af043-c71e-4695-8cd1-74fbbee35d3c}</Project>
+      <Name>Xamarin.HotReload.Agent</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Xamarin.HotReload.Bridge\Xamarin.HotReload.Bridge.csproj">
+      <Project>{135f5f08-9510-40a3-a415-1c873cabc8be}</Project>
+      <Name>Xamarin.HotReload.Bridge</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Xamarin.HotReload.Contracts\Xamarin.HotReload.Contracts.csproj">
+      <Project>{471c1ba8-b3f1-47fc-9f56-499438f84ffe}</Project>
+      <Name>Xamarin.HotReload.Contracts</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Xamarin.HotReload.Forms\Xamarin.HotReload.Forms.csproj">
+      <Project>{3d998729-d9fc-4824-b4a5-187a3b3972bc}</Project>
+      <Name>Xamarin.HotReload.Forms</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Xamarin.HotReload.Ide\Xamarin.HotReload.Ide.csproj">
+      <Project>{a0e0776e-cebb-4556-a472-d1960ec59e94}</Project>
+      <Name>Xamarin.HotReload.Ide</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\VSSDK\Microsoft.VsSDK.targets" Condition="'$(VSToolsPath)' != ''" />
+  <!-- Allows us to update the version in CI -->
+  <Target Name="UpdateExtensionVersion">
+    <XmlPoke XmlInputPath="source.extension.vsixmanifest" Namespaces="&lt;Namespace Prefix='n' Uri='http://schemas.microsoft.com/developer/vsx-schema/2011' Name='x' /&gt;" Query="/n:PackageManifest/n:Metadata/n:Identity/@Version" Value="$(ExtensionVersion)" />
+  </Target>
+</Project>

@@ -1,0 +1,116 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{A0E0776E-CEBB-4556-A472-D1960EC59E94}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Xamarin.HotReload.Ide</RootNamespace>
+    <AssemblyName>Xamarin.HotReload.Ide</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+    <LangVersion>7.1</LangVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <LangVersion>7.1</LangVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <LangVersion>7.1</LangVersion>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Mono.Debugger.Soft" />
+    <Reference Include="Mono.Debugging.Soft">
+      <HintPath>..\..\libs\Mono.Debugging.Soft.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CodeAnalysis.CSharp">
+      <HintPath>..\..\..\..\..\..\Applications\Visual Studio %28Preview%29.app\Contents\Resources\lib\monodevelop\bin\Microsoft.CodeAnalysis.CSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CodeAnalysis">
+      <HintPath>..\..\..\..\..\..\Applications\Visual Studio %28Preview%29.app\Contents\Resources\lib\monodevelop\bin\Microsoft.CodeAnalysis.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Language.Xml">
+      <Version>1.1.20</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.VisualStudio.SDK" Version="16.0.200" ExcludeAssets="runtime">
+      <IncludeAssets>compile; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.VSSDK.BuildTools" Version="16.1.3128">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.VisualStudio.Telemetry">
+      <Version>16.0.233</Version>
+    </PackageReference>
+    <PackageReference Include="System.ValueTuple">
+      <Version>4.5.0</Version>
+    </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="IdeManager.cs" />
+    <Compile Include="IErrorListProvider.cs" />
+    <Compile Include="IInfoBarProvider.cs" />
+    <Compile Include="ITextSnapshotExtensions.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Resources\Strings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Strings.resx</DependentUpon>
+    </Compile>
+    <Compile Include="XamlUnsupportedEditTagger.cs" />
+    <Compile Include="XamlUnsupportedEditTaggerProvider.cs" />
+    <Compile Include="ISettingsProvider.cs" />
+    <Compile Include="Telemetry\VsTelemetryService.cs" />
+    <Compile Include="Telemetry\TelemetryExtensions.cs" />
+    <Compile Include="RoslynCodeManager.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\Strings.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Strings.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Xamarin.HotReload.Agent\Xamarin.HotReload.Agent.csproj">
+      <Project>{0FBE5D6B-7656-4C3B-981C-5024D49AD05A}</Project>
+      <Name>Xamarin.HotReload.Agent</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Xamarin.HotReload.Bridge\Xamarin.HotReload.Bridge.csproj">
+      <Project>{1BBC18DE-EA69-4AB4-B3DE-4E25B5D05834}</Project>
+      <Name>Xamarin.HotReload.Bridge</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Xamarin.HotReload.Contracts\Xamarin.HotReload.Contracts.csproj">
+      <Project>{48C287E5-DFA9-4AFB-A127-22B2D7CC553C}</Project>
+      <Name>Xamarin.HotReload.Contracts</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Xamarin.HotReload.HotUI\Xamarin.HotReload.HotUI.csproj">
+      <Project>{F0409F48-8B3A-4CCD-BE80-26E2DC64C301}</Project>
+      <Name>Xamarin.HotReload.HotUI</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Telemetry\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

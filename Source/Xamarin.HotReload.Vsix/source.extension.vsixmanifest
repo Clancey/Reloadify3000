@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
+    <Metadata>
+        <Identity Id="Xamarin.HotReload.Vsix.f135f3c0-16d7-4349-908e-2b35db4a8ff2" Version="1.0.0.1" Language="en-US" Publisher="Microsoft" />
+        <DisplayName>Xamarin HotReload</DisplayName>
+        <Description xml:space="preserve">Xamarin HotReload enables developers to view XAML changes instantly inside their running Xamarin.Forms apps.</Description>
+        <Icon>hricon.png</Icon>
+        <Preview>true</Preview>
+    </Metadata>
+    <Installation AllUsers="true">
+        <InstallationTarget Id="Microsoft.VisualStudio.Community" Version="[16.0,)" />
+    </Installation>
+    <Dependencies>
+    </Dependencies>
+    <Prerequisites>
+        <Prerequisite Id="Component.Xamarin" Version="[16.0,)" DisplayName="Xamarin" />
+    </Prerequisites>
+    <Assets>
+        <Asset Type="Microsoft.VisualStudio.VsPackage" d:Source="Project" d:ProjectName="%CurrentProject%" Path="|%CurrentProject%;PkgdefProjectOutputGroup|" />
+        <Asset Type="Microsoft.VisualStudio.MefComponent" d:Source="Project" d:ProjectName="%CurrentProject%" Path="|%CurrentProject%|" />
+        <Asset Type="Microsoft.VisualStudio.MefComponent" d:Source="Project" d:ProjectName="%CurrentProject%" Path="Xamarin.HotReload.Ide.dll" />
+    </Assets>
+</PackageManifest>
