@@ -70,6 +70,8 @@ namespace Xamarin.HotReload.VSMac
 
 			var projectFlavor = ActiveProject?.GetProjectFlavor () ?? ProjectFlavor.None;
 
+            if (!RoslynCodeManager.Shared.ShouldHotReload(ActiveProject?.FileName))
+                return;
 			Ide.StartHotReload (projectFlavor, debuggerSession);
             RoslynCodeManager.Shared.StartDebugging();
         }

@@ -20,6 +20,14 @@ namespace Xamarin.HotReload.Ide
         Dictionary<string, List<string>> referencesForProjects = new Dictionary<string, List<string>>();
         Dictionary<string, Assembly> currentAssemblies = new Dictionary<string, Assembly>();
         Dictionary<string, string> replacedClasses = new Dictionary<string, string>();
+
+        public bool ShouldHotReload(string project)
+        {
+            if (string.IsNullOrWhiteSpace(project))
+                return false;
+            var hasHotReload = GetReferences(project, null).Any(x=> x.EndsWith("HotUI.dll"));
+            return hasHotReload;
+        }
         public void StartDebugging()
         {
         }
@@ -55,9 +63,6 @@ namespace Xamarin.HotReload.Ide
                 return;
             }
             currentFiles[file.SourcePath] = code;
-
-
-
 
             var tree = CSharpSyntaxTree.ParseText(code);
             var root = tree.GetCompilationUnitRoot();
