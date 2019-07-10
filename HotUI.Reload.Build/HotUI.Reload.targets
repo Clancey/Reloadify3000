@@ -2,24 +2,15 @@
 <Project>
     <UsingTask TaskName="HotUI.Reload.Build.Tasks.AssemblyWeaver" AssemblyFile="$(MSBuildThisFileDirectory)HotUI.Reload.Build.Tasks.dll" />
     <Choose>
-        <When Condition="$(TargetFrameworkIdentifier) == '.NETFramework'">
-            <PropertyGroup>
-                <HotUIAssemblyPath>$(MSBuildThisFileDirectory)..\lib\net47\HotUI.Reload.dll</HotUIAssemblyPath>
-            </PropertyGroup>
-        </When>
+
         <When Condition="$(TargetFrameworkIdentifier) == 'Xamarin.iOS'">
             <PropertyGroup>
                 <HotUIAssemblyPath>$(MSBuildThisFileDirectory)..\lib\xamarinios10\HotUI.Reload.dll</HotUIAssemblyPath>
             </PropertyGroup>
         </When>
-        <When Condition="$(TargetFrameworkIdentifier) == 'MonoAndroid'">
+        <When Condition="$(TargetFrameworkIdentifier) != 'Xamarin.iOS'">
             <PropertyGroup>
-                <HotUIAssemblyPath>$(MSBuildThisFileDirectory)..\lib\monoandroid81\HotUI.Reload.dll</HotUIAssemblyPath>
-            </PropertyGroup>
-        </When>
-        <When Condition="$(TargetFrameworkIdentifier) == 'Xamarin.Mac'">
-            <PropertyGroup>
-                 <HotUIAssemblyPath>$(MSBuildThisFileDirectory)..\lib\Xamarin.Mac\HotUI.Reload.dll</HotUIAssemblyPath>
+                <HotUIAssemblyPath>$(MSBuildThisFileDirectory)..\lib\netstandard2.0\HotUI.Reload.dll</HotUIAssemblyPath>
             </PropertyGroup>
         </When>
     </Choose>
