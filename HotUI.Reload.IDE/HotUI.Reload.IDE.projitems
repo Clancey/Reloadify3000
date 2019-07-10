@@ -15,5 +15,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)SyntaxNodeHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)FixedSizeDictionary.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)FixedSizedQueue.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)RoslynCodeManager.cs" Condition=" '$(EnableDefaultCompileItems)' == 'true' " />
   </ItemGroup>
 </Project>
