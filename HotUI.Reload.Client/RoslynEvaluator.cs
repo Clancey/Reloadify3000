@@ -13,11 +13,12 @@ using Microsoft.CodeAnalysis.Emit;
 using System.Reflection;
 
 namespace HotUI.Internal.Reload {
-	public class Evaluator : IEvaluator {
+	public partial class Evaluator : IEvaluator {
 
 		public static bool IsSupported { get; }
 		static Evaluator ()
 		{
+            Debug.WriteLine("Starting Roslyn");
 			//try {
 			//	CSharpScript.RunAsync ("2+2").Wait ();
 			//	IsSupported = true;
@@ -107,55 +108,29 @@ namespace HotUI.Internal.Reload {
 			return null;
 		}
 
-
-
-
-		Assembly hotUIAssembly;
-		Type _viewType;
-		Type ViewType => _viewType ?? (_viewType = hotUIAssembly?.GetType ("HotUI.View"));
-		Dictionary<string, string> replacedClasses = new Dictionary<string, string> ();
-
-
-
+        		
 		static HashSet<string> newClasses = new HashSet<string> ();
-		bool IsExistingType (string fullClassName)
-		{
-			if (newClasses.Contains (fullClassName))
-				return false;
-			try {
+        bool IsExistingType(string fullClassName)
+        {
+            if (newClasses.Contains(fullClassName))
+                return false;
+            try
+            {
 
-				var result = AppDomain.CurrentDomain.GetAssemblies ().FirstOrDefault (x => x.GetType (fullClassName) != null);
-				if(result != null && result == hotUIAssembly) {
-					newClasses.Add (fullClassName);
-					return false;
-				}
-				return result != null;
-			} catch (Exception ex) {
-				newClasses.Add (fullClassName);
-				return false;
-			}
-		}
-
-		static string ToFullName ((string NameSpace, string ClassName) data) => ToFullName (data.NameSpace, data.ClassName);
-		static string ToFullName (string NameSpace, string ClassName)
-		{
-			var name = string.IsNullOrWhiteSpace (NameSpace) ? "" : $"{NameSpace}.";
-			return $"{name}{ClassName}";
-		}
-
-		static string Replace (string code, Dictionary<string, string> replaced)
-		{
-
-			string newCode = code;
-			foreach (var pair in replaced) {
-				if (pair.Key == pair.Value)
-					continue;
-				newCode = newCode.Replace ($" {pair.Key} ", $" {pair.Value} ");
-				newCode = newCode.Replace ($" {pair.Key}(", $" {pair.Value}(");
-				newCode = newCode.Replace ($" {pair.Key}:", $" {pair.Value}:");
-			}
-			return newCode;
-		}
+                var result = AppDomain.CurrentDomain.GetAssemblies().FirstOrDefault(x => x.GetType(fullClassName) != null);
+                if (result != null && result == hotUIAssembly)
+                {
+                    newClasses.Add(fullClassName);
+                    return false;
+                }
+                return result != null;
+            }
+            catch (Exception ex)
+            {
+                newClasses.Add(fullClassName);
+                return false;
+            }
+        }
 
 		void EnsureConfigured ()
 		{

@@ -1,6 +1,7 @@
 ﻿#if !NETSTANDARD2_0
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -11,6 +12,7 @@ namespace HotUI.Internal.Reload {
 	public partial class Evaluator : IEvaluator {
 		static Evaluator ()
 		{
+            Debug.WriteLine("Using Mono.CSharp.Evaluator");
 			var eval = new Mono.CSharp.Evaluator (new CompilerContext (new CompilerSettings (), new Printer ()));
 			try {
 				eval.Evaluate ("2+2");
@@ -36,10 +38,7 @@ namespace HotUI.Internal.Reload {
 			EnsureConfigured ();
 			return Evaluate (request, result, true);
 		}
-		Assembly hotUIAssembly;
-		Type _viewType;
-		Type ViewType => _viewType ?? (_viewType = hotUIAssembly?.GetType ("HotUI.View"));
-		Dictionary<string, string> replacedClasses = new Dictionary<string, string> ();
+		
 		async Task<bool> Evaluate (EvalRequestMessage request, EvalResult result, bool retryOnError)
 		{
 			try {
@@ -60,11 +59,12 @@ namespace HotUI.Internal.Reload {
 
 
 				var newCode = Replace (request.Code, replacedClasses);
-
+                Debug.WriteLine(newCode);
 				var foo = eval.Compile (newCode);
 				foreach (var c in request.Classes) {
 					var code = $"typeof({ToFullName(c.NameSpace,replacedClasses[c.ClassName])})";
-					var s = eval.Evaluate (code, out retResult, out result_set);
+                    Debug.WriteLine(code);
+                    var s = eval.Evaluate (code, out retResult, out result_set);
 					if (result_set) {
 						var t = (Type)retResult;
 						if (t.IsSubclassOf (ViewType)) {
@@ -114,26 +114,7 @@ namespace HotUI.Internal.Reload {
 			}
 		}
 
-		static string ToFullName ((string NameSpace, string ClassName) data) => ToFullName (data.NameSpace, data.ClassName);
-		static string ToFullName(string NameSpace, string ClassName)
-		{
-			var name = string.IsNullOrWhiteSpace (NameSpace) ? "" : $"{NameSpace}.";
-			return $"{name}{ClassName}";
-		}
-
-		static string Replace(string code, Dictionary<string,string> replaced)
-		{
-			
-			string newCode = code;
-			foreach(var pair in replaced) {
-				if (pair.Key == pair.Value)
-					continue;
-				newCode = newCode.Replace ($" {pair.Key} ", $" {pair.Value} ");
-				newCode = newCode.Replace ($" {pair.Key}(", $" {pair.Value}(");
-				newCode = newCode.Replace ($" {pair.Key}:", $" {pair.Value}:");
-			}
-			return newCode;
-		}
+		
 
 		void EnsureConfigured ()
 		{

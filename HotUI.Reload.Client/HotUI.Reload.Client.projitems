@@ -13,6 +13,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)RoslynEvaluator.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)MonoEvaluator.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Reload.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Evaluator.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="$(MSBuildThisFileDirectory)IdeIP.txt">

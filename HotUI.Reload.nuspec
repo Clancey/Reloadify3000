@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
   <metadata>
     <id>HotUI.Reload</id>
-    <version>0.0.2-alpha</version>
+    <version>0.0.4-alpha</version>
     <title>HotUI HotReload</title>
     <authors>James Clancey</authors>
     <owners>Clancey</owners>
@@ -29,8 +29,8 @@
   <files>
     <file src="HotUI.Reload.iOS/bin/Debug/HotUI.Reload.dll" target="lib/xamarinios10/HotUI.Reload.dll" />
     <file src="HotUI.Reload.iOS/bin/Debug/HotUI.Reload.pdb" target="lib/xamarinios10/HotUI.Reload.pdb" />
-    <file src="HotUI.Reload.Roslyn/bin/Debug/netstandard2.0/HotUI.dll" target="lib/netstandard2.0/HotUI.Reload.dll" />
-    <file src="HotUI.Reload.Roslyn/bin/Debug/netstandard2.0/HotUI.pdb" target="lib/netstandard2.0/HotUI.Reload.pdb" />
+    <file src="HotUI.Reload.Roslyn/bin/Debug/netstandard2.0/HotUI.Reload.dll" target="lib/netstandard2.0/HotUI.Reload.dll" />
+    <file src="HotUI.Reload.Roslyn/bin/Debug/netstandard2.0/HotUI.Reload.pdb" target="lib/netstandard2.0/HotUI.Reload.pdb" />
     <file src="HotUI.Reload.Build/bin/Debug/Mono.Cecil.dll" target="build\Mono.Cecil.dll" />
     <file src="HotUI.Reload.Build/HotUI.Reload.targets" target="build\HotUI.Reload.targets" />
     <file src="HotUI.Reload.Build/bin/Debug/HotUI.Reload.Build.Tasks.dll" target="build/HotUI.Reload.Build.Tasks.dll" />

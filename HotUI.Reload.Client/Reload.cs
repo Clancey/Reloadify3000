@@ -140,5 +140,20 @@ namespace HotUI
 				Debug.WriteLine (ex);
 			}
 		}
-	}
+
+        internal static string Replace(string code, Dictionary<string, string> replaced)
+        {
+
+            string newCode = code;
+            foreach (var pair in replaced)
+            {
+                if (pair.Key == pair.Value)
+                    continue;
+                newCode = newCode.Replace($" {pair.Key} ", $" {pair.Value} ");
+                newCode = newCode.Replace($" {pair.Key}(", $" {pair.Value}(");
+                newCode = newCode.Replace($" {pair.Key}:", $" {pair.Value}:");
+            }
+            return newCode;
+        }
+    }
 }
