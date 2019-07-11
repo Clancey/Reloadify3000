@@ -73,7 +73,6 @@ namespace HotUIReloadVisix
         IVsOutputWindowPane debugOutputPane;
         IVsOutputWindowPane generalOutputPane;
         IVsStatusbar statusBar;
-        [Newtonsoft.Json.JsonProperty("Foo")]
         SolutionEvents solutionEvents;
 
         DocumentEvents documentEvents;

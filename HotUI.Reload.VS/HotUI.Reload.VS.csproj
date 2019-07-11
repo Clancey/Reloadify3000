@@ -69,9 +69,6 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
-    <PackageReference Include="Newtonsoft.Json">
-      <Version>12.0.2</Version>
-    </PackageReference>
   </ItemGroup>
   <Import Project="..\HotUI.Reload.Core\HotUI.Reload.Core.projitems" Label="Shared" />
   <Import Project="..\HotUI.Reload.IDE\HotUI.Reload.IDE.projitems" Label="Shared" />
