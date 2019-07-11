@@ -17,16 +17,11 @@ namespace HotUI.Internal.Reload {
 
 		public static bool IsSupported { get; }
 
-        static Enum uwpFlags;
-        static bool IsUWP;
-        static Type appDomainType;
 		static Evaluator ()
 		{
             Debug.WriteLine("Starting Roslyn");
 
-            appDomainType = typeof(ResolveEventArgs).Assembly.GetType("System.AppDomain");
-            var isApexMethod = appDomainType.GetMethod("IsAppXModel", BindingFlags.NonPublic | BindingFlags.Static);
-            IsUWP = (bool)(isApexMethod?.Invoke(null,null) ?? false);
+        
 			//try {
 			//	CSharpScript.RunAsync ("2+2").Wait ();
 			//	IsSupported = true;
@@ -109,7 +104,7 @@ namespace HotUI.Internal.Reload {
 					}
 				} else {
 					ms.Seek (0, SeekOrigin.Begin);
-                    using(var hack = new UwpHack(IsUWP)){
+                    using(new UwpHack()){
 					    Assembly assembly = Assembly.Load (ms.ToArray ());
 					    return assembly;
                     }
@@ -121,11 +116,19 @@ namespace HotUI.Internal.Reload {
 
         class UwpHack : IDisposable
         {
+            static bool isUWP;
+            static Type appDomainType;
+            static UwpHack()
+            {
+                appDomainType = typeof(ResolveEventArgs).Assembly.GetType("System.AppDomain");
+                var isApexMethod = appDomainType.GetMethod("IsAppXModel", BindingFlags.NonPublic | BindingFlags.Static);
+                isUWP = (bool)(isApexMethod?.Invoke(null, null) ?? false);
+            }
             FieldInfo flagsField;
             Enum defaultValue;
-            public UwpHack(bool shouldApply)
+            public UwpHack()
             {
-                if (!shouldApply)
+                if (!isUWP)
                     return;
                 flagsField = appDomainType.GetField("s_flags", BindingFlags.NonPublic | BindingFlags.Static);
                 defaultValue = (Enum)flagsField.GetValue(null);
@@ -133,7 +136,7 @@ namespace HotUI.Internal.Reload {
             }
             public void Dispose()
             {
-                if(flagsField != null)
+                if (flagsField != null)
                     flagsField.SetValue(null, defaultValue);
             }
         }
