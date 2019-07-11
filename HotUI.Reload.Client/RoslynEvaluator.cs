@@ -136,8 +136,7 @@ namespace HotUI.Internal.Reload {
             }
             public void Dispose()
             {
-                if (flagsField != null)
-                    flagsField.SetValue(null, defaultValue);
+                flagsField?.SetValue(null, defaultValue);
             }
         }
         		
