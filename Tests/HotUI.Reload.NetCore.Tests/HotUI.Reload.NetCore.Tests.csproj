@@ -17,8 +17,8 @@
     <Compile Remove="UnitTest1.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\HotUI\src\HotUI\HotUI.csproj" />
     <ProjectReference Include="..\..\..\HotUI\sample\HotUI.Samples\HotUI.Samples.csproj" />
+    <ProjectReference Include="..\..\..\HotUI\src\HotUI\HotUI.csproj" />
     <ProjectReference Include="..\..\HotUI.Reload.Roslyn\HotUI.Reload.Roslyn.csproj" />
   </ItemGroup>
   <Import Project="..\HotUI.Reload.Tests.Shared\HotUI.Reload.Tests.Shared.projitems" Label="Shared" Condition="Exists('..\HotUI.Reload.Tests.Shared\HotUI.Reload.Tests.Shared.projitems')" />

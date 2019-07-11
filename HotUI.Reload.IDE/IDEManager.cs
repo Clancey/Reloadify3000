@@ -9,7 +9,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace HotUI.Reload {
 	public class IDEManager {
-
+        public bool IsEnabled { get; set; } = true;
 		public static IDEManager Shared { get; set; } = new IDEManager ();
 
 		ITcpCommunicatorServer server;

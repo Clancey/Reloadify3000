@@ -12,6 +12,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)IDEManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DocumentChangedEventArgs.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ClassCollector.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)RoslynCodeManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SyntaxNodeHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)FixedSizeDictionary.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)FixedSizedQueue.cs" />
