@@ -35,7 +35,6 @@ namespace HotUI.Reload
                 return;
             if(currentDocument != null)
             {
-                currentDocument.ContentChanged -= CurrentDocument_ContentChanged;
                 if (editorBound)
                 {
                     currentDocument.TextBuffer.Changed -= TextBuffer_Changed;
@@ -43,35 +42,36 @@ namespace HotUI.Reload
                 }
             }
             currentDocument = e.Document;
-            currentDocument.ContentChanged += CurrentDocument_ContentChanged;
-            if (currentDocument.TextBuffer != null)
+            if(isDebugging)
             {
+                if (currentDocument.TextBuffer == null)
+                {
+                    currentDocument.ContentChanged += CurrentDocument_ContentChanged;
+                }
+                else
+                {
+                    currentDocument.TextBuffer.Changed += TextBuffer_Changed;
+                    editorBound = true;
+                }
+            }
+        }
+
+        private void CurrentDocument_ContentChanged(object sender, EventArgs e)
+        {
+            if(currentDocument.TextBuffer != null)
+            {
+                currentDocument.ContentChanged -= CurrentDocument_ContentChanged;
                 currentDocument.TextBuffer.Changed += TextBuffer_Changed;
                 editorBound = true;
             }
-          
-           
         }
-
 
         private void TextBuffer_Changed(object sender, Microsoft.VisualStudio.Text.TextContentChangedEventArgs e)
         {
             IDEManager.Shared.TextChanged(currentDocument.FilePath);
         }
 
-        private void CurrentDocument_ContentChanged(object sender, EventArgs e)
-        {
-            if (currentDocument.TextBuffer != null && !editorBound)
-            {
-                currentDocument.TextBuffer.Changed += TextBuffer_Changed;
-                editorBound = true;
-            }
-        }
-
-        private void Editor_TextChanged(object sender, MonoDevelop.Core.Text.TextChangeEventArgs e)
-        {
-            IDEManager.Shared.TextChanged(currentDocument.FilePath);
-        }
+        
 
         bool shouldRun;
         private void ProjectOperations_BeforeStartProject(object sender, EventArgs e)
@@ -93,21 +93,27 @@ namespace HotUI.Reload
         {
             if (IdeApp.Workbench.ActiveDocument.FilePath != filePath)
                 return null;
-            return IdeApp.Workbench.ActiveDocument.Editor.Text;
+            return IdeApp.Workbench.ActiveDocument.TextBuffer.CurrentSnapshot.GetText();
         }
-
+        bool isDebugging;
         private void DebuggingService_DebugSessionStarted(object sender, EventArgs e)
         {
             if (!shouldRun)
                 return;
-           IDEManager.Shared.StartMonitoring();
+            isDebugging = true;
+            IDEManager.Shared.StartMonitoring();
+            currentDocument.TextBuffer.Changed += TextBuffer_Changed;
+            editorBound = true;
         }
 
         private void DebuggingService_StoppedEvent(object sender, EventArgs e)
         {
+            isDebugging = false;
             if (!shouldRun)
                 return;
             IDEManager.Shared.StopMonitoring();
+            if(editorBound)
+                currentDocument.TextBuffer.Changed -= TextBuffer_Changed;
         }
     }
 }
