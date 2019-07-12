@@ -38,6 +38,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HotUI.Reload.NetCore.Tests"
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "HotUI.Reload.Tests.Shared", "Tests\HotUI.Reload.Tests.Shared\HotUI.Reload.Tests.Shared.shproj", "{D7B239B7-2883-4B53-8873-5A3DD82578AC}"
 EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "HotUI.Reload.IDE", "HotUI.Reload.IDE\HotUI.Reload.IDE.shproj", "{4F101B9A-EF2C-47B6-B7E0-007FE8B97168}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		HotUI.Reload.Core\HotUI.Reload.Core.projitems*{4af14c8d-878a-4cb4-8b61-60a531ab358b}*SharedItemsImports = 13
@@ -194,6 +196,7 @@ Global
 		{C6E7D0DF-824B-4A57-9BC0-AF7874E0E49B} = {F36B5545-F798-4371-A17C-B0CB5EE1C76B}
 		{18EF3C1F-C3B0-4A4D-8929-86F54E9491AA} = {F36B5545-F798-4371-A17C-B0CB5EE1C76B}
 		{D7B239B7-2883-4B53-8873-5A3DD82578AC} = {F36B5545-F798-4371-A17C-B0CB5EE1C76B}
+		{4F101B9A-EF2C-47B6-B7E0-007FE8B97168} = {6EA10C36-41FC-4FDF-B3F7-1F2828ABC896}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E21E1431-5EEF-4039-AD8E-29E3E3E49AD0}
