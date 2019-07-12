@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using HotUI.Internal.Reload;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -18,11 +19,31 @@ namespace HotUI.Reload {
 			server = new TcpCommunicatorServer ();
 			server.DataReceived = (o) => DataRecieved?.Invoke (o);
 		}
-		//TODO: change to fixed size dictionary
+        string textChangedFile;
+        System.Timers.Timer textChangedTimer;
+        public void TextChanged(string file)
+        {
+            textChangedFile = file;
+            if (textChangedTimer == null)
+            {
+                textChangedTimer = new System.Timers.Timer(600);
+                textChangedTimer.Elapsed += async (s, e) =>
+                {
+                    var code = await GetActiveDocumentText.Invoke(textChangedFile);
+                    HandleDocumentChanged(new DocumentChangedEventArgs(textChangedFile,code));
+                };
+            }
+            else
+                textChangedTimer.Stop();
+            textChangedTimer.Start();
+        }
+
+        public Func<string,Task<string>> GetActiveDocumentText { get; set; }
 		FixedSizeDictionary<string, string> currentFiles = new FixedSizeDictionary<string, string> (10);
 		public async void HandleDocumentChanged (DocumentChangedEventArgs e)
 		{
-			if (server.ClientsCount == 0)
+            textChangedTimer.Stop();
+            if (server.ClientsCount == 0)
 				return;
 
 			if (string.IsNullOrWhiteSpace (e.Filename))

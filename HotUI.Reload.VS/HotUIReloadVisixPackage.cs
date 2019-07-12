@@ -15,7 +15,7 @@ using Microsoft.VisualStudio.TextTemplating;
 using System.Data;
 using Xamarin.HotReload.Vsix;
 using HotUI.Reload;
-
+using System.Threading.Tasks;
 
 namespace HotUIReloadVisix
 {
@@ -87,7 +87,7 @@ namespace HotUIReloadVisix
         protected override async Task InitializeAsync(CancellationToken cancellationToken, IProgress<ServiceProgressData> progress)
         {
             Instance = this;
-
+            IDEManager.Shared.GetActiveDocumentText = GetCodeFromActiveDocument;
             await base.InitializeAsync(cancellationToken, progress);
 
             await JoinableTaskFactory.SwitchToMainThreadAsync(cancellationToken);
@@ -97,6 +97,7 @@ namespace HotUIReloadVisix
             vsSolution = (IVsSolution)Package.GetGlobalService(typeof(IVsSolution));
 
             InitializeGeneralOutputPane();
+
 
 
             //ide.AgentStatusChanged += IdeManager_AgentStatusChanged;
@@ -122,10 +123,26 @@ namespace HotUIReloadVisix
             textEditorEvents.LineChanged += TextEditorEvents_LineChanged;
         }
 
-        private void TextEditorEvents_LineChanged(TextPoint StartPoint, TextPoint EndPoint, int Hint)
+        async Task<string> GetCodeFromActiveDocument(string filePath)
+        {
+            await JoinableTaskFactory.SwitchToMainThreadAsync();
+            var dte = (DTE)(await GetServiceAsync(typeof(DTE)));
+            var file = dte.ActiveDocument.FullName;
+            if (file != filePath)
+                return null;
+            var textDoc = dte.ActiveDocument.Object("TextDocument") as TextDocument;
+            var edit = textDoc.StartPoint.CreateEditPoint();
+            var text = edit.GetText(textDoc.EndPoint);
+            return text;
+        }
+
+        private async void TextEditorEvents_LineChanged(TextPoint StartPoint, TextPoint EndPoint, int Hint)
         {
             if (!isDebugging || !IDEManager.Shared.IsEnabled || !shouldRun)
                 return;
+            var dte = (DTE)(await GetServiceAsync(typeof(DTE)));
+            var file = dte.ActiveDocument.FullName;
+            IDEManager.Shared.TextChanged(file);
         }
 
         protected override void Dispose(bool disposing)
