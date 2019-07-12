@@ -23,6 +23,8 @@ namespace HotUI.Reload {
         System.Timers.Timer textChangedTimer;
         public void TextChanged(string file)
         {
+            if (server.ClientsCount == 0)
+                return;
             textChangedFile = file;
             if (textChangedTimer == null)
             {
@@ -42,7 +44,7 @@ namespace HotUI.Reload {
 		FixedSizeDictionary<string, string> currentFiles = new FixedSizeDictionary<string, string> (10);
 		public async void HandleDocumentChanged (DocumentChangedEventArgs e)
 		{
-            textChangedTimer.Stop();
+            textChangedTimer?.Stop();
             if (server.ClientsCount == 0)
 				return;
 

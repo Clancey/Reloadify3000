@@ -30,7 +30,7 @@ using Mono.Addins.Description;
 [assembly: Addin (
 	"HotUI.Reload.VSMac",
 	Namespace = "HotUI.Reload.VSMac",
-	Version = "0.1"
+	Version = "0.1.1"
 )]
 
 [assembly: AddinName ("HotUI.Reload.VSMac")]

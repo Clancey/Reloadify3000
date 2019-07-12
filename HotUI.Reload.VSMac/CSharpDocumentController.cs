@@ -23,5 +23,6 @@ namespace HotUI.Reload.VSMac {
 				return;
 			IDEManager.Shared.HandleDocumentChanged (new DocumentChangedEventArgs (doc?.FileName, doc?.Editor?.Text));
 		}
-	}
+       
+    }
 }
