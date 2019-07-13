@@ -131,10 +131,11 @@ namespace HotUI.Internal.Reload {
 			AppDomain.CurrentDomain.AssemblyLoad += (_, e) => {
 				LoadAssembly (e.LoadedAssembly);
 			};
-			foreach (var a in AppDomain.CurrentDomain.GetAssemblies ()) {
-				LoadAssembly (a);
+            AppDomain.CurrentDomain.GetAssemblies ()
+                .Where (a => !a.IsDynamic).ToList()
+                .ForEach(LoadAssembly);
 
-			}
+			
 			if (hotUIAssembly == null)
 				eval.LoadAssembly ("HotUI.dll");
 
