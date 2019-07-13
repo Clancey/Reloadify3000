@@ -2,13 +2,13 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
   <metadata>
     <id>HotUI.Reload</id>
-    <version>0.0.5-alpha</version>
+    <version>0.0.6-alpha</version>
     <title>HotUI HotReload</title>
     <authors>James Clancey</authors>
     <owners>Clancey</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Hot Reload plugin for HotUI</description>
-    <summary>This is the </summary>
+    <summary>HotUI.Reload plugin, Just call HotUI.Reload.Init() for debug builds.</summary>
     <copyright>James Clancey</copyright>
     <projectUrl>https://github.com/clancey/hotui</projectUrl>
     <repository type="git" url="https://github.com/clancey/hotui"/>
@@ -29,6 +29,8 @@
   <files>
     <file src="HotUI.Reload.iOS/bin/Debug/HotUI.Reload.dll" target="lib/xamarinios10/HotUI.Reload.dll" />
     <file src="HotUI.Reload.iOS/bin/Debug/HotUI.Reload.pdb" target="lib/xamarinios10/HotUI.Reload.pdb" />
+    <file src="HotUI.Reload.Android/bin/Debug/HotUI.Reload.dll" target="lib/monoandroid81/HotUI.Reload.dll" />
+    <file src="HotUI.Reload.Android/bin/Debug/HotUI.Reload.pdb" target="lib/monoandroid81/HotUI.Reload.pdb" />
     <file src="HotUI.Reload.Roslyn/bin/Debug/netstandard2.0/HotUI.Reload.dll" target="lib/netstandard2.0/HotUI.Reload.dll" />
     <file src="HotUI.Reload.Roslyn/bin/Debug/netstandard2.0/HotUI.Reload.pdb" target="lib/netstandard2.0/HotUI.Reload.pdb" />
     <file src="HotUI.Reload.Build/bin/Debug/Mono.Cecil.dll" target="build\Mono.Cecil.dll" />
