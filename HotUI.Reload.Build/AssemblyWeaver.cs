@@ -20,34 +20,34 @@ namespace HotUI.Reload.Build.Tasks
 
 		public override bool Execute()
 		{
-			var xamlatorAssembly = System.IO.Path.GetFullPath(Path.Trim());
-			var xamlatorAssemblyTmp = xamlatorAssembly + ".tmp";
-			Log.LogMessage(MessageImportance.Normal, $"Weaving assembly {xamlatorAssembly}");
-			AssemblyDefinition assemblyDef = AssemblyDefinition.ReadAssembly(xamlatorAssembly);
+			var hotUIAssembly = System.IO.Path.GetFullPath(Path.Trim());
+			var hotUIAssemblyTmp = hotUIAssembly + ".tmp";
+			Log.LogMessage(MessageImportance.Normal, $"Weaving assembly {hotUIAssembly}");
+			AssemblyDefinition assemblyDef = AssemblyDefinition.ReadAssembly(hotUIAssembly);
 			var resources = assemblyDef.MainModule.Resources;
 			var selectedResource = resources.FirstOrDefault(x => x.Name == Constants.IDE_IP_RESOURCE_NAME);
 			if (selectedResource != null)
 			{
 				var ips = NetworkUtils.DeviceIps();
-				string ipsString = String.Join("-", ips);
+				string ipsString = String.Join("\n", ips);
 				if (string.IsNullOrEmpty(ipsString))
 				{
 					ipsString = "127.0.0.1";
 				}
-				Log.LogMessage(MessageImportance.Normal, $"HotUI.Reload weaved with ips {String.Join("-", ips)}");
-				var currentIps = Encoding.ASCII.GetBytes(String.Join("\n", NetworkUtils.DeviceIps()));
-				var newResource = new EmbeddedResource(Constants.IDE_IP_RESOURCE_NAME, selectedResource.Attributes, currentIps);
+				Log.LogMessage(MessageImportance.Normal, $"HotUI.Reload weaved with ips `{ipsString}`");
+                var currentIps = Encoding.ASCII.GetBytes(ipsString);
+                var newResource = new EmbeddedResource(Constants.IDE_IP_RESOURCE_NAME, selectedResource.Attributes, currentIps);
 				resources.Remove(selectedResource);
 				resources.Add(newResource);
-				assemblyDef.Write(xamlatorAssemblyTmp);
+				assemblyDef.Write(hotUIAssemblyTmp);
 			}
 			else
 			{
-				Log.LogError($"Resource {Constants.IDE_IP_RESOURCE_NAME} not found in assembly {xamlatorAssembly}");
+				Log.LogError($"Resource {Constants.IDE_IP_RESOURCE_NAME} not found in assembly {hotUIAssembly}");
 			}
 			assemblyDef.Dispose();
 
-			File.Replace(xamlatorAssemblyTmp, xamlatorAssembly, xamlatorAssembly + ".backup");
+			File.Replace(hotUIAssemblyTmp, hotUIAssembly, hotUIAssembly + ".backup");
 			return true;
 		}
 	}
