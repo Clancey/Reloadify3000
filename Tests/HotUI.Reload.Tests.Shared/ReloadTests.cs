@@ -4,12 +4,14 @@ using System;
 using HotUI.Samples;
 using System.IO;
 using System.Threading.Tasks;
+using HotUI.Internal;
 
 namespace HotUI.Tests {
 	[TestFixture ()]
 	public class ReloadTests {
 		static ReloadTests ()
 		{
+            HotReloadHelper.IsEnabled = true;
 			var view = new HotUI.View ();
 		}
 		IEvaluator eval;
