@@ -67,7 +67,7 @@ namespace HotUI.Internal.Reload {
                     var s = eval.Evaluate (code, out retResult, out result_set);
 					if (result_set) {
 						var t = (Type)retResult;
-						if (t.IsSubclassOf (ViewType)) {
+						if (t.IsSubclassOf (ViewType) || HandlerType.IsAssignableFrom(t)) {
 							result.FoundClasses.Add ((ToFullName(c), t));
 						}
 

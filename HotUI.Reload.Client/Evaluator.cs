@@ -11,7 +11,9 @@ namespace HotUI.Internal.Reload
     {
         Assembly hotUIAssembly;
         Type _viewType;
+        Type _handlerType;
         Type ViewType => _viewType ?? (_viewType = hotUIAssembly?.GetType("HotUI.View"));
+        Type HandlerType => _handlerType ?? (_handlerType = hotUIAssembly?.GetType("HotUI.IViewHandler"));
         Dictionary<string, string> replacedClasses = new Dictionary<string, string>();
 
 

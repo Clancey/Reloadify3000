@@ -62,7 +62,7 @@ namespace HotUI.Internal.Reload {
 					var code = $"{ToFullName (c.NameSpace, replacedClasses [c.ClassName])}";
 					var  t = assembly.GetType (code);
 					if(t != null) {
-						if (t.IsSubclassOf (ViewType))
+						if (t.IsSubclassOf (ViewType) || HandlerType.IsAssignableFrom(t)) {
 							result.FoundClasses.Add ((ToFullName (c), t));
 						result.Result = t;
 					}
@@ -104,10 +104,7 @@ namespace HotUI.Internal.Reload {
 					}
 				} else {
 					ms.Seek (0, SeekOrigin.Begin);
-                    using(new UwpHack()){
-					    Assembly assembly = Assembly.Load (ms.ToArray ());
-					    return assembly;
-                    }
+                  ≠
 				}
 			}
 			return null;
