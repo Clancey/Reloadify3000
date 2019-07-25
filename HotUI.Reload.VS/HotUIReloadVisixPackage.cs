@@ -216,20 +216,23 @@ namespace HotUIReloadVisix
             if (dbgmodeNew == DBGMODE.DBGMODE_Break)
                 return VSConstants.S_OK;
 
-            if (IDEManager.Shared.IsEnabled)
+            Task.Run(() =>
             {
+                if (IDEManager.Shared.IsEnabled)
+                {
 
-                var project = GetStartupProject();
-                var proj = project.FileName;
-                var dll = GetAssemblyPath(project);
+                    var project = GetStartupProject();
+                    var proj = project.FileName;
+                    var dll = GetAssemblyPath(project);
 
-                InitializeDebugOutputPane();
-                shouldRun = RoslynCodeManager.Shared.ShouldHotReload(proj);
-                if (shouldRun)
-                    IDEManager.Shared.StartMonitoring();
-                isDebugging = true;
-            }
-
+                    InitializeDebugOutputPane();
+                    shouldRun = RoslynCodeManager.Shared.ShouldHotReload(proj);
+                    if (shouldRun)
+                        IDEManager.Shared.StartMonitoring();
+                   
+                }
+            });
+            isDebugging = true;
             return VSConstants.S_OK;
         }
 
