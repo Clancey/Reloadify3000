@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
   <metadata>
     <id>Clancey.Comet.Reload</id>
-    <version>0.0.8-alpha</version>
+    <version>0.0.9-alpha</version>
     <title>Comet HotReload</title>
     <authors>James Clancey</authors>
     <owners>Clancey</owners>
@@ -37,7 +37,7 @@
     <file src="Comet.Reload.Roslyn/bin/Debug/netstandard2.0/Comet.Reload.dll" target="lib/netstandard2.0/Comet.Reload.dll" />
     <file src="Comet.Reload.Roslyn/bin/Debug/netstandard2.0/Comet.Reload.pdb" target="lib/netstandard2.0/Comet.Reload.pdb" />
     <file src="Comet.Reload.Build/bin/Debug/Mono.Cecil.dll" target="build\Mono.Cecil.dll" />
-    <file src="Comet.Reload.Build/Comet.Reload.targets" target="build\Comet.Reload.targets" />
+    <file src="Comet.Reload.Build/Comet.Reload.targets" target="build\Clancey.Comet.Reload.targets" />
     <file src="Comet.Reload.Build/bin/Debug/Comet.Reload.Build.Tasks.dll" target="build/Comet.Reload.Build.Tasks.dll" />
     <file src="Comet.Reload.Build/bin/Debug/Comet.Reload.Build.Tasks.pdb" target="build/Comet.Reload.Build.Tasks.pdb" />
   </files>
