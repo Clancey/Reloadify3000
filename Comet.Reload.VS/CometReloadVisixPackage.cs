@@ -140,14 +140,17 @@ namespace CometReloadVisix
         {
             if (!isDebugging || !IDEManager.Shared.IsEnabled || !shouldRun)
                 return;
+            await JoinableTaskFactory.SwitchToMainThreadAsync();
             var dte = (DTE)(await GetServiceAsync(typeof(DTE)));
-            var file = dte.ActiveDocument.FullName;
+            var file = dte.ActiveDocument?.FullName;
+            if (string.IsNullOrWhiteSpace(file))
+                return;
             IDEManager.Shared.TextChanged(file);
         }
 
         protected override void Dispose(bool disposing)
         {
-            if (disposing)
+            if (disposing) 
             {
                 //ide.AgentStatusChanged -= IdeManager_AgentStatusChanged;
                 //ide.AgentViewAppeared -= IdeManager_AgentViewAppeared;
