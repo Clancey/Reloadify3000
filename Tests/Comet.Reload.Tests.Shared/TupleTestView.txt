@@ -1,0 +1,24 @@
+﻿using System;
+using System.Collections.Generic;
+
+namespace Comet.Samples {
+    public class MainPage : View {
+        List<(string Title, Func<View> View)> pages = new List<(string Title, Func<View> View)> {
+            ("Binding Sample",()=> new MainPage()),
+            ("BasicTestView",()=> new MainPage()),
+            ("ListPage1", ()=> new MainPage()),
+            ("ListPage2", ()=> new MainPage()),
+            ("Insane Diff", ()=> new MainPage()),
+        };
+        public MainPage ()
+        {
+            Body = () => new NavigationView {
+                new ListView<(string Title, Func<View> View)> (pages) {
+                    Cell = (page) => new NavigationButton (page.Title,page.View),
+                }
+            };
+        }
+
+    }
+    
+}

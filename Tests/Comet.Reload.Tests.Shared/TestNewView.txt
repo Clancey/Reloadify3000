@@ -1,0 +1,13 @@
+﻿using System;
+using System.Collections.Generic;
+
+namespace Comet.Samples
+{
+    public class MyNewTestView : View
+    {
+        public MyNewTestView()
+        {
+            Body = () => new Text("New TestView");;
+        }
+    }
+}

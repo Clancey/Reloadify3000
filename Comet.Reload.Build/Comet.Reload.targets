@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Project>
+    <UsingTask TaskName="Comet.Reload.Build.Tasks.AssemblyWeaver" AssemblyFile="$(MSBuildThisFileDirectory)Comet.Reload.Build.Tasks.dll" />
+    <Choose>
+        <When Condition="$(TargetFrameworkIdentifier) == 'Xamarin.iOS'">
+            <PropertyGroup>
+                <CometAssemblyPath>$(MSBuildThisFileDirectory)..\lib\xamarinios10\Comet.Reload.dll</CometAssemblyPath>
+            </PropertyGroup>
+        </When>
+        <When Condition="$(TargetFrameworkIdentifier) == 'MonoAndroid'">
+            <PropertyGroup>
+                <CometAssemblyPath>$(MSBuildThisFileDirectory)..\lib\monoandroid81\Comet.Reload.dll</CometAssemblyPath>
+            </PropertyGroup>
+        </When>
+        <When Condition="$(TargetFrameworkIdentifier) != 'Xamarin.iOS' And $(TargetFrameworkIdentifier) != 'MonoAndroid'">
+            <PropertyGroup>
+                <CometAssemblyPath>$(MSBuildThisFileDirectory)..\lib\netstandard2.0\Comet.Reload.dll</CometAssemblyPath>
+            </PropertyGroup>
+        </When>
+    </Choose>
+    <!-- this will automatically run after the 'Build' target -->
+    <Target Name="WeaveComet" BeforeTargets="_CopyFilesMarkedCopyLocal">
+        <AssemblyWeaver Path="$(CometAssemblyPath)" />
+    </Target>
+</Project>
