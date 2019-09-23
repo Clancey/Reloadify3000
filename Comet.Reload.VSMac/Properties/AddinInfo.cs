@@ -30,7 +30,7 @@ using Mono.Addins.Description;
 [assembly: Addin (
 	"Comet.Reload.VSMac",
 	Namespace = "Comet.Reload.VSMac",
-	Version = "0.1.1"
+	Version = "0.1.2"
 )]
 
 [assembly: AddinName ("Comet.Reload.VSMac")]

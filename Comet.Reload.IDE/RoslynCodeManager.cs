@@ -20,6 +20,9 @@ namespace Comet.Reload
         {
             if (string.IsNullOrWhiteSpace(project))
                 return false;
+
+            var hasComet = File.ReadAllText(project).Contains("Comet");
+            return hasComet;
             var hasHotReload = GetReferences(project, null).Any(x => x.EndsWith("Comet.dll"));
             return hasHotReload;
         }
