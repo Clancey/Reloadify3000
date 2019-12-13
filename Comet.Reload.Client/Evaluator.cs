@@ -45,6 +45,7 @@ namespace Comet.Internal.Reload
                 '>',
                 '.',
                 ':',
+                ';',
                 (char)10,
                 (char)32,
                 (char)40 //Return
