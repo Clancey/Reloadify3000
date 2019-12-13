@@ -104,6 +104,9 @@ namespace Comet.Internal.Reload {
 					}
 				} else {
 					ms.Seek (0, SeekOrigin.Begin);
+					var data = new byte [ms.Length];
+					ms.Read (data, 0, data.Length);
+					return Assembly.Load (data);
 				}
 			}
 			return null;
