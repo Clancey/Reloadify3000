@@ -16,6 +16,19 @@ namespace Comet.Tests {
 		}
 		IEvaluator eval;
 
+
+		[Test()]
+		public async Task CodeReplacesPRoperly()
+		{
+
+			var oldCode = File.ReadAllText ("SkiaSlider.txt");
+			var newCode = Evaluator.ReplaceAllIndexesOf (oldCode, "SliderHandler", "SliderHandlerfdsjfdsklfjds");
+			//Console.WriteLine (newCode);
+			var expexted = File.ReadAllText ("SkiaSlider-result.txt");
+			Assert.AreEqual (expexted, newCode);
+
+		}
+
 		[Test ()]
 		public async Task CanLoadCodeFromFile ()
 		{
