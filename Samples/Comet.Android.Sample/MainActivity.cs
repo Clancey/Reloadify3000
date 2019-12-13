@@ -11,7 +11,7 @@ using Comet.Samples;
 namespace Comet.Android.Sample
 {
     [Activity(Label = "@string/app_name", Theme = "@style/AppTheme.NoActionBar", MainLauncher = true)]
-    public class MainActivity : HotActivity
+    public class MainActivity : CometActivity
     {
 
         protected override void OnCreate(Bundle savedInstanceState)
