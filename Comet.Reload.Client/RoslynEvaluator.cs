@@ -19,9 +19,9 @@ namespace Comet.Internal.Reload {
 
 		static Evaluator ()
 		{
-            Debug.WriteLine("Starting Roslyn");
+			Debug.WriteLine ("Starting Roslyn");
 
-        
+
 			//try {
 			//	CSharpScript.RunAsync ("2+2").Wait ();
 			//	IsSupported = true;
@@ -60,10 +60,8 @@ namespace Comet.Internal.Reload {
 
 				foreach (var c in request.Classes) {
 					var code = $"{ToFullName (c.NameSpace, replacedClasses [c.ClassName])}";
-					var  t = assembly.GetType (code);
-					if(t != null) {
-						if (t.IsSubclassOf (ViewType) || HandlerType.IsAssignableFrom(t))
-							result.FoundClasses.Add ((ToFullName (c), t));
+					var t = assembly.GetType (code);
+					if (t != null) {
 						//if (t.IsSubclassOf (ViewType) || HandlerType.IsAssignableFrom(t))
 						result.FoundClasses.Add ((ToFullName (c), t));
 						result.Result = t;
@@ -81,7 +79,7 @@ namespace Comet.Internal.Reload {
 		}
 
 
-		Assembly Compile (string code )
+		Assembly Compile (string code)
 		{
 			var syntaxTree = CSharpSyntaxTree.ParseText (code);
 
@@ -115,54 +113,49 @@ namespace Comet.Internal.Reload {
 		}
 
 
-        class UwpHack : IDisposable
-        {
-            static bool isUWP;
-            static Type appDomainType;
-            static UwpHack()
-            {
-                appDomainType = typeof(ResolveEventArgs).Assembly.GetType("System.AppDomain");
-                var isApexMethod = appDomainType.GetMethod("IsAppXModel", BindingFlags.NonPublic | BindingFlags.Static);
-                isUWP = (bool)(isApexMethod?.Invoke(null, null) ?? false);
-            }
-            FieldInfo flagsField;
-            Enum defaultValue;
-            public UwpHack()
-            {
-                if (!isUWP)
-                    return;
-                flagsField = appDomainType.GetField("s_flags", BindingFlags.NonPublic | BindingFlags.Static);
-                defaultValue = (Enum)flagsField.GetValue(null);
-                flagsField.SetValue(null, 0x01);
-            }
-            public void Dispose()
-            {
-                flagsField?.SetValue(null, defaultValue);
-            }
-        }
-        		
-		static HashSet<string> newClasses = new HashSet<string> ();
-        bool IsExistingType(string fullClassName)
-        {
-            if (newClasses.Contains(fullClassName))
-                return false;
-            try
-            {
+		class UwpHack : IDisposable {
+			static bool isUWP;
+			static Type appDomainType;
+			static UwpHack ()
+			{
+				appDomainType = typeof (ResolveEventArgs).Assembly.GetType ("System.AppDomain");
+				var isApexMethod = appDomainType.GetMethod ("IsAppXModel", BindingFlags.NonPublic | BindingFlags.Static);
+				isUWP = (bool)(isApexMethod?.Invoke (null, null) ?? false);
+			}
+			FieldInfo flagsField;
+			Enum defaultValue;
+			public UwpHack ()
+			{
+				if (!isUWP)
+					return;
+				flagsField = appDomainType.GetField ("s_flags", BindingFlags.NonPublic | BindingFlags.Static);
+				defaultValue = (Enum)flagsField.GetValue (null);
+				flagsField.SetValue (null, 0x01);
+			}
+			public void Dispose ()
+			{
+				flagsField?.SetValue (null, defaultValue);
+			}
+		}
 
-                var result = AppDomain.CurrentDomain.GetAssemblies().FirstOrDefault(x => x.GetType(fullClassName) != null);
-                if (result != null && result == CometAssembly)
-                {
-                    newClasses.Add(fullClassName);
-                    return false;
-                }
-                return result != null;
-            }
-            catch (Exception ex)
-            {
-                newClasses.Add(fullClassName);
-                return false;
-            }
-        }
+		static HashSet<string> newClasses = new HashSet<string> ();
+		bool IsExistingType (string fullClassName)
+		{
+			if (newClasses.Contains (fullClassName))
+				return false;
+			try {
+
+				var result = AppDomain.CurrentDomain.GetAssemblies ().FirstOrDefault (x => x.GetType (fullClassName) != null);
+				if (result != null && result == CometAssembly) {
+					newClasses.Add (fullClassName);
+					return false;
+				}
+				return result != null;
+			} catch (Exception ex) {
+				newClasses.Add (fullClassName);
+				return false;
+			}
+		}
 
 		void EnsureConfigured ()
 		{
@@ -174,25 +167,24 @@ namespace Comet.Internal.Reload {
 
 		void ConfigureVM ()
 		{
-			var refs = new List<MetadataReference>
-				{
-					//MetadataReference.CreateFromFile(typeof(object).Assembly.Location),
-					//MetadataReference.CreateFromFile(typeof(Enumerable).Assembly.Location)
-				};
-			var assemblies = AppDomain.CurrentDomain.GetAssemblies ().Where (a => !a.IsDynamic && !string.IsNullOrWhiteSpace(a.Location)).ToArray ();
+			var refs = new List<MetadataReference> {
+				//MetadataReference.CreateFromFile(typeof(object).Assembly.Location),
+				//MetadataReference.CreateFromFile(typeof(Enumerable).Assembly.Location)
+			};
+			var assemblies = AppDomain.CurrentDomain.GetAssemblies ().Where (a => !a.IsDynamic && !string.IsNullOrWhiteSpace (a.Location)).ToArray ();
 			var o = new CSharpCompilationOptions (OutputKind.DynamicallyLinkedLibrary);
 			foreach (var assembly in assemblies) {
 				var name = assembly.GetName ().Name;
 				if (name == "Comet") {
 					CometAssembly = assembly;
 				}
-				refs.Add (MetadataReference.CreateFromFile(assembly.Location));
+				refs.Add (MetadataReference.CreateFromFile (assembly.Location));
 			}
 			//This should only happen in the tests
-			if(CometAssembly == null) {
-				refs.Add(MetadataReference.CreateFromFile ("Comet.dll"));
+			if (CometAssembly == null) {
+				refs.Add (MetadataReference.CreateFromFile ("Comet.dll"));
 				var filePath = System.IO.Path.Combine (Directory.GetCurrentDirectory (), "Comet.dll");
-				CometAssembly = Assembly.Load(filePath);
+				CometAssembly = Assembly.Load (filePath);
 			}
 			references = refs.ToArray ();
 			options = ScriptOptions.Default.WithReferences (assemblies);

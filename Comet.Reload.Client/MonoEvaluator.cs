@@ -12,7 +12,7 @@ namespace Comet.Internal.Reload {
 	public partial class Evaluator : IEvaluator {
 		static Evaluator ()
 		{
-            Debug.WriteLine("Using Mono.CSharp.Evaluator");
+			Debug.WriteLine("Using Mono.CSharp.Evaluator");
 			var eval = new Mono.CSharp.Evaluator (new CompilerContext (new CompilerSettings (), new Printer ()));
 			try {
 				eval.Evaluate ("2+2");
@@ -59,12 +59,12 @@ namespace Comet.Internal.Reload {
 
 
 				var newCode = Replace (request.Code, replacedClasses);
-                Debug.WriteLine(newCode);
+				Debug.WriteLine(newCode);
 				var foo = eval.Compile (newCode);
 				foreach (var c in request.Classes) {
 					var code = $"typeof({ToFullName(c.NameSpace,replacedClasses[c.ClassName])})";
-                    Debug.WriteLine(code);
-                    var s = eval.Evaluate (code, out retResult, out result_set);
+					Debug.WriteLine(code);
+					var s = eval.Evaluate (code, out retResult, out result_set);
 					if (result_set) {
 						var t = (Type)retResult;
 						//if (t.IsSubclassOf (ViewType) || HandlerType.IsAssignableFrom(t)) {
@@ -131,9 +131,9 @@ namespace Comet.Internal.Reload {
 			AppDomain.CurrentDomain.AssemblyLoad += (_, e) => {
 				LoadAssembly (e.LoadedAssembly);
 			};
-            AppDomain.CurrentDomain.GetAssemblies ()
-                .Where (a => !a.IsDynamic).ToList()
-                .ForEach(LoadAssembly);
+			AppDomain.CurrentDomain.GetAssemblies ()
+				.Where (a => !a.IsDynamic).ToList()
+				.ForEach(LoadAssembly);
 
 			
 			if (CometAssembly == null)
