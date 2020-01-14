@@ -64,6 +64,8 @@ namespace Comet.Internal.Reload {
 					if(t != null) {
 						if (t.IsSubclassOf (ViewType) || HandlerType.IsAssignableFrom(t))
 							result.FoundClasses.Add ((ToFullName (c), t));
+						//if (t.IsSubclassOf (ViewType) || HandlerType.IsAssignableFrom(t))
+						result.FoundClasses.Add ((ToFullName (c), t));
 						result.Result = t;
 					}
 				}
