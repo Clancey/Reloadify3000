@@ -189,7 +189,7 @@ namespace CometReloadVisix
         {
             InitializeGeneralOutputPane();
 
-            //ide?.StopHotReload(reason);
+            IDEManager.Shared?.StopMonitoring();
 
 
             if (docTableCookie > 0 && runningDocTable != null)

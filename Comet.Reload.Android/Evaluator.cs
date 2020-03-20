@@ -13,9 +13,6 @@ namespace Comet.Internal.Reload
         {
             object res;
             bool hasRes;
-            eval.Evaluate("using Android.OS;", out res, out hasRes);
-            eval.Evaluate("using Android.App;", out res, out hasRes);
-            eval.Evaluate("using Android.Widget;", out res, out hasRes);
         }
     }
 }
