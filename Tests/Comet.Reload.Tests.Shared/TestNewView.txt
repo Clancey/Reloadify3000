@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Comet.Samples
+namespace System.Maui.Samples
 {
     public class MyNewTestView : View
     {

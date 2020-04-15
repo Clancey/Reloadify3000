@@ -1,7 +1,7 @@
-﻿using Comet.Samples;
+﻿using System.Maui.Samples;
 using System.Windows;
 
-namespace Comet.WPF.Sample
+namespace System.Maui.WPF.Sample
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml

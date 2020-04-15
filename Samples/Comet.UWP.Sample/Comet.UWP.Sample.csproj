@@ -7,8 +7,8 @@
     <ProjectGuid>{35664234-EB75-47BA-A082-9F96BDF6FC92}</ProjectGuid>
     <OutputType>AppContainerExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Comet.UWP.Sample</RootNamespace>
-    <AssemblyName>Comet.UWP.Sample</AssemblyName>
+    <RootNamespace>System.Maui.UWP.Sample</RootNamespace>
+    <AssemblyName>System.Maui.UWP.Sample</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
     <TargetPlatformVersion Condition=" '$(TargetPlatformVersion)' == '' ">10.0.18362.0</TargetPlatformVersion>
@@ -150,17 +150,17 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Comet.UWP\Comet.UWP.csproj">
+    <ProjectReference Include="..\..\src\System.Maui.UWP\System.Maui.UWP.csproj">
       <Project>{2d337300-b3e9-4a36-8387-76a9a1100c5b}</Project>
-      <Name>Comet.UWP</Name>
+      <Name>System.Maui.UWP</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\src\Comet\Comet.csproj">
+    <ProjectReference Include="..\..\src\System.Maui\System.Maui.csproj">
       <Project>{1817646e-e71e-48cf-80a4-3030ef870d61}</Project>
-      <Name>Comet</Name>
+      <Name>System.Maui</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Comet.Samples\Comet.Samples.csproj">
+    <ProjectReference Include="..\System.Maui.Samples\System.Maui.Samples.csproj">
       <Project>{d058a769-9ae6-438f-960c-2ecc287f6d1e}</Project>
-      <Name>Comet.Samples</Name>
+      <Name>System.Maui.Samples</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

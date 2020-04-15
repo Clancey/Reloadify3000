@@ -10,8 +10,8 @@
     <TemplateGuid>{84dd83c5-0fe3-4294-9419-09e7c8ba324f}</TemplateGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Comet.Android.Sample</RootNamespace>
-    <AssemblyName>Comet.Android.Sample</AssemblyName>
+    <RootNamespace>System.Maui.Android.Sample</RootNamespace>
+    <AssemblyName>System.Maui.Android.Sample</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <AndroidApplication>True</AndroidApplication>
     <AndroidResgenFile>Resources\Resource.designer.cs</AndroidResgenFile>
@@ -110,27 +110,27 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Comet.Reload.Android\Comet.Reload.Android.csproj">
+    <ProjectReference Include="..\..\System.Maui.Reload.Android\System.Maui.Reload.Android.csproj">
       <Project>{C4AD509A-5B07-4509-8667-043291626006}</Project>
-      <Name>Comet.Reload.Android</Name>
+      <Name>System.Maui.Reload.Android</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\Comet\src\Comet\Comet.csproj">
+    <ProjectReference Include="..\..\..\System.Maui\src\System.Maui\System.Maui.csproj">
       <Project>{DE1BA22F-7E7B-40EC-9301-8E02A9A25E0A}</Project>
-      <Name>Comet</Name>
+      <Name>System.Maui</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\Comet\src\Comet.Android\Comet.Android.csproj">
+    <ProjectReference Include="..\..\..\System.Maui\src\System.Maui.Android\System.Maui.Android.csproj">
       <Project>{1E8FBBC2-9E06-4960-A116-65CDEFEFE11D}</Project>
-      <Name>Comet.Android</Name>
+      <Name>System.Maui.Android</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\Comet\sample\Comet.Samples\Comet.Samples.csproj">
+    <ProjectReference Include="..\..\..\System.Maui\sample\System.Maui.Samples\System.Maui.Samples.csproj">
       <Project>{A1F28182-12FA-4EC0-83E2-0CBF7C5B70CB}</Project>
-      <Name>Comet.Samples</Name>
+      <Name>System.Maui.Samples</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
-  <UsingTask TaskName="AssemblyWeaver" AssemblyFile="..\..\\\Comet.Reload.Build\bin\$(Configuration)\Comet.Reload.Build.Tasks.dll" />
+  <UsingTask TaskName="AssemblyWeaver" AssemblyFile="..\..\\\System.Maui.Reload.Build\bin\$(Configuration)\System.Maui.Reload.Build.Tasks.dll" />
   <Target Name="WeaveComet" AfterTargets="_CopyFilesMarkedCopyLocal" BeforeTargets="CopyFilesToOutputDirectory">
-    <AssemblyWeaver Path="..\..\Comet.Reload.Android\bin\$(Configuration)\Comet.Reload.dll" />
+    <AssemblyWeaver Path="..\..\System.Maui.Reload.Android\bin\$(Configuration)\System.Maui.Reload.dll" />
   </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
     Other similar extension points exist, see Microsoft.Common.targets.

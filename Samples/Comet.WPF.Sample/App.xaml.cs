@@ -6,7 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace Comet.WPF.Sample
+namespace System.Maui.WPF.Sample
 {
     /// <summary>
     /// Interaction logic for App.xaml

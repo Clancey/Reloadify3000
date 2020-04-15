@@ -5,9 +5,9 @@ using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
-using Comet.Samples;
+using System.Maui.Samples;
 
-namespace Comet.UWP.Sample
+namespace System.Maui.UWP.Sample
 {
     sealed partial class App : Application
     {

@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>CFBundleDisplayName</key>
-	<string>Comet.iOS.Sample</string>
+	<string>System.Maui.iOS.Sample</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.Microsoft.Comet-iOS-Sample</string>
+	<string>com.Microsoft.System.Maui-iOS-Sample</string>
 	<key>CFBundleShortVersionString</key>
 	<string>1.0</string>
 	<key>CFBundleVersion</key>
@@ -43,6 +43,6 @@
 	<key>XSAppIconAssets</key>
 	<string>Assets.xcassets/AppIcon.appiconset</string>
 	<key>CFBundleName</key>
-	<string>Comet.iOS.Sample</string>
+	<string>System.Maui.iOS.Sample</string>
 </dict>
 </plist>

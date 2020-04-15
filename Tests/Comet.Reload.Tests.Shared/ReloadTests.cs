@@ -1,18 +1,18 @@
-﻿using Comet.Internal.Reload;
+﻿using System.Maui.Internal.Reload;
 using NUnit.Framework;
 using System;
-using Comet.Samples;
+using System.Maui.Samples;
 using System.IO;
 using System.Threading.Tasks;
-using Comet.Internal;
+using System.Maui.Internal;
 
-namespace Comet.Tests {
+namespace System.Maui.Tests {
 	[TestFixture ()]
 	public class ReloadTests {
 		static ReloadTests ()
 		{
             HotReloadHelper.IsEnabled = true;
-			var view = new Comet.View ();
+			var view = new System.Maui.View ();
 		}
 		IEvaluator eval;
 
@@ -38,7 +38,7 @@ namespace Comet.Tests {
 				Code = File.ReadAllText ("TestView.txt"),
 				FileName = "BasicTestView.cs",
 				Classes = new System.Collections.Generic.List<(string NameSpace, string ClassName)> {
-					("Comet.Samples","BasicTestView")
+					("System.Maui.Samples","BasicTestView")
 				},
 			};
 			var result = new EvalResult ();
@@ -57,7 +57,7 @@ namespace Comet.Tests {
 				Code = File.ReadAllText ("TestView.txt"),
 				FileName = "BasicTestView.cs",
 				Classes = new System.Collections.Generic.List<(string NameSpace, string ClassName)> {
-					("Comet.Samples","BasicTestView")
+					("System.Maui.Samples","BasicTestView")
 				},
 			};
 			var result = new EvalResult ();
@@ -79,7 +79,7 @@ namespace Comet.Tests {
 				Code = File.ReadAllText ("TupleTestView.txt"),
 				FileName = "MainPage.cs",
 				Classes = new System.Collections.Generic.List<(string NameSpace, string ClassName)> {
-					("Comet.Samples","MainPage")
+					("System.Maui.Samples","MainPage")
 				},
 			};
 			var result = new EvalResult ();

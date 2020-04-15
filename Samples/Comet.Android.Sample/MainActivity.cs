@@ -6,9 +6,9 @@ using Android.Support.Design.Widget;
 using Android.Support.V7.App;
 using Android.Views;
 using Android.Widget;
-using Comet.Samples;
+using System.Maui.Samples;
 
-namespace Comet.Android.Sample
+namespace System.Maui.Android.Sample
 {
     [Activity(Label = "@string/app_name", Theme = "@style/AppTheme.NoActionBar", MainLauncher = true)]
     public class MainActivity : CometActivity
@@ -18,7 +18,7 @@ namespace Comet.Android.Sample
         {
             base.OnCreate(savedInstanceState);
 #if DEBUG
-            Comet.Reload.Init();
+            System.Maui.Reload.Init();
 #endif
             Page = new MainPage();
         }

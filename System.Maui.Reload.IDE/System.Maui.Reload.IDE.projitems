@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>{4AF14C8D-878A-4CB4-8B61-60A531AB358B}</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>System.Maui.Reload.IDE</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)IDEManager.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DocumentChangedEventArgs.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ClassCollector.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)RoslynCodeManager.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SyntaxNodeHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FixedSizeDictionary.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FixedSizedQueue.cs" />
+  </ItemGroup>
+</Project>

@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\Comet.Reload.Tests.Shared\Comet.Reload.Tests.Shared.projitems" Label="Shared" Condition="Exists('..\Comet.Reload.Tests.Shared\Comet.Reload.Tests.Shared.projitems')" />
-  <Import Project="..\..\Comet.Reload.Client\Comet.Reload.Client.projitems" Label="Shared" Condition="Exists('..\..\Comet.Reload.Client\Comet.Reload.Client.projitems')" />
-  <Import Project="..\..\Comet.Reload.Core\Comet.Reload.Core.projitems" Label="Shared" Condition="Exists('..\..\Comet.Reload.Core\Comet.Reload.Core.projitems')" />
+  <Import Project="..\System.Maui.Reload.Tests.Shared\System.Maui.Reload.Tests.Shared.projitems" Label="Shared" Condition="Exists('..\System.Maui.Reload.Tests.Shared\System.Maui.Reload.Tests.Shared.projitems')" />
+  <Import Project="..\..\System.Maui.Reload.Client\System.Maui.Reload.Client.projitems" Label="Shared" Condition="Exists('..\..\System.Maui.Reload.Client\System.Maui.Reload.Client.projitems')" />
+  <Import Project="..\..\System.Maui.Reload.Core\System.Maui.Reload.Core.projitems" Label="Shared" Condition="Exists('..\..\System.Maui.Reload.Core\System.Maui.Reload.Core.projitems')" />
   <Import Project="..\..\..\packages\NUnit.3.12.0\build\NUnit.props" Condition="Exists('..\..\..\packages\NUnit.3.12.0\build\NUnit.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{C6E7D0DF-824B-4A57-9BC0-AF7874E0E49B}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>Comet.Tests</RootNamespace>
-    <AssemblyName>Comet.Reload.Tests</AssemblyName>
+    <RootNamespace>System.Maui.Tests</RootNamespace>
+    <AssemblyName>System.Maui.Reload.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -39,13 +39,13 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Comet\sample\Comet.Samples\Comet.Samples.csproj">
+    <ProjectReference Include="..\..\..\System.Maui\sample\System.Maui.Samples\System.Maui.Samples.csproj">
       <Project>{A1F28182-12FA-4EC0-83E2-0CBF7C5B70CB}</Project>
-      <Name>Comet.Samples</Name>
+      <Name>System.Maui.Samples</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\Comet\src\Comet\Comet.csproj">
+    <ProjectReference Include="..\..\..\System.Maui\src\System.Maui\System.Maui.csproj">
       <Project>{DE1BA22F-7E7B-40EC-9301-8E02A9A25E0A}</Project>
-      <Name>Comet</Name>
+      <Name>System.Maui</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

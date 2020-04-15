@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Comet.WPF.Sample.Properties
+namespace System.Maui.WPF.Sample.Properties
 {
 
 

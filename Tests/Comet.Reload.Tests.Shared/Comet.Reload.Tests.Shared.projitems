@@ -6,7 +6,7 @@
     <SharedGUID>{D7B239B7-2883-4B53-8873-5A3DD82578AC}</SharedGUID>
   </PropertyGroup>
   <PropertyGroup Label="Configuration">
-    <Import_RootNamespace>Comet.Reload.Tests.Shared</Import_RootNamespace>
+    <Import_RootNamespace>System.Maui.Reload.Tests.Shared</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)ReloadTests.cs" />

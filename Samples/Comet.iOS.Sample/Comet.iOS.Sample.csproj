@@ -7,8 +7,8 @@
     <ProjectTypeGuids>{FEACFBD2-3405-455C-9665-78FE426C6842};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <TemplateGuid>{edc1b0fa-90cd-4038-8fad-98fe74adb368}</TemplateGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>Comet.iOS.Sample</RootNamespace>
-    <AssemblyName>Comet.iOS.Sample</AssemblyName>
+    <RootNamespace>System.Maui.iOS.Sample</RootNamespace>
+    <AssemblyName>System.Maui.iOS.Sample</AssemblyName>
     <IPhoneResourcePrefix>Resources</IPhoneResourcePrefix>
     <MtouchEnableSGenConc>true</MtouchEnableSGenConc>
     <MtouchHttpClientHandler>NSUrlSessionHandler</MtouchHttpClientHandler>
@@ -137,30 +137,30 @@
     <Compile Include="AppDelegate.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Comet\src\Comet\Comet.csproj">
+    <ProjectReference Include="..\..\..\System.Maui\src\System.Maui\System.Maui.csproj">
       <Project>{DE1BA22F-7E7B-40EC-9301-8E02A9A25E0A}</Project>
-      <Name>Comet</Name>
+      <Name>System.Maui</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\Comet\src\Comet.iOS\Comet.iOS.csproj">
+    <ProjectReference Include="..\..\..\System.Maui\src\System.Maui.iOS\System.Maui.iOS.csproj">
       <Project>{9DF36DBF-AFE6-438D-B7A6-1B5FB3D1D6D1}</Project>
-      <Name>Comet.iOS</Name>
+      <Name>System.Maui.iOS</Name>
       <IsAppExtension>false</IsAppExtension>
       <IsWatchApp>false</IsWatchApp>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\Comet\sample\Comet.Samples\Comet.Samples.csproj">
+    <ProjectReference Include="..\..\..\System.Maui\sample\System.Maui.Samples\System.Maui.Samples.csproj">
       <Project>{A1F28182-12FA-4EC0-83E2-0CBF7C5B70CB}</Project>
-      <Name>Comet.Samples</Name>
+      <Name>System.Maui.Samples</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Comet.Reload.iOS\Comet.Reload.iOS.csproj">
+    <ProjectReference Include="..\..\System.Maui.Reload.iOS\System.Maui.Reload.iOS.csproj">
       <Project>{CC766EBA-D4BC-4460-805D-5041C10A70EE}</Project>
-      <Name>Comet.Reload.iOS</Name>
+      <Name>System.Maui.Reload.iOS</Name>
       <IsAppExtension>false</IsAppExtension>
       <IsWatchApp>false</IsWatchApp>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
-  <UsingTask TaskName="AssemblyWeaver" AssemblyFile="..\..\Comet.Reload.Build\bin\$(Configuration)\Comet.Reload.Build.Tasks.dll" />
+  <UsingTask TaskName="AssemblyWeaver" AssemblyFile="..\..\System.Maui.Reload.Build\bin\$(Configuration)\System.Maui.Reload.Build.Tasks.dll" />
   <Target Name="WeaveComet" AfterTargets="_CopyFilesMarkedCopyLocal" BeforeTargets="CopyFilesToOutputDirectory">
-    <AssemblyWeaver Path="..\..\Comet.Reload.iOS\bin\$(Configuration)\Comet.Reload.dll" />
+    <AssemblyWeaver Path="..\..\System.Maui.Reload.iOS\bin\$(Configuration)\System.Maui.Reload.dll" />
   </Target>
 </Project>

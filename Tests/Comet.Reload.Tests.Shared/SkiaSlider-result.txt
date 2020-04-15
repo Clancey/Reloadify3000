@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using Comet.Internal;
+using System.Maui.Internal;
 using SkiaSharp;
 
-namespace Comet.Skia
+namespace System.Maui.Skia
 {
 	public class SliderHandlerfdsjfdsklfjds : SkiaAbstractControlHandler<Slider>
 	{

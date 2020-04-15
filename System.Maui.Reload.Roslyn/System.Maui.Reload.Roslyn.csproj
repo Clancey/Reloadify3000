@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <RootNamespace>System.Maui.Internal.Reload</RootNamespace>
+    <AssemblyName>System.Maui.Reload</AssemblyName>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DefineConstants>TRACE;DEBUG;NETSTANDARD;NETSTANDARD2_0;ROSLYN;</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType></DebugType>
+    <DefineConstants>TRACE;RELEASE;NETSTANDARD;NETSTANDARD2_0;ROSLYN;</DefineConstants>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Scripting" Version="3.4.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Comet\src\System.Maui\System.Maui.csproj" />
+  </ItemGroup>
+  <Import Project="..\System.Maui.Reload.Core\System.Maui.Reload.Core.projitems" Label="Shared" Condition="Exists('..\System.Maui.Reload.Core\System.Maui.Reload.Core.projitems')" />
+  <Import Project="..\System.Maui.Reload.Client\System.Maui.Reload.Client.projitems" Label="Shared" Condition="Exists('..\System.Maui.Reload.Client\System.Maui.Reload.Client.projitems')" />
+</Project>

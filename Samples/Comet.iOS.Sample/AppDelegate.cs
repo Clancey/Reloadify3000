@@ -1,8 +1,8 @@
 ﻿using Foundation;
-using Comet.Samples;
+using System.Maui.Samples;
 using UIKit;
 
-namespace Comet.iOS.Sample {
+namespace System.Maui.iOS.Sample {
 	// The UIApplicationDelegate for the application. This class is responsible for launching the
 	// User Interface of the application, as well as listening (and optionally responding) to application events from iOS.
 	[Register ("AppDelegate")]
@@ -23,7 +23,7 @@ namespace Comet.iOS.Sample {
 			// Override point for customization after application launch.
 			// If not required for your application you can safely delete this method
 #if DEBUG
-			Comet.Reload.Init ();
+			System.Maui.Reload.Init ();
 #endif
 			window = new UIWindow {
 				RootViewController = new MainPage ().ToViewController (),
