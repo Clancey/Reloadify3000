@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Comet.Internal.Reload {
+
+
 	public interface ICommunicator
 	{
 		Action<object> DataReceived { get; set; }
@@ -9,10 +12,14 @@ namespace Comet.Internal.Reload {
 		Task<bool> Send<T>(T obj);
 	}
 
-	public interface ITcpCommunicatorClient : ICommunicator {
-		Task<bool> Connect (string ip, int port);
+	public interface ICommunicatorClient : ICommunicator {
+		Task<(bool success, ICommunicatorClient client)> Connect (CancellationToken cancellationToken);
+		Task Disconnect ();
+	}
 
-		void Disconnect ();
+	public interface ITcpCommunicatorClient : ICommunicatorClient {
+
+		Task<bool> Connect (string ip, int port);
 	}
 
 	public interface ITcpCommunicatorServer : ICommunicator {

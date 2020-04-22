@@ -5,6 +5,8 @@ using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using Comet.Internal.Reload;
+using Esp;
+using Esp.Resources;
 using Newtonsoft.Json.Linq;
 
 namespace Comet
@@ -20,7 +22,7 @@ namespace Comet
 		IEvaluator eval;
 		TaskScheduler mainScheduler;
 		bool isRunning;
-		ITcpCommunicatorClient client;
+		ICommunicatorClient client;
 
 		internal static Reload Instance => serverInstance;
 
@@ -37,42 +39,24 @@ namespace Comet
 			return Instance.RunInternal( ideIP, idePort);
 		}
 
-		internal async Task<bool> RunInternal(string ideIP, int idePort, ITcpCommunicatorClient client = null)
+		internal async Task<bool> RunInternal(string ideIP, int idePort)
 		{
 			if (isRunning)
 			{
 				return true;
 			}
+			var tcpClients = TcpCommunicatorClient.GetTcpCommunicatorsFromResource ();
+			if (ideIP != null)
+				tcpClients.Insert (0, new TcpCommunicatorClient { Ip = ideIP, Port = idePort });
+			this.client = await DiscoveryService.Shared.FindConnection (tcpClients.ToArray ());
 
-
-			if (client == null)
-			{
-				client = new TcpCommunicatorClient();
-			}
-			this.client = client;
 			client.DataReceived = HandleDataReceived;
 
 			mainScheduler = TaskScheduler.FromCurrentSynchronizationContext();
-			await RegisterDevice(ideIP, idePort);
 			
 			eval = new Evaluator();
 			isRunning = true;
 			return true;
-		}
-
-		async Task RegisterDevice(string ideIP, int idePort)
-		{
-			ideIP = ((string.IsNullOrEmpty(ideIP) ? GetIdeIPFromResource() : ideIP));
-			try
-			{
-				Debug.WriteLine ($"Connecting to IDE at tcp://{ideIP}:{idePort}");
-				await client.Connect(ideIP, idePort);
-			}
-			catch (Exception ex)
-			{
-				Debug.WriteLine($"Couldn't register device at {ideIP}");
-				Debug.WriteLine (ex);
-			}
 		}
 
 		void ResetIDE()

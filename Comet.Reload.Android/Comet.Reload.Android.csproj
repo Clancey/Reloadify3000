@@ -55,7 +55,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json">
-      <Version>12.0.2</Version>
+      <Version>12.0.3</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
@@ -68,6 +68,14 @@
     <ProjectReference Include="..\..\Comet\src\Comet\Comet.csproj">
       <Project>{DE1BA22F-7E7B-40EC-9301-8E02A9A25E0A}</Project>
       <Name>Comet</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Esp.Resources\Esp.Resources.csproj">
+      <Project>{F2F87FCA-EE86-4E72-B4B7-923A77A84E47}</Project>
+      <Name>Esp.Resources</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Esp\Esp.csproj">
+      <Project>{C43DEC68-4787-4653-9017-959465340A05}</Project>
+      <Name>Esp</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="..\Comet.Reload.Client\Comet.Reload.Client.projitems" Label="Shared" Condition="Exists('..\Comet.Reload.Client\Comet.Reload.Client.projitems')" />

@@ -22,6 +22,10 @@
     <AddinReference Include="MonoDevelop.Debugger" />
     <AddinReference Include="MonoDevelop.Debugger.Soft" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Esp\Esp.csproj" />
+    <ProjectReference Include="..\Esp.Resources\Esp.Resources.csproj" />
+  </ItemGroup>
   <Import Project="..\Comet.Reload.Core\Comet.Reload.Core.projitems" Label="Shared" Condition="Exists('..\Comet.Reload.Core\Comet.Reload.Core.projitems')" />
   <Import Project="..\Comet.Reload.IDE\Comet.Reload.IDE.projitems" Label="Shared" Condition="Exists('..\Comet.Reload.IDE\Comet.Reload.IDE.projitems')" />
   

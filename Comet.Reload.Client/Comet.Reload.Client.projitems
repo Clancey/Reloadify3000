@@ -15,9 +15,4 @@
     <Compile Include="$(MSBuildThisFileDirectory)Reload.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Evaluator.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="$(MSBuildThisFileDirectory)IdeIP.txt">
-      <LogicalName>IdeIP</LogicalName>
-    </EmbeddedResource>
-  </ItemGroup>
 </Project>

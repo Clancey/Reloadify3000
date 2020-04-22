@@ -9,12 +9,8 @@
     <Import_RootNamespace>Comet.Reload.Core</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="$(MSBuildThisFileDirectory)TcpCommunicator.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Constants.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)NetworkUtils.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)ITcpCommunicator.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)EvalRequest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ExtensionMethods.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Serializer.cs" />
   </ItemGroup>
 </Project>

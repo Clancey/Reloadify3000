@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <NoWarn></NoWarn>
+    <AllowUnsafeBlocks></AllowUnsafeBlocks>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Remove="IdeIP.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="IdeIP.txt">
+      <LogicalName>IdeIP</LogicalName>
+    </EmbeddedResource>
+  </ItemGroup>
+</Project>

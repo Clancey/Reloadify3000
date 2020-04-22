@@ -7,6 +7,7 @@ using Comet.Internal.Reload;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Esp.Resources;
 
 namespace Comet.Reload
 {

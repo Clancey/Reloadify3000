@@ -4,17 +4,17 @@
     <Choose>
         <When Condition="$(TargetFrameworkIdentifier) == 'Xamarin.iOS'">
             <PropertyGroup>
-                <CometAssemblyPath>$(MSBuildThisFileDirectory)..\lib\xamarinios10\Comet.Reload.dll</CometAssemblyPath>
+                <CometAssemblyPath>$(MSBuildThisFileDirectory)..\lib\xamarinios10\Esp.Resources.dll</CometAssemblyPath>
             </PropertyGroup>
         </When>
         <When Condition="$(TargetFrameworkIdentifier) == 'MonoAndroid'">
             <PropertyGroup>
-                <CometAssemblyPath>$(MSBuildThisFileDirectory)..\lib\monoandroid81\Comet.Reload.dll</CometAssemblyPath>
+                <CometAssemblyPath>$(MSBuildThisFileDirectory)..\lib\monoandroid81\Esp.Resources.dll</CometAssemblyPath>
             </PropertyGroup>
         </When>
         <When Condition="$(TargetFrameworkIdentifier) != 'Xamarin.iOS' And $(TargetFrameworkIdentifier) != 'MonoAndroid'">
             <PropertyGroup>
-                <CometAssemblyPath>$(MSBuildThisFileDirectory)..\lib\netstandard2.0\Comet.Reload.dll</CometAssemblyPath>
+                <CometAssemblyPath>$(MSBuildThisFileDirectory)..\lib\netstandard2.0\Esp.Resources.dll</CometAssemblyPath>
             </PropertyGroup>
         </When>
     </Choose>

@@ -1,11 +1,10 @@
 ﻿using System;
-namespace Comet.Internal.Reload {
-	public static class Constants
-	{
+namespace Esp.Resources {
+	public static class Constants {
 		public const string DEFAULT_HOST = "127.0.0.1";
 
 #if DEBUG
-		public const int DEFAULT_PORT = 9988;
+		public const int DEFAULT_PORT = 9998;
 #else
 		public const int DEFAULT_PORT = 8488;
 #endif
