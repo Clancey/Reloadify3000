@@ -8,11 +8,4 @@
   <PropertyGroup Label="Configuration">
     <Import_RootNamespace>Comet.Internal.Reload</Import_RootNamespace>
   </PropertyGroup>
-  <ItemGroup>
-    <Compile Include="$(MSBuildThisFileDirectory)IEvaluator.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)RoslynEvaluator.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)MonoEvaluator.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Reload.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Evaluator.cs" />
-  </ItemGroup>
 </Project>

@@ -1,4 +1,4 @@
-﻿#if NETSTANDARD2_0
+﻿#if NETSTANDARD
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -12,7 +12,7 @@ using System.IO;
 using Microsoft.CodeAnalysis.Emit;
 using System.Reflection;
 
-namespace Comet.Internal.Reload {
+namespace Reloadify.Internal {
 	public partial class Evaluator : IEvaluator {
 
 		public static bool IsSupported { get; }

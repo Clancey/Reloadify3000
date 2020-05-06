@@ -1,6 +1,6 @@
 ﻿using Microsoft.CodeAnalysis;
 
-namespace Comet.Reload {
+namespace Reloadify {
 	/// <summary>
 	/// Document changed event arguments.
 	/// </summary>

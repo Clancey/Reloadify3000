@@ -1,4 +1,4 @@
-﻿#if !NETSTANDARD2_0
+﻿#if !NETSTANDARD
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using Mono.CSharp;
 
 
-namespace Comet.Internal.Reload {
+namespace Reloadify.Internal {
 	public partial class Evaluator : IEvaluator {
 		static Evaluator ()
 		{

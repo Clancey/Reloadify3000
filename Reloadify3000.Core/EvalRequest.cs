@@ -3,7 +3,7 @@ using System.Linq;
 using System.Collections.Generic;
 using System.ComponentModel;
 
-namespace Comet.Internal.Reload {
+namespace Reloadify.Internal {
 	public class Message {
 		public string Type => GetType ().Name;
 	}

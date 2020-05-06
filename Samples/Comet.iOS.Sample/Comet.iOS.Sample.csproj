@@ -77,6 +77,9 @@
     <PackageReference Include="Xamarin.FFImageLoading">
       <Version>2.4.11.982</Version>
     </PackageReference>
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Scripting">
+      <Version>3.5.0</Version>
+    </PackageReference>
   </ItemGroup>
   <ItemGroup>
     <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Contents.json">
@@ -151,11 +154,13 @@
       <Project>{F86E3A30-8D79-4E77-BB8A-F05A904DC942}</Project>
       <Name>Comet.Samples</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Comet.Reload.iOS\Comet.Reload.iOS.csproj">
-      <Project>{CC766EBA-D4BC-4460-805D-5041C10A70EE}</Project>
-      <Name>Comet.Reload.iOS</Name>
-      <IsAppExtension>false</IsAppExtension>
-      <IsWatchApp>false</IsWatchApp>
+    <ProjectReference Include="..\..\Reloadify3000\Reloadify3000.csproj">
+      <Project>{F30568DE-56FE-40CC-95E2-4EF10790E059}</Project>
+      <Name>Reloadify3000</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Reloadify3000.Core\Reloadify3000.Core.csproj">
+      <Project>{E6B209ED-81AA-46B8-A265-619513E246B5}</Project>
+      <Name>Reloadify3000.Core</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />

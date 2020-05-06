@@ -1,5 +1,5 @@
 ﻿using System;
-namespace Comet.Reload {
+namespace Reloadify {
 
 	public class IDE {
 

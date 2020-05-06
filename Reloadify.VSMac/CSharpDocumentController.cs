@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using MonoDevelop.Ide.Gui.Documents;
 
-namespace Comet.Reload.VSMac {
+namespace Reloadify.VSMac {
 
 	[ExportDocumentControllerExtension (MimeType = "*", FileExtension = "cs")]
 	public class CSharpDocumentController : DocumentControllerExtension {

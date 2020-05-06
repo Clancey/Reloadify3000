@@ -11,10 +11,10 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Mono.Debugger.Soft" />    
     <Reference Include="Microsoft.CodeAnalysis.CSharp">
-      <HintPath>..\..\..\..\..\..\Applications\Visual Studio %28Preview%29.app\Contents\Resources\lib\monodevelop\bin\Microsoft.CodeAnalysis.CSharp.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\Applications\Visual Studio.app\Contents\Resources\lib\monodevelop\bin\Microsoft.CodeAnalysis.CSharp.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CodeAnalysis">
-      <HintPath>..\..\..\..\..\..\Applications\Visual Studio %28Preview%29.app\Contents\Resources\lib\monodevelop\bin\Microsoft.CodeAnalysis.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\Applications\Visual Studio.app\Contents\Resources\lib\monodevelop\bin\Microsoft.CodeAnalysis.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Build" />
   </ItemGroup>
@@ -25,8 +25,8 @@
   <ItemGroup>
     <ProjectReference Include="..\Esp\Esp.csproj" />
     <ProjectReference Include="..\Esp.Resources\Esp.Resources.csproj" />
+    <ProjectReference Include="..\Reloadify3000\Reloadify3000.csproj" />
+    <ProjectReference Include="..\Reloadify3000.Core\Reloadify3000.Core.csproj" />
   </ItemGroup>
-  <Import Project="..\Comet.Reload.Core\Comet.Reload.Core.projitems" Label="Shared" Condition="Exists('..\Comet.Reload.Core\Comet.Reload.Core.projitems')" />
-  <Import Project="..\Comet.Reload.IDE\Comet.Reload.IDE.projitems" Label="Shared" Condition="Exists('..\Comet.Reload.IDE\Comet.Reload.IDE.projitems')" />
-  
+  <Import Project="..\Reloadify.IDE\Reloadify.IDE.projitems" Label="Shared" Condition="Exists('..\Reloadify.IDE\Reloadify.IDE.projitems')" />
 </Project>

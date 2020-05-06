@@ -2,7 +2,7 @@
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace Comet.Reload {
+namespace Reloadify {
 	public static class SyntaxNodeHelper {
 		public static bool TryGetParentSyntax<T> (SyntaxNode syntaxNode, out T result)
 		where T : SyntaxNode
@@ -37,7 +37,7 @@ namespace Comet.Reload {
 			NamespaceDeclarationSyntax namespaceDeclaration;
 			TryGetParentSyntax (c, out namespaceDeclaration);
 			var theNameSpace = namespaceDeclaration?.Name?.ToString () ?? "";
-			return (theNameSpace,c.Identifier.ToString() );
+			return (theNameSpace, c.Identifier.ToString ());
 		}
 	}
 }

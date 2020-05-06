@@ -22,6 +22,5 @@
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Scripting" Version="3.4.0" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
   </ItemGroup>
-  <Import Project="..\Comet.Reload.Core\Comet.Reload.Core.projitems" Label="Shared" Condition="Exists('..\Comet.Reload.Core\Comet.Reload.Core.projitems')" />
   <Import Project="..\Comet.Reload.Client\Comet.Reload.Client.projitems" Label="Shared" Condition="Exists('..\Comet.Reload.Client\Comet.Reload.Client.projitems')" />
 </Project>

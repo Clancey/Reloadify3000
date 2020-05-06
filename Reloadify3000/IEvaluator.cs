@@ -1,15 +1,14 @@
 ﻿using System.Threading.Tasks;
 
-namespace Comet.Internal.Reload {
-	public interface IEvaluator
-	{
+namespace Reloadify.Internal {
+	public interface IEvaluator {
 		/// <summary>
 		/// Evaluates an expression and code before the expression if requested.
 		/// </summary>
 		/// <returns>True if succeeded.</returns>
 		/// <param name="code">The class code.</param>
 		/// <param name="result">Eval result.</param>
-		Task<bool> EvaluateCode(EvalRequestMessage request, EvalResult result);
+		Task<bool> EvaluateCode (EvalRequestMessage request, EvalResult result);
 
 		/// <summary>
 		/// Check if evaluation is supported. This can fail in iOS real devices

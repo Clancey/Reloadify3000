@@ -6,7 +6,7 @@
     <SharedGUID>{4AF14C8D-878A-4CB4-8B61-60A531AB358B}</SharedGUID>
   </PropertyGroup>
   <PropertyGroup Label="Configuration">
-    <Import_RootNamespace>Comet.Reload.IDE</Import_RootNamespace>
+    <Import_RootNamespace>Reloadify.IDE</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)IDEManager.cs" />

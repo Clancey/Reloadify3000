@@ -28,7 +28,7 @@ using System.Linq;
 using MonoDevelop.Ide;
 using MonoDevelop.Projects;
 
-namespace Comet.Reload.XamarinStudio
+namespace Reloadify.XamarinStudio
 {
 	class XamariniOSSwizzle
 	{

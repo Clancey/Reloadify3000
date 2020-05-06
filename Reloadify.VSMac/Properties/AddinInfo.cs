@@ -28,12 +28,12 @@ using Mono.Addins;
 using Mono.Addins.Description;
 
 [assembly: Addin (
-	"Comet.Reload.VSMac",
-	Namespace = "Comet.Reload.VSMac",
+	"Reloadify.VSMac",
+	Namespace = "Reloadify",
 	Version = "0.1.2"
 )]
 
-[assembly: AddinName ("Comet.Reload.VSMac")]
+[assembly: AddinName ("Reloadify3000")]
 [assembly: AddinCategory ("IDE extensions")]
-[assembly: AddinDescription ("Comet.Reload.VSMac")]
+[assembly: AddinDescription ("Reloadify 3000")]
 [assembly: AddinAuthor ("James Clancey")]

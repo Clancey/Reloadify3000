@@ -5,9 +5,8 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Comet.Internal.Reload {
-	public static class ExtensionMethods
-	{
+namespace Reloadify.Internal {
+	public static class ExtensionMethods {
 		/// <summary>
 		/// Parallelize tasks in partitions limiting the number of operations that are able to run in parallel
 		/// like <see cref="Parallel.ForEach"/> do but being an Asynchronous method.
@@ -19,22 +18,18 @@ namespace Comet.Internal.Reload {
 		/// <param name="body">Body.</param>
 		/// <param name="ct">CancellationToken?, null if not used.</param>
 		/// <typeparam name="T">The 1st type parameter.</typeparam>
-		public static Task ForEachAsync<T>(this IEnumerable<T> source, int dop, Func<T, Task> body, CancellationToken ct = default(CancellationToken))
+		public static Task ForEachAsync<T> (this IEnumerable<T> source, int dop, Func<T, Task> body, CancellationToken ct = default (CancellationToken))
 		{
-			return Task.WhenAll(
-				Partitioner.Create(source).GetPartitions(dop).Select(partition =>
-				{
-					return Task.Factory.StartNew(async () =>
-					{
-						using (partition)
-						{
-							while (partition.MoveNext())
-							{
-								await body(partition.Current);
-								ct.ThrowIfCancellationRequested();
+			return Task.WhenAll (
+				Partitioner.Create (source).GetPartitions (dop).Select (partition => {
+					return Task.Factory.StartNew (async () => {
+						using (partition) {
+							while (partition.MoveNext ()) {
+								await body (partition.Current);
+								ct.ThrowIfCancellationRequested ();
 							}
 						}
-					}, ct).Unwrap();
+					}, ct).Unwrap ();
 				})
 			);
 		}

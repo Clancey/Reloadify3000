@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace Comet.Reload {
+namespace Reloadify {
 	public class ClassCollector : CSharpSyntaxWalker
 	{
 		public ICollection<UsingDirectiveSyntax> Usings { get; } = new List<UsingDirectiveSyntax> ();

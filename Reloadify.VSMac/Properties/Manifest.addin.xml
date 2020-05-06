@@ -3,7 +3,7 @@
     <Runtime>
     </Runtime>
     <Extension path="/MonoDevelop/Ide/StartupHandlers">
-        <Class class="Comet.Reload.StartupHandler" />
+        <Class class="Reloadify.StartupHandler" />
     </Extension>
   
 <!--  <Extension path="/MonoDevelop/Ide/GlobalOptionsDialog/Projects">
@@ -13,7 +13,6 @@
   </Extension>-->
   
   <Extension path="/MonoDevelop/Ide/Composition">
-    <Assembly file="Comet.Reload.Core.dll" />
-    <Assembly file="Comet.Reload.dll" />
+    <Assembly file="Reloadify3000.Core.dll" />
   </Extension>
 </ExtensionModel>
