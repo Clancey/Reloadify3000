@@ -6,8 +6,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{B960F8D7-25B3-46E9-A95C-E539192B5744}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>Comet.Reload.Build.Tasks</RootNamespace>
-    <AssemblyName>Comet.Reload.Build.Tasks</AssemblyName>
+    <RootNamespace>Reloadify3000.Build.Tasks</RootNamespace>
+    <AssemblyName>Reloadify3000.Build.Tasks</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <PrimaryOutputKind>build</PrimaryOutputKind>
   </PropertyGroup>
@@ -45,12 +45,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyWeaver.cs" />
-    <Compile Include="..\Comet.Reload.Core\NetworkUtils.cs">
+    <Compile Include="..\Reloadify3000.Core\NetworkUtils.cs">
       <Link>NetworkUtils.cs</Link>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <PackageFile Include="Comet.Reload.targets">
+    <PackageFile Include="Reloadify3000.targets">
       <PackagePath>build\XAMLator.Server.targets</PackagePath>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </PackageFile>

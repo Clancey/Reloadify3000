@@ -29,4 +29,7 @@
     <ProjectReference Include="..\Reloadify3000.Core\Reloadify3000.Core.csproj" />
   </ItemGroup>
   <Import Project="..\Reloadify.IDE\Reloadify.IDE.projitems" Label="Shared" Condition="Exists('..\Reloadify.IDE\Reloadify.IDE.projitems')" />
+  <Target Name="AfterBuilding" AfterTargets="Build">
+      <Exec Command="'/Applications/Visual Studio.app/Contents/MacOS/vstool' setup pack Reloadify.VSMac.dll" WorkingDirectory="$(TargetDir)" />
+  </Target>
 </Project>

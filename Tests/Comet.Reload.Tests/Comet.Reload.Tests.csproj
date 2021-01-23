@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="..\Comet.Reload.Tests.Shared\Comet.Reload.Tests.Shared.projitems" Label="Shared" Condition="Exists('..\Comet.Reload.Tests.Shared\Comet.Reload.Tests.Shared.projitems')" />
-  <Import Project="..\..\Comet.Reload.Client\Comet.Reload.Client.projitems" Label="Shared" Condition="Exists('..\..\Comet.Reload.Client\Comet.Reload.Client.projitems')" />
-  <Import Project="..\..\Comet.Reload.Core\Comet.Reload.Core.projitems" Label="Shared" Condition="Exists('..\..\Comet.Reload.Core\Comet.Reload.Core.projitems')" />
   <Import Project="..\..\..\packages\NUnit.3.12.0\build\NUnit.props" Condition="Exists('..\..\..\packages\NUnit.3.12.0\build\NUnit.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -39,10 +37,6 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Comet\sample\Comet.Samples\Comet.Samples.csproj">
-      <Project>{A1F28182-12FA-4EC0-83E2-0CBF7C5B70CB}</Project>
-      <Name>Comet.Samples</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\..\Comet\src\Comet\Comet.csproj">
       <Project>{DE1BA22F-7E7B-40EC-9301-8E02A9A25E0A}</Project>
       <Name>Comet</Name>

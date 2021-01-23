@@ -16,10 +16,5 @@
   <ItemGroup>
     <Compile Remove="UnitTest1.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\Comet\sample\Comet.Samples\Comet.Samples.csproj" />
-    <ProjectReference Include="..\..\..\Comet\src\Comet\Comet.csproj" />
-    <ProjectReference Include="..\..\Comet.Reload.Roslyn\Comet.Reload.Roslyn.csproj" />
-  </ItemGroup>
   <Import Project="..\Comet.Reload.Tests.Shared\Comet.Reload.Tests.Shared.projitems" Label="Shared" Condition="Exists('..\Comet.Reload.Tests.Shared\Comet.Reload.Tests.Shared.projitems')" />
 </Project>

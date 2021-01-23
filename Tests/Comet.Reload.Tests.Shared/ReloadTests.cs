@@ -1,10 +1,10 @@
-﻿using Comet.Internal.Reload;
+﻿//using Comet.Internal.Reload;
 using NUnit.Framework;
 using System;
-using Comet.Samples;
+//using Comet.Samples;
 using System.IO;
 using System.Threading.Tasks;
-using Comet.Internal;
+//using Comet.Internal;
 
 namespace Comet.Tests {
 	[TestFixture ()]

@@ -140,10 +140,6 @@
     <Compile Include="AppDelegate.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Comet\src\Comet\Comet.csproj">
-      <Project>{DE1BA22F-7E7B-40EC-9301-8E02A9A25E0A}</Project>
-      <Name>Comet</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\..\Comet\src\Comet.iOS\Comet.iOS.csproj">
       <Project>{9DF36DBF-AFE6-438D-B7A6-1B5FB3D1D6D1}</Project>
       <Name>Comet.iOS</Name>
@@ -155,17 +151,17 @@
       <Name>Comet.Samples</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Reloadify3000\Reloadify3000.csproj">
-      <Project>{F30568DE-56FE-40CC-95E2-4EF10790E059}</Project>
+      <Project>{8C508CFB-9BEB-450B-923E-5EBACC214243}</Project>
       <Name>Reloadify3000</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Reloadify3000.Core\Reloadify3000.Core.csproj">
-      <Project>{E6B209ED-81AA-46B8-A265-619513E246B5}</Project>
+      <Project>{FBE87848-3648-47F3-9F03-F8273D14BDE9}</Project>
       <Name>Reloadify3000.Core</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <UsingTask TaskName="AssemblyWeaver" AssemblyFile="..\..\Comet.Reload.Build\bin\$(Configuration)\Comet.Reload.Build.Tasks.dll" />
   <Target Name="WeaveComet" AfterTargets="_CopyFilesMarkedCopyLocal" BeforeTargets="CopyFilesToOutputDirectory">
-    <AssemblyWeaver Path="..\..\Comet.Reload.iOS\bin\$(Configuration)\Esp.Resources.dll" />
+    <AssemblyWeaver Path="..\..\Reloadify3000\bin\$(Configuration)\netstandard2.0\Esp.Resources.dll" />
   </Target>
 </Project>
