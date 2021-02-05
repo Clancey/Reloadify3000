@@ -36,7 +36,7 @@ namespace Reloadify.Internal {
 		MetadataReference [] references;
 		public async Task<bool> EvaluateCode (EvalRequestMessage request, EvalResult result)
 		{
-			if (string.IsNullOrEmpty (request.Code)) {
+			if (!request.Files?.Any() ?? false) {
 				return false;
 			}
 
@@ -53,10 +53,14 @@ namespace Reloadify.Internal {
 					} else
 						replacedClasses [pair.ClassName] = pair.ClassName;
 				}
+				var newCodes = new List<string>();
+				foreach (var file in request.Files)
+				{
+					newCodes.Add(Replace(file.Code, replacedClasses));
+				}
 
-				var newCode = Replace (request.Code, replacedClasses);
 
-				var assembly = Compile (newCode);
+				var assembly = Compile (newCodes);
 
 				foreach (var c in request.Classes) {
 					var code = $"{ToFullName (c.NameSpace, replacedClasses [c.ClassName])}";
@@ -79,15 +83,15 @@ namespace Reloadify.Internal {
 		}
 
 
-		Assembly Compile (string code)
+		Assembly Compile (List<string> code)
 		{
-			var syntaxTree = CSharpSyntaxTree.ParseText (code);
+			var syntaxTrees = code.Select(x=>  CSharpSyntaxTree.ParseText (x)).ToArray();
 
 			string assemblyName = System.IO.Path.GetRandomFileName ();
 
 			CSharpCompilation compilation = CSharpCompilation.Create (
 				assemblyName,
-				syntaxTrees: new [] { syntaxTree },
+				syntaxTrees: syntaxTrees,
 				references: references,
 				options: new CSharpCompilationOptions (OutputKind.DynamicallyLinkedLibrary));
 

@@ -58,18 +58,16 @@ namespace Reloadify {
 			if (currentFiles.TryGetValue (e.Filename, out var oldFile) && oldFile == e.Text) {
 				return;
 			}
-			currentFiles [e.Filename] = e.Text;
-			SyntaxTree tree = CSharpSyntaxTree.ParseText (e.Text);
 
-			var root = tree.GetCompilationUnitRoot ();
-			var collector = new ClassCollector ();
-			collector.Visit (root);
-			var classes = collector.Classes.Select (x => x.GetClassNameWithNamespace ()).ToList ();
-			if (classes.Count > 0)
-				await server.Send (new EvalRequestMessage { Classes = classes, Code = e.Text, FileName = e.Filename });
+
+			currentFiles [e.Filename] = e.Text;
+			var response = await RoslynCodeManager.SearchForPartialClasses(e.Filename, e.Text, Solution);
+			if (response != null)
+				await server.Send (response);
 		}
 
 		public Action<object> DataRecieved { get; set; }
+		public Solution Solution { get; internal set; }
 
 		public void StartMonitoring ()
 		{

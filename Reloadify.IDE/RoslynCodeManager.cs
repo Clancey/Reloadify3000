@@ -9,6 +9,9 @@ using Microsoft.Build.Execution;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.CodeAnalysis.MSBuild;
+using Reloadify.Internal;
+
 namespace Reloadify {
 	public class RoslynCodeManager {
 		public static RoslynCodeManager Shared { get; set; } = new RoslynCodeManager ();
@@ -18,7 +21,6 @@ namespace Reloadify {
 		{
 			if (string.IsNullOrWhiteSpace (project))
 				return false;
-
 			var hasReloadify = File.ReadAllText (project).Contains ("Reloadify3000");
 			return hasReloadify;
 		}
@@ -57,6 +59,68 @@ namespace Reloadify {
 				references.Add (currentReference);
 			referencesForProjects [projectPath] = references;
 			return references;
+		}
+
+		public static async System.Threading.Tasks.Task<EvalRequestMessage> SearchForPartialClasses(string filePath, string fileContents, Microsoft.CodeAnalysis.Solution solution)
+		{
+			try
+			{
+				var workspace = MSBuildWorkspace.Create();
+				//workspace.WorkspaceFailed += (s,e)=>
+				//{
+				//	Console.WriteLine(e);
+				//};
+				//if (workspace?.CurrentSolution?.FilePath != solutionPath)
+				//	await workspace.OpenSolutionAsync(solutionPath);
+
+
+				var tree = Microsoft.CodeAnalysis.CSharp.CSharpSyntaxTree.ParseText(fileContents);
+
+				var root = tree.GetCompilationUnitRoot();
+				var collector = new ClassCollector();
+				collector.Visit(root);
+				var classes = collector.Classes.Select(x => x.GetClassNameWithNamespace()).ToList();
+				if (classes.Count == 0)
+					return null;
+				var partialClasses = collector.PartialClasses.Select(x => x.GetClassNameWithNamespace()).ToList();
+				//collector.Classes.Where(x=> x.)
+
+				var newFiles = new List<(string FileName, string Code)>
+				{
+					(filePath,fileContents)
+				};
+				if (partialClasses.Count > 0)
+				{
+					var projects = solution.Projects.ToList();
+					var docs = projects?.SelectMany(x => x.Documents.Where(y => y.FilePath == filePath));
+					var doc = docs.FirstOrDefault();
+					var model = await doc.GetSemanticModelAsync();
+					var compilation = model.Compilation;
+					foreach (var c in partialClasses)
+					{
+						var symbols = compilation.GetSymbolsWithName(c.ClassName).ToList();// c.NameSpace == null ? c.ClassName : $"{c.NameSpace}.{c.ClassName}").ToList();
+						var symbol = symbols.FirstOrDefault();
+						var files = symbol?.DeclaringSyntaxReferences.Select(x => x.SyntaxTree.FilePath).Where(x => x != filePath);
+						await files?.ForEachAsync(1, (file) => Task.Run(() =>
+						 {
+							 var contents = System.IO.File.ReadAllText(file);
+							 newFiles.Add((file, contents));
+						 }));
+					}
+				}
+				return new EvalRequestMessage
+				{
+					Classes = classes,
+					Files = newFiles,
+				};
+
+			}
+			catch(Exception ex)
+			{
+				Console.WriteLine(ex);
+			}
+			return null;
+
 		}
 
 	}

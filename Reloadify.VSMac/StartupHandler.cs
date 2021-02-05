@@ -29,6 +29,7 @@ namespace Reloadify {
 		bool editorBound;
 		private void Workbench_ActiveDocumentChanged (object sender, MonoDevelop.Ide.Gui.DocumentEventArgs e)
 		{
+			IDEManager.Shared.Solution = IdeApp.TypeSystemService?.Workspace?.CurrentSolution;
 			if (currentDocument == e.Document)
 				return;
 			if (currentDocument != null) {
@@ -68,6 +69,7 @@ namespace Reloadify {
 		private void ProjectOperations_BeforeStartProject (object sender, EventArgs e)
 		{
 			try {
+				IDEManager.Shared.Solution = IdeApp.TypeSystemService.Workspace.CurrentSolution;
 				var proj = ActiveProject.FileName;
 				var dll = (ActiveProject.DefaultConfiguration as MonoDevelop.Projects.DotNetProjectConfiguration)?.CompiledOutputName;
 				shouldRun = RoslynCodeManager.Shared.ShouldHotReload (ActiveProject?.FileName);
