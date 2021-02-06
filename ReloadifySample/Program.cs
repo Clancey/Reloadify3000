@@ -25,6 +25,11 @@ namespace ReloadifySample
 			Console.WriteLine("Goodbye");
 		}
 
+		internal static void FooBar()
+		{
+			Console.WriteLine("Foo Bar was Called!");
+		}
+
 		static async void RunHotReload(string ideIP = null, int idePort = Constants.DEFAULT_PORT)
 		{
 			Reloadify.Reload.Instance.ReplaceType = (d) => {
@@ -32,6 +37,14 @@ namespace ReloadifySample
 				foreach(var prop in d.Type.GetProperties())
 				{
 					Console.WriteLine($"\t{prop.Name}");
+				}
+				//Call static init if it exists on new classes!
+				var staticInit = d.Type.GetMethod("Init", System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Public);
+				if(staticInit != null)
+				{
+					Console.WriteLine($"Calling static Init on :{d.Type}");
+					staticInit?.Invoke(null, null);
+					Console.WriteLine("Init completed");
 				}
 			};
 			var loaded = await Reloadify.Reload.Init(ideIP, idePort);

@@ -61,6 +61,7 @@ namespace Reloadify {
 			return references;
 		}
 
+
 		public static async System.Threading.Tasks.Task<EvalRequestMessage> SearchForPartialClasses(string filePath, string fileContents,string projectPath, Microsoft.CodeAnalysis.Solution solution)
 		{
 			try
@@ -95,8 +96,15 @@ namespace Reloadify {
 				//This doc is not part of the current running solution, lets not send it over
 				if (doc == null)
 					return null;
+
+
+				var assemblies = projects.Select(x => x.AssemblyName).Distinct();
+
+				var header = string.Join("\r\n", assemblies.Select(x => $"[assembly: System.Runtime.CompilerServices.IgnoresAccessChecksTo(\"{x}\")]"));
+
 				var newFiles = new List<(string FileName, string Code)>
 				{
+					("IgnoreStuff",header),
 					(filePath, fileContents)
 				}; ;
 
