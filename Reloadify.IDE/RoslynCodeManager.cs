@@ -100,8 +100,8 @@ namespace Reloadify {
 
 				var assemblies = projects.Select(x => x.AssemblyName).Distinct();
 
+				//We are going to build a file, with all the IgnoreAccessChecks so we don't get System.MethodAccessException when we call internal stuff
 				var header = string.Join("\r\n", assemblies.Select(x => $"[assembly: System.Runtime.CompilerServices.IgnoresAccessChecksTo(\"{x}\")]"));
-
 				var newFiles = new List<(string FileName, string Code)>
 				{
 					("IgnoreStuff",header),

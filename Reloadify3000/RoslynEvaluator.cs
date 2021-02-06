@@ -88,6 +88,7 @@ namespace Reloadify.Internal {
 			var syntaxTrees = code.Select(x=>  CSharpSyntaxTree.ParseText (x)).ToArray();
 
 			string assemblyName = System.IO.Path.GetRandomFileName ();
+			//This awesome code allows us to compile new dll's that can reference internal bits from the rest of the app!
 			var compilationOptions = new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary).WithMetadataImportOptions(MetadataImportOptions.All);
 			var topLevelBinderFlagsProperty = typeof(CSharpCompilationOptions).GetProperty("TopLevelBinderFlags", BindingFlags.Instance | BindingFlags.NonPublic);
 			topLevelBinderFlagsProperty.SetValue(compilationOptions, (uint)1 << 22);
