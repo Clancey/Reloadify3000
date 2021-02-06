@@ -21,7 +21,7 @@ namespace Reloadify {
 		public Action<(string ClassName, Type Type)> ReplaceType { get; set; }
 		public Action FinishedReload { get; set; }
 		IEvaluator eval;
-		TaskScheduler mainScheduler;
+		//TaskScheduler mainScheduler;
 		bool isRunning;
 		ICommunicatorClient client;
 
@@ -52,7 +52,7 @@ namespace Reloadify {
 
 			client.DataReceived = HandleDataReceived;
 
-			mainScheduler = TaskScheduler.FromCurrentSynchronizationContext ();
+			//mainScheduler = TaskScheduler.FromCurrentSynchronizationContext ();
 
 			eval = new Evaluator ();
 			isRunning = true;

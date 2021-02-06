@@ -88,12 +88,15 @@ namespace Reloadify.Internal {
 			var syntaxTrees = code.Select(x=>  CSharpSyntaxTree.ParseText (x)).ToArray();
 
 			string assemblyName = System.IO.Path.GetRandomFileName ();
+			var compilationOptions = new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary).WithMetadataImportOptions(MetadataImportOptions.All);
+			var topLevelBinderFlagsProperty = typeof(CSharpCompilationOptions).GetProperty("TopLevelBinderFlags", BindingFlags.Instance | BindingFlags.NonPublic);
+			topLevelBinderFlagsProperty.SetValue(compilationOptions, (uint)1 << 22);
 
 			CSharpCompilation compilation = CSharpCompilation.Create (
 				assemblyName,
 				syntaxTrees: syntaxTrees,
 				references: references,
-				options: new CSharpCompilationOptions (OutputKind.DynamicallyLinkedLibrary));
+				options: compilationOptions);
 
 			using (var ms = new MemoryStream ()) {
 				EmitResult emitResult = compilation.Emit (ms);
@@ -101,7 +104,7 @@ namespace Reloadify.Internal {
 				if (!emitResult.Success) {
 					IEnumerable<Diagnostic> failures = emitResult.Diagnostics.Where (diagnostic =>
 						 diagnostic.IsWarningAsError ||
-						 diagnostic.Severity == DiagnosticSeverity.Error);
+						 diagnostic.Severity == DiagnosticSeverity.Error).ToList();
 
 					foreach (Diagnostic diagnostic in failures) {
 						Console.Error.WriteLine ("{0}: {1}", diagnostic.Id, diagnostic.GetMessage ());
@@ -185,11 +188,11 @@ namespace Reloadify.Internal {
 				refs.Add (MetadataReference.CreateFromFile (assembly.Location));
 			}
 			//This should only happen in the tests
-			if (CometAssembly == null) {
-				refs.Add (MetadataReference.CreateFromFile ("Comet.dll"));
-				var filePath = System.IO.Path.Combine (Directory.GetCurrentDirectory (), "Comet.dll");
-				CometAssembly = Assembly.Load (filePath);
-			}
+			//if (CometAssembly == null) {
+			//	refs.Add (MetadataReference.CreateFromFile ("Comet.dll"));
+			//	var filePath = System.IO.Path.Combine (Directory.GetCurrentDirectory (), "Comet.dll");
+			//	CometAssembly = Assembly.Load (filePath);
+			//}
 			references = refs.ToArray ();
 			options = ScriptOptions.Default.WithReferences (assemblies);
 		}

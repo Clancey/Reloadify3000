@@ -19,7 +19,6 @@ namespace Reloadify {
 			IDE.Init ();
 			IDEManager.Shared.GetActiveDocumentText = GetCurrentDocumentText;
 			IdeApp.Workbench.ActiveDocumentChanged += Workbench_ActiveDocumentChanged;
-
 			IdeApp.ProjectOperations.BeforeStartProject += ProjectOperations_BeforeStartProject;
 			MonoDevelop.Debugger.DebuggingService.DebugSessionStarted += DebuggingService_DebugSessionStarted;
 			MonoDevelop.Debugger.DebuggingService.StoppedEvent += DebuggingService_StoppedEvent;
@@ -68,7 +67,8 @@ namespace Reloadify {
 		bool shouldRun;
 		private void ProjectOperations_BeforeStartProject (object sender, EventArgs e)
 		{
-			try {
+			try
+			{
 				IDEManager.Shared.Solution = IdeApp.TypeSystemService.Workspace.CurrentSolution;
 				var proj = ActiveProject.FileName;
 				var dll = (ActiveProject.DefaultConfiguration as MonoDevelop.Projects.DotNetProjectConfiguration)?.CompiledOutputName;
@@ -91,6 +91,7 @@ namespace Reloadify {
 			if (!shouldRun)
 				return;
 			isDebugging = true;
+			IDEManager.Shared.CurrentProjectPath = IdeApp.Workspace.CurrentSelectedSolution.StartupItem.FileName.FullPath;
 			IDEManager.Shared.StartMonitoring ();
 			currentDocument.TextBuffer.Changed += TextBuffer_Changed;
 			editorBound = true;
@@ -99,9 +100,9 @@ namespace Reloadify {
 		private void DebuggingService_StoppedEvent (object sender, EventArgs e)
 		{
 			isDebugging = false;
+			IDEManager.Shared.StopMonitoring();
 			if (!shouldRun)
 				return;
-			IDEManager.Shared.StopMonitoring ();
 			if (editorBound)
 				currentDocument.TextBuffer.Changed -= TextBuffer_Changed;
 		}

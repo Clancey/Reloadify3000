@@ -61,7 +61,7 @@ namespace Reloadify {
 			return references;
 		}
 
-		public static async System.Threading.Tasks.Task<EvalRequestMessage> SearchForPartialClasses(string filePath, string fileContents, Microsoft.CodeAnalysis.Solution solution)
+		public static async System.Threading.Tasks.Task<EvalRequestMessage> SearchForPartialClasses(string filePath, string fileContents,string projectPath, Microsoft.CodeAnalysis.Solution solution)
 		{
 			try
 			{
@@ -88,25 +88,29 @@ namespace Reloadify {
 				var newFiles = new List<(string FileName, string Code)>
 				{
 					(filePath,fileContents)
-				};
-				if (partialClasses.Count > 0)
+				}; ;
+				var projects = solution.Projects.ToList();
+				var activeProject = projects?.FirstOrDefault(x => x.FilePath == projectPath);
+				var references = activeProject.ProjectReferences.Select(x=> x.ProjectId).ToList();
+				var referencedProjects = projects.Where(x => references.Any(y => y == x.Id)).ToList();
+				var docs = referencedProjects?.SelectMany(x => x.Documents.Where(y => y.FilePath == filePath)).ToList();
+				var doc = docs.FirstOrDefault();
+				//This doc is not part of the current running solution, lets not send it over
+				if (doc == null)
+					return null;
+				var model = await doc.GetSemanticModelAsync();
+				var compilation = model.Compilation;
+				foreach (var c in partialClasses)
 				{
-					var projects = solution.Projects.ToList();
-					var docs = projects?.SelectMany(x => x.Documents.Where(y => y.FilePath == filePath));
-					var doc = docs.FirstOrDefault();
-					var model = await doc.GetSemanticModelAsync();
-					var compilation = model.Compilation;
-					foreach (var c in partialClasses)
-					{
-						var symbols = compilation.GetSymbolsWithName(c.ClassName).ToList();// c.NameSpace == null ? c.ClassName : $"{c.NameSpace}.{c.ClassName}").ToList();
-						var symbol = symbols.FirstOrDefault();
-						var files = symbol?.DeclaringSyntaxReferences.Select(x => x.SyntaxTree.FilePath).Where(x => x != filePath);
-						await files?.ForEachAsync(1, (file) => Task.Run(() =>
-						 {
-							 var contents = System.IO.File.ReadAllText(file);
-							 newFiles.Add((file, contents));
-						 }));
-					}
+					var symbols = compilation.GetSymbolsWithName(c.ClassName).ToList();// c.NameSpace == null ? c.ClassName : $"{c.NameSpace}.{c.ClassName}").ToList();
+					var symbol = symbols.FirstOrDefault();
+					var allFiles = symbol?.DeclaringSyntaxReferences.Select(x => x.SyntaxTree.FilePath).ToList();
+					var files = allFiles.Where(x => x != filePath);
+					await files?.ForEachAsync(1, (file) => Task.Run(() =>
+						{
+							var contents = System.IO.File.ReadAllText(file);
+							newFiles.Add((file, contents));
+						}));
 				}
 				return new EvalRequestMessage
 				{

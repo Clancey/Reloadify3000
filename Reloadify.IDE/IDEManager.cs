@@ -9,6 +9,7 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Esp.Resources;
 using Reloadify.Internal;
+using MonoDevelop.Core;
 
 namespace Reloadify {
 	public class IDEManager {
@@ -41,6 +42,7 @@ namespace Reloadify {
 
 		public Func<string, Task<string>> GetActiveDocumentText { get; set; }
 		FixedSizeDictionary<string, string> currentFiles = new FixedSizeDictionary<string, string> (10);
+
 		public async void HandleDocumentChanged (DocumentChangedEventArgs e)
 		{
 			textChangedTimer?.Stop ();
@@ -61,12 +63,13 @@ namespace Reloadify {
 
 
 			currentFiles [e.Filename] = e.Text;
-			var response = await RoslynCodeManager.SearchForPartialClasses(e.Filename, e.Text, Solution);
+			var response = await RoslynCodeManager.SearchForPartialClasses(e.Filename, e.Text, CurrentProjectPath, Solution);
 			if (response != null)
 				await server.Send (response);
 		}
 
 		public Action<object> DataRecieved { get; set; }
+		public string CurrentProjectPath { get; set; }
 		public Solution Solution { get; internal set; }
 
 		public void StartMonitoring ()
