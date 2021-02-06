@@ -85,19 +85,21 @@ namespace Reloadify {
 				var partialClasses = collector.PartialClasses.Select(x => x.GetClassNameWithNamespace()).ToList();
 				//collector.Classes.Where(x=> x.)
 
-				var newFiles = new List<(string FileName, string Code)>
-				{
-					(filePath,fileContents)
-				}; ;
 				var projects = solution.Projects.ToList();
 				var activeProject = projects?.FirstOrDefault(x => x.FilePath == projectPath);
 				var references = activeProject.ProjectReferences.Select(x=> x.ProjectId).ToList();
 				var referencedProjects = projects.Where(x => references.Any(y => y == x.Id)).ToList();
+				referencedProjects.Add(activeProject);
 				var docs = referencedProjects?.SelectMany(x => x.Documents.Where(y => y.FilePath == filePath)).ToList();
 				var doc = docs.FirstOrDefault();
 				//This doc is not part of the current running solution, lets not send it over
 				if (doc == null)
 					return null;
+				var newFiles = new List<(string FileName, string Code)>
+				{
+					(filePath, fileContents)
+				}; ;
+
 				var model = await doc.GetSemanticModelAsync();
 				var compilation = model.Compilation;
 				foreach (var c in partialClasses)
