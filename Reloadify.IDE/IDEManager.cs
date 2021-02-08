@@ -61,7 +61,6 @@ namespace Reloadify {
 				return;
 			}
 
-
 			currentFiles [e.Filename] = e.Text;
 			var response = await RoslynCodeManager.SearchForPartialClasses(e.Filename, e.Text, CurrentProjectPath, Solution);
 			if (response != null)

@@ -66,15 +66,6 @@ namespace Reloadify {
 		{
 			try
 			{
-				var workspace = MSBuildWorkspace.Create();
-				//workspace.WorkspaceFailed += (s,e)=>
-				//{
-				//	Console.WriteLine(e);
-				//};
-				//if (workspace?.CurrentSolution?.FilePath != solutionPath)
-				//	await workspace.OpenSolutionAsync(solutionPath);
-
-
 				var tree = Microsoft.CodeAnalysis.CSharp.CSharpSyntaxTree.ParseText(fileContents);
 
 				var root = tree.GetCompilationUnitRoot();
@@ -84,7 +75,6 @@ namespace Reloadify {
 				if (classes.Count == 0)
 					return null;
 				var partialClasses = collector.PartialClasses.Select(x => x.GetClassNameWithNamespace()).ToList();
-				//collector.Classes.Where(x=> x.)
 
 				var projects = solution.Projects.ToList();
 				var activeProject = projects?.FirstOrDefault(x => x.FilePath == projectPath);
