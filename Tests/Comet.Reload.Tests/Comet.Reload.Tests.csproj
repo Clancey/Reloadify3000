@@ -37,9 +37,13 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Comet\src\Comet\Comet.csproj">
-      <Project>{DE1BA22F-7E7B-40EC-9301-8E02A9A25E0A}</Project>
-      <Name>Comet</Name>
+    <ProjectReference Include="..\..\Reloadify3000\Reloadify3000.csproj">
+      <Project>{8C508CFB-9BEB-450B-923E-5EBACC214243}</Project>
+      <Name>Reloadify3000</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Reloadify3000.Core\Reloadify3000.Core.csproj">
+      <Project>{FBE87848-3648-47F3-9F03-F8273D14BDE9}</Project>
+      <Name>Reloadify3000.Core</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
