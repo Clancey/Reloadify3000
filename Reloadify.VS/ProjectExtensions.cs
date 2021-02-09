@@ -25,7 +25,8 @@ using System.Text;
 using Microsoft.VisualStudio.Text.Editor;
 using Microsoft.VisualStudio.Editor;
 using Microsoft.VisualStudio.Text;
-using Microsoft.Build.Tasks;
+using Reloadify;
+using Microsoft.CodeAnalysis.CSharp;
 
 namespace Xamarin.HotReload.Vsix
 {
@@ -128,6 +129,7 @@ namespace Xamarin.HotReload.Vsix
 			}
 		}
 
+
 		public static string GetRelativePathTo (this FileSystemInfo from, FileSystemInfo to)
 		{
 			Func<FileSystemInfo, string> getPath = fsi => {
@@ -150,6 +152,48 @@ namespace Xamarin.HotReload.Vsix
 
 	internal static class VSHelpers
 	{
+
+
+		public static async System.Threading.Tasks.Task SearchForPartialClasses(string filePath,string fileContents, string solutionPath)
+		{
+			var workspace = Microsoft.CodeAnalysis.MSBuild.MSBuildWorkspace.Create();
+
+			if (workspace?.CurrentSolution?.FilePath != solutionPath)
+				await workspace.OpenSolutionAsync(solutionPath);
+
+
+
+			var tree = Microsoft.CodeAnalysis.CSharp.CSharpSyntaxTree.ParseText(fileContents);
+
+			var root = tree.GetCompilationUnitRoot();
+			var collector = new ClassCollector();
+			collector.Visit(root);
+			var classes = collector.Classes.Select(x => x.GetClassNameWithNamespace()).ToList();
+			//collector.Classes.Where(x=> x.)
+
+
+			var docs = workspace.CurrentSolution.Projects?.SelectMany(x => x.Documents.Where(y => y.FilePath == filePath));
+			var doc = docs.FirstOrDefault();
+			var model = await doc.GetSemanticModelAsync();
+			var compilation = model.Compilation;
+			//var symbol = compilation.GetTypeByMetadataName(fullName);
+			//var refrences = symbol.DeclaringSyntaxReferences;
+
+			//Console.WriteLine(refrences);
+
+
+
+			//foreach(var p in workspace.CurrentSolution.Projects)
+			//{
+			//	//new Microsoft.CodeAnalysis.Document().WithFilePath("");
+			//	Console.WriteLine(p.FilePath);
+			//	foreach(var d in p.Documents)
+			//	{
+			//		d.id
+			//	}
+
+		}
+
 		internal static IVsTextView GetIVsTextView (string filename)
 		{
 			IVsTextView result = default;

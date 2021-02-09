@@ -24,7 +24,7 @@ namespace Reloadify {
 			if (node.Parent is ClassDeclarationSyntax)
 				return;
 
-			Classes.Add(node);
+			 Classes.Add(node);
 			if (node.Modifiers.Any(x => (string)x.Value == "partial"))
 				PartialClasses.Add(node);
 		}

@@ -4,7 +4,7 @@ VisualStudioVersion = 16.0.29025.244
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "IDE", "IDE", "{6EA10C36-41FC-4FDF-B3F7-1F2828ABC896}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Reloadify3000.Build.Tasks", "Reloadify3000.Build\Reloadify3000.Build.Tasks.csproj", "{B960F8D7-25B3-46E9-A95C-E539192B5744}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Reloadify3000.Build.Tasks", "Reloadify3000.Build\Reloadify3000.Build.Tasks.csproj", "{9DFC84AF-936D-4A8D-8700-564B333FA65A}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{F36B5545-F798-4371-A17C-B0CB5EE1C76B}"
 EndProject
@@ -12,39 +12,36 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Comet.Reload.NetCore.Tests"
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Comet.Reload.Tests.Shared", "Tests\Comet.Reload.Tests.Shared\Comet.Reload.Tests.Shared.shproj", "{D7B239B7-2883-4B53-8873-5A3DD82578AC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Esp", "Esp\Esp.csproj", "{C43DEC68-4787-4653-9017-959465340A05}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Esp", "Esp\Esp.csproj", "{C43DEC68-4787-4653-9017-959465340A05}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Esp.Resources", "Esp.Resources\Esp.Resources.csproj", "{F2F87FCA-EE86-4E72-B4B7-923A77A84E47}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Esp.Resources", "Esp.Resources\Esp.Resources.csproj", "{F2F87FCA-EE86-4E72-B4B7-923A77A84E47}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ESPSamples", "ESPSamples", "{E713C139-14CB-4B95-950C-CB1183BA19DD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Client", "Esp.Samples\Client\Client.csproj", "{4737E610-5890-4A1C-B1A1-BAA3C18A4E15}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Client", "Esp.Samples\Client\Client.csproj", "{4737E610-5890-4A1C-B1A1-BAA3C18A4E15}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Server", "Esp.Samples\Server\Server.csproj", "{03B8011B-4577-45E6-AA05-4F9E4FFD3C07}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Server", "Esp.Samples\Server\Server.csproj", "{03B8011B-4577-45E6-AA05-4F9E4FFD3C07}"
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Reloadify.IDE", "Reloadify.IDE\Reloadify.IDE.shproj", "{4F101B9A-EF2C-47B6-B7E0-007FE8B97168}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Reloadify.VSMac", "Reloadify.VSMac\Reloadify.VSMac.csproj", "{216A2FB3-E9E6-4D90-B1BD-DBE8C6280459}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Reloadify.VSMac", "Reloadify.VSMac\Reloadify.VSMac.csproj", "{216A2FB3-E9E6-4D90-B1BD-DBE8C6280459}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Reloadify3000", "Reloadify3000\Reloadify3000.csproj", "{8C508CFB-9BEB-450B-923E-5EBACC214243}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Reloadify3000", "Reloadify3000\Reloadify3000.csproj", "{8C508CFB-9BEB-450B-923E-5EBACC214243}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Reloadify3000.Core", "Reloadify3000.Core\Reloadify3000.Core.csproj", "{FBE87848-3648-47F3-9F03-F8273D14BDE9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Reloadify3000.Core", "Reloadify3000.Core\Reloadify3000.Core.csproj", "{FBE87848-3648-47F3-9F03-F8273D14BDE9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Comet.Reload.Tests", "Tests\Comet.Reload.Tests\Comet.Reload.Tests.csproj", "{C6E7D0DF-824B-4A57-9BC0-AF7874E0E49B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Comet.Reload", "Comet.Reload\Comet.Reload.csproj", "{3A5C15DE-AFA7-4675-9282-194D5784F8F0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Comet.Reload", "Comet.Reload\Comet.Reload.csproj", "{3A5C15DE-AFA7-4675-9282-194D5784F8F0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReloadifySample", "ReloadifySample\ReloadifySample.csproj", "{D6C3B8FD-348B-4630-8C8C-5746E2892EC4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReloadifySample", "ReloadifySample\ReloadifySample.csproj", "{D6C3B8FD-348B-4630-8C8C-5746E2892EC4}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
-		Comet.Reload.Core\Comet.Reload.Core.projitems*{4af14c8d-878a-4cb4-8b61-60a531ab358b}*SharedItemsImports = 13
-		Comet.Reload.Client\Comet.Reload.Client.projitems*{6ec9ca25-09ed-4f80-8d23-39fb28294a3e}*SharedItemsImports = 13
-		Comet.Reload.Client\Comet.Reload.Client.projitems*{c6e7d0df-824b-4a57-9bc0-af7874e0e49b}*SharedItemsImports = 4
-		Comet.Reload.Core\Comet.Reload.Core.projitems*{c6e7d0df-824b-4a57-9bc0-af7874e0e49b}*SharedItemsImports = 4
+		Tests\Comet.Reload.Tests.Shared\Comet.Reload.Tests.Shared.projitems*{18ef3c1f-c3b0-4a4d-8929-86f54e9491aa}*SharedItemsImports = 5
+		Reloadify.IDE\Reloadify.IDE.projitems*{216a2fb3-e9e6-4d90-b1bd-dbe8c6280459}*SharedItemsImports = 5
+		Reloadify.IDE\Reloadify.IDE.projitems*{4f101b9a-ef2c-47b6-b7e0-007fe8b97168}*SharedItemsImports = 13
 		Tests\Comet.Reload.Tests.Shared\Comet.Reload.Tests.Shared.projitems*{c6e7d0df-824b-4a57-9bc0-af7874e0e49b}*SharedItemsImports = 4
-		Comet.Reload.Client\Comet.Reload.Client.projitems*{cc766eba-d4bc-4460-805d-5041c10a70ee}*SharedItemsImports = 4
-		Comet.Reload.Core\Comet.Reload.Core.projitems*{cc766eba-d4bc-4460-805d-5041c10a70ee}*SharedItemsImports = 4
 		Tests\Comet.Reload.Tests.Shared\Comet.Reload.Tests.Shared.projitems*{d7b239b7-2883-4b53-8873-5a3dd82578ac}*SharedItemsImports = 13
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -56,18 +53,18 @@ Global
 		Release|iPhoneSimulator = Release|iPhoneSimulator
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{B960F8D7-25B3-46E9-A95C-E539192B5744}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B960F8D7-25B3-46E9-A95C-E539192B5744}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B960F8D7-25B3-46E9-A95C-E539192B5744}.Debug|iPhone.ActiveCfg = Debug|Any CPU
-		{B960F8D7-25B3-46E9-A95C-E539192B5744}.Debug|iPhone.Build.0 = Debug|Any CPU
-		{B960F8D7-25B3-46E9-A95C-E539192B5744}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
-		{B960F8D7-25B3-46E9-A95C-E539192B5744}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
-		{B960F8D7-25B3-46E9-A95C-E539192B5744}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B960F8D7-25B3-46E9-A95C-E539192B5744}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B960F8D7-25B3-46E9-A95C-E539192B5744}.Release|iPhone.ActiveCfg = Release|Any CPU
-		{B960F8D7-25B3-46E9-A95C-E539192B5744}.Release|iPhone.Build.0 = Release|Any CPU
-		{B960F8D7-25B3-46E9-A95C-E539192B5744}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
-		{B960F8D7-25B3-46E9-A95C-E539192B5744}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
+		{9DFC84AF-936D-4A8D-8700-564B333FA65A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9DFC84AF-936D-4A8D-8700-564B333FA65A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9DFC84AF-936D-4A8D-8700-564B333FA65A}.Debug|iPhone.ActiveCfg = Debug|Any CPU
+		{9DFC84AF-936D-4A8D-8700-564B333FA65A}.Debug|iPhone.Build.0 = Debug|Any CPU
+		{9DFC84AF-936D-4A8D-8700-564B333FA65A}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{9DFC84AF-936D-4A8D-8700-564B333FA65A}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
+		{9DFC84AF-936D-4A8D-8700-564B333FA65A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9DFC84AF-936D-4A8D-8700-564B333FA65A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9DFC84AF-936D-4A8D-8700-564B333FA65A}.Release|iPhone.ActiveCfg = Release|Any CPU
+		{9DFC84AF-936D-4A8D-8700-564B333FA65A}.Release|iPhone.Build.0 = Release|Any CPU
+		{9DFC84AF-936D-4A8D-8700-564B333FA65A}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
+		{9DFC84AF-936D-4A8D-8700-564B333FA65A}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
 		{18EF3C1F-C3B0-4A4D-8929-86F54E9491AA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{18EF3C1F-C3B0-4A4D-8929-86F54E9491AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{18EF3C1F-C3B0-4A4D-8929-86F54E9491AA}.Debug|iPhone.ActiveCfg = Debug|Any CPU

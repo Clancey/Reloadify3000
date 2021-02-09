@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{B960F8D7-25B3-46E9-A95C-E539192B5744}</ProjectGuid>
+    <ProjectGuid>{9DFC84AF-936D-4A8D-8700-564B333FA65A}</ProjectGuid>
     <OutputType>Library</OutputType>
     <RootNamespace>Reloadify3000.Build.Tasks</RootNamespace>
     <AssemblyName>Reloadify3000.Build.Tasks</AssemblyName>

@@ -6,16 +6,17 @@ using System.Runtime.InteropServices;
 using System.Threading;
 using EnvDTE;
 using Microsoft.VisualStudio;
-using Microsoft.VisualStudio.ProjectSystem;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Task = System.Threading.Tasks.Task;
 using System.Reflection;
 using Microsoft.VisualStudio.TextTemplating;
+using Microsoft.VisualStudio.LanguageServices;
 using System.Data;
 using Xamarin.HotReload.Vsix;
-using Comet.Reload;
 using System.Threading.Tasks;
+using Reloadify;
+using Microsoft.VisualStudio.ComponentModelHost;
 
 namespace CometReloadVisix
 {
@@ -50,20 +51,17 @@ namespace CometReloadVisix
     [Guid(CometReloadVisixPackage.PackageGuidString)]
 
     [ProvideBindingPath]
-    [ProvideUIContextRule(
-        Constants.LoadContextRuleGuidString,
-        name: "Xamarin Comet Reload",
-        expression: "XamarinXaml",
-        termNames: new[] { "XamarinXaml" },
-        termValues: new[] { "SolutionHasProjectCapability:XamarinXaml" })]
-    [ProvideAutoLoad(Constants.LoadContextRuleGuidString, flags: PackageAutoLoadFlags.BackgroundLoad)]
+    [ProvideAutoLoad(VSConstants.UICONTEXT.SolutionExists_string, PackageAutoLoadFlags.BackgroundLoad)]
+    [ProvideAutoLoad(VSConstants.UICONTEXT.SolutionHasMultipleProjects_string, PackageAutoLoadFlags.BackgroundLoad)]
+    [ProvideAutoLoad(VSConstants.UICONTEXT.SolutionHasSingleProject_string, PackageAutoLoadFlags.BackgroundLoad)]
+    [ProvideMenuResource("Menus.ctmenu", 1)]
 
     public sealed class CometReloadVisixPackage : AsyncPackage, IVsDebuggerEvents
     {
         /// <summary>
         /// CometReloadVisixPackage GUID string.
         /// </summary>
-        public const string PackageGuidString = "03b1ee8f-65a9-43b3-8c8a-6b5d90a494b6";
+        public const string PackageGuidString = "BFF3BF4B-914F-4453-9426-72F1D6B16173";
 
         public static CometReloadVisixPackage Instance { get; private set; }
 
@@ -74,6 +72,7 @@ namespace CometReloadVisix
         IVsOutputWindowPane generalOutputPane;
         IVsStatusbar statusBar;
         SolutionEvents solutionEvents;
+        VisualStudioWorkspace workspace;
 
         DocumentEvents documentEvents;
         TextEditorEvents textEditorEvents;
@@ -86,6 +85,7 @@ namespace CometReloadVisix
 
         protected override async Task InitializeAsync(CancellationToken cancellationToken, IProgress<ServiceProgressData> progress)
         {
+            Console.WriteLine("Initialized Reloadify3000");
             Instance = this;
             IDEManager.Shared.GetActiveDocumentText = GetCodeFromActiveDocument;
             await base.InitializeAsync(cancellationToken, progress);
@@ -112,6 +112,9 @@ namespace CometReloadVisix
             debuggerService = (IVsDebugger)GetService(typeof(IVsDebugger));
             debuggerService.AdviseDebuggerEvents(this, out debugEventsCookie);
 
+            var componentModel = (IComponentModel)this.GetService(typeof(SComponentModel));
+            workspace = componentModel.GetService<VisualStudioWorkspace>();
+
             statusBar = (IVsStatusbar)GetService(typeof(SVsStatusbar));
 
             solutionEvents = dte.Events.SolutionEvents;
@@ -121,6 +124,7 @@ namespace CometReloadVisix
             documentEvents.DocumentSaved += DocumentEvents_DocumentSaved;
             textEditorEvents = dte.Events.TextEditorEvents;
             textEditorEvents.LineChanged += TextEditorEvents_LineChanged;
+            await Reloadify3000.Command1.InitializeAsync(this);
         }
 
         async Task<string> GetCodeFromActiveDocument(string filePath)
@@ -182,7 +186,7 @@ namespace CometReloadVisix
             base.Dispose(disposing);
         }
 
-        void OnSolutionOpened() { } // => RefreshHotReloadBridge ();
+        void OnSolutionOpened() {} // => RefreshHotReloadBridge ();
         void OnAfterSolutionClosing() => Cleanup();
 
         void Cleanup()
@@ -223,7 +227,8 @@ namespace CometReloadVisix
             {
                 if (IDEManager.Shared.IsEnabled)
                 {
-
+                    IDEManager.Shared.CurrentProjectPath = GetStartupProject().FileName;
+                    IDEManager.Shared.Solution = workspace.CurrentSolution;
                     var project = GetStartupProject();
                     var proj = project.FileName;
                     var dll = GetAssemblyPath(project);
@@ -286,17 +291,40 @@ namespace CometReloadVisix
         public int OnAfterFirstDocumentLock(uint docCookie, uint dwRDTLockType, uint dwReadLocksRemaining, uint dwEditLocksRemaining) => VSConstants.S_OK;
         public int OnBeforeLastDocumentUnlock(uint docCookie, uint dwRDTLockType, uint dwReadLocksRemaining, uint dwEditLocksRemaining) => VSConstants.S_OK;
 
+        void TestOutPRojects(DTE dte)
+		{
+            //Microsoft.CodeAnalysis.Solution solution = CreateUnitTestBoilerplateCommandPackage.VisualStudioWorkspace.CurrentSolution;
+            //DocumentId documentId = solution.GetDocumentIdsWithFilePath(inputFilePath).FirstOrDefault();
+            //var document = solution.GetDocument(documentId);
+
+            //SyntaxNode root = await document.GetSyntaxRootAsync();
+            //SemanticModel semanticModel = await document.GetSemanticModelAsync();
+
+            //var componentModel = (IComponentModel)this.GetService(typeof(SComponentModel));
+            //VisualStudioWorkspace = componentModel.GetService<VisualStudioWorkspace>();
+
+            var projects = dte.ActiveSolutionProjects as Project[];
+            if(projects != null)
+			{
+                foreach(var p in projects)
+				{
+                    var items = p.ProjectItems;
+                    foreach(var i in items)
+					{
+                        Console.WriteLine(i);
+					}
+				}
+			}
+		}
 
 
-
-        private void DocumentEvents_DocumentSaved(Document Document)
+        private async void DocumentEvents_DocumentSaved(Document Document)
         {
 
             if (!isDebugging || !IDEManager.Shared.IsEnabled || !shouldRun)
                 return;
             try
             {
-
                 var docPath = Document.FullName;
                 if (!string.IsNullOrEmpty(docPath))
                 {
@@ -320,6 +348,7 @@ namespace CometReloadVisix
                             assemblyName = new AssemblyName(assemblyNameProjectProperty?.Value.ToString());
 
                         var rootPath = doc.ProjectItem.ContainingProject.AsMsBuildProject().DirectoryPath;
+                        
 
                         if (!string.IsNullOrEmpty(rootPath))
                         {
@@ -337,6 +366,7 @@ namespace CometReloadVisix
                             var textDoc = (TextDocument)doc.Object("TextDocument");
                             var editPoint = textDoc.StartPoint.CreateEditPoint();
                             var xaml = editPoint.GetText(textDoc.EndPoint);
+                            IDEManager.Shared.Solution = workspace.CurrentSolution;
                             IDEManager.Shared.HandleDocumentChanged(new DocumentChangedEventArgs(docPath, xaml));
                         }
                     }

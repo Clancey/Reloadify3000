@@ -80,8 +80,9 @@ namespace Reloadify {
 				var activeProject = projects?.FirstOrDefault(x => x.FilePath == projectPath);
 				var references = activeProject.ProjectReferences.Select(x=> x.ProjectId).ToList();
 				var referencedProjects = projects.Where(x => references.Any(y => y == x.Id)).ToList();
-				referencedProjects.Add(activeProject);
-				var docs = referencedProjects?.SelectMany(x => x.Documents.Where(y => y.FilePath == filePath)).ToList();
+				var docs = activeProject.Documents.Where(x => string.Equals(x.FilePath ,filePath, StringComparison.OrdinalIgnoreCase)).ToList();
+				if(docs.Count == 0)
+					docs = referencedProjects?.SelectMany(x => x.Documents.Where(y => string.Equals(y.FilePath, filePath, StringComparison.OrdinalIgnoreCase))).ToList();
 				var doc = docs.FirstOrDefault();
 				//This doc is not part of the current running solution, lets not send it over
 				if (doc == null)
@@ -105,7 +106,7 @@ namespace Reloadify {
 					var symbols = compilation.GetSymbolsWithName(c.ClassName).ToList();// c.NameSpace == null ? c.ClassName : $"{c.NameSpace}.{c.ClassName}").ToList();
 					var symbol = symbols.FirstOrDefault();
 					var allFiles = symbol?.DeclaringSyntaxReferences.Select(x => x.SyntaxTree.FilePath).ToList();
-					var files = allFiles.Where(x => x != filePath);
+					var files = allFiles.Where(x => !string.Equals(x,filePath,StringComparison.OrdinalIgnoreCase));
 					await files?.ForEachAsync(1, (file) => Task.Run(() =>
 						{
 							var contents = System.IO.File.ReadAllText(file);

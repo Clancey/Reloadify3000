@@ -11,6 +11,8 @@ namespace ReloadifySample
 		{
 			Console.WriteLine("Hello World!");
 
+			await Task.Delay(1000);
+
 			await Task.Run(()=>RunHotReload());
 
 			await Task.Run(() =>

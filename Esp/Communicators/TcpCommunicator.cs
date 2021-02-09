@@ -68,7 +68,7 @@ namespace Comet.Internal.Reload {
 				client.Value.Item2.Cancel ();
 			}
 			clients.Clear ();
-			listener.Stop ();
+			listener?.Stop ();
 		}
 
 		public override async Task<bool> Send<T> (T obj)

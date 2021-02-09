@@ -9,7 +9,6 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Esp.Resources;
 using Reloadify.Internal;
-using MonoDevelop.Core;
 
 namespace Reloadify {
 	public class IDEManager {
