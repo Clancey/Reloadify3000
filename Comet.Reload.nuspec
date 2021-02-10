@@ -8,10 +8,10 @@
     <owners>Clancey</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Hot Reload plugin for Comet</description>
-    <summary>Reloadify3000 plugin, Just call Reloadify3000.Init() for debug builds.</summary>
+    <summary>Comet Hot Reload plugin, Just call Comet.Reload.Init() for debug builds.</summary>
     <copyright>James Clancey</copyright>
-    <projectUrl>https://github.com/clancey/Comet</projectUrl>
-    <repository type="git" url="https://github.com/clancey/Comet"/>
+    <projectUrl>https://github.com/Clancey/Reloadify3000</projectUrl>
+    <repository type="git" url="https://github.com/Clancey/Reloadify3000"/>
     <language>C#</language>
     <dependencies>
         <dependency id="Reloadify3000" version="0.0.1-alpha" />

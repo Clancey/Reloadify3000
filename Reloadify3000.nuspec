@@ -10,8 +10,8 @@
     <description>Hot Reload plugin for Comet</description>
     <summary>Comet.Reload plugin, Just call Comet.Reload.Init() for debug builds.</summary>
     <copyright>James Clancey</copyright>
-    <projectUrl>https://github.com/clancey/Comet</projectUrl>
-    <repository type="git" url="https://github.com/clancey/Comet"/>
+    <projectUrl>https://github.com/Clancey/Reloadify3000</projectUrl>
+    <repository type="git" url="https://github.com/Clancey/Reloadify3000"/>
     <language>C#</language>
     <dependencies>
         <dependency id="Newtonsoft.Json" version="12.0.2" />
