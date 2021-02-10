@@ -124,7 +124,6 @@ namespace CometReloadVisix
             documentEvents.DocumentSaved += DocumentEvents_DocumentSaved;
             textEditorEvents = dte.Events.TextEditorEvents;
             textEditorEvents.LineChanged += TextEditorEvents_LineChanged;
-            await Reloadify3000.Command1.InitializeAsync(this);
         }
 
         async Task<string> GetCodeFromActiveDocument(string filePath)
