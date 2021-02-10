@@ -1,4 +1,6 @@
 # Reloadify3000
+[![NuGet](https://img.shields.io/nuget/v/Reloadify3000.svg)](https://www.nuget.org/packages/Reloadify3000)
+
 What am I? I am a nuget and IDE Extension to help with developing HotReload libraries.
 
 
