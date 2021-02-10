@@ -46,4 +46,8 @@ Reloadify.Reload.Init();
 # Disclaimer
 Reloadify is a proof of concept. There is no official support. Use at your own Risk.
 
+
+# Thanks
+Thank you Frank for the original [proof of concept](https://github.com/praeclarum/Continuous)!
+
 	 
