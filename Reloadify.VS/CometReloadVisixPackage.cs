@@ -222,18 +222,16 @@ namespace CometReloadVisix
             if (dbgmodeNew == DBGMODE.DBGMODE_Break)
                 return VSConstants.S_OK;
 
-            Task.Run(() =>
+            Task.Run(async () =>
             {
                 if (IDEManager.Shared.IsEnabled)
                 {
                     IDEManager.Shared.CurrentProjectPath = GetStartupProject().FileName;
                     IDEManager.Shared.Solution = workspace.CurrentSolution;
-                    var project = GetStartupProject();
-                    var proj = project.FileName;
-                    var dll = GetAssemblyPath(project);
+                    var project = workspace.CurrentSolution.Projects.FirstOrDefault(x => string.Equals(x.FilePath, IDEManager.Shared.CurrentProjectPath, StringComparison.OrdinalIgnoreCase));
 
                     InitializeDebugOutputPane();
-                    shouldRun = RoslynCodeManager.Shared.ShouldHotReload(proj);
+                    shouldRun = await RoslynCodeManager.Shared.ShouldHotReload(project);
                     if (shouldRun)
                         IDEManager.Shared.StartMonitoring();
                    

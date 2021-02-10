@@ -9,6 +9,7 @@ using Microsoft.Build.Execution;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.CodeAnalysis.FindSymbols;
 using Microsoft.CodeAnalysis.MSBuild;
 using Reloadify.Internal;
 
@@ -17,12 +18,10 @@ namespace Reloadify {
 		public static RoslynCodeManager Shared { get; set; } = new RoslynCodeManager ();
 
 		Dictionary<string, List<string>> referencesForProjects = new Dictionary<string, List<string>> ();
-		public bool ShouldHotReload (string project)
+		public async Task<bool> ShouldHotReload (Project project)
 		{
-			if (string.IsNullOrWhiteSpace (project))
-				return false;
-			var hasReloadify = File.ReadAllText (project).Contains ("Reloadify3000");
-			return hasReloadify;
+			var shouldRun = (await SymbolFinder.FindDeclarationsAsync(project, "Reloadify", true)).Any();
+			return shouldRun;
 		}
 		public void StartDebugging ()
 		{
