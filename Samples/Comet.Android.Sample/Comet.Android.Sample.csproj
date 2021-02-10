@@ -123,7 +123,7 @@
       <Name>Comet.Android</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\Comet\sample\Comet.Samples\Comet.Samples.csproj">
-      <Project>{A1F28182-12FA-4EC0-83E2-0CBF7C5B70CB}</Project>
+      <Project>{F86E3A30-8D79-4E77-BB8A-F05A904DC942}</Project>
       <Name>Comet.Samples</Name>
     </ProjectReference>
   </ItemGroup>

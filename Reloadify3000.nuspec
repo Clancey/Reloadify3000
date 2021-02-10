@@ -2,13 +2,13 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
   <metadata>
     <id>Reloadify3000</id>
-    <version>0.0.13-alpha</version>
+    <version>0.0.15-alpha</version>
     <title>Reloadify3000</title>
     <authors>James Clancey</authors>
     <owners>Clancey</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Hot Reload plugin for Comet</description>
-    <summary>Reloadify3000 plugin, Just call Reloadify3000.Init() for debug builds.</summary>
+    <summary>Comet.Reload plugin, Just call Comet.Reload.Init() for debug builds.</summary>
     <copyright>James Clancey</copyright>
     <projectUrl>https://github.com/clancey/Comet</projectUrl>
     <repository type="git" url="https://github.com/clancey/Comet"/>
@@ -24,13 +24,11 @@
   <files>
     <file src="Reloadify3000/bin/Debug/netstandard2.0/Reloadify3000.dll" target="lib/netstandard2.0/Reloadify3000.dll" />
     <file src="Reloadify3000/bin/Debug/netstandard2.0/Reloadify3000.pdb" target="lib/netstandard2.0/Reloadify3000.pdb" />
+    <file src="Reloadify3000/bin/Debug/netstandard2.0/Reloadify3000.Core.dll" target="lib/netstandard2.0/Reloadify3000.Core.dll" />
+    <file src="Reloadify3000/bin/Debug/netstandard2.0/Reloadify3000.Core.pdb" target="lib/netstandard2.0/Reloadify3000.Core.pdb" />
     <file src="Reloadify3000/bin/Debug/netstandard2.0/Esp.dll" target="lib/netstandard2.0/Esp.dll" />
     <file src="Reloadify3000/bin/Debug/netstandard2.0/Esp.pdb" target="lib/netstandard2.0/Esp.pdb" />
     <file src="Reloadify3000/bin/Debug/netstandard2.0/Esp.Resources.dll" target="lib/netstandard2.0/Esp.Resources.dll" />
     <file src="Reloadify3000/bin/Debug/netstandard2.0/Esp.Resources.pdb" target="lib/netstandard2.0/Esp.Resources.pdb" />
-    <file src="Reloadify3000.Build/bin/Debug/Mono.Cecil.dll" target="build\Mono.Cecil.dll" />
-    <file src="Reloadify3000.Build/Reloadify3000.targets" target="build\Reloadify3000.targets" />
-    <file src="Reloadify3000.Build/bin/Debug/Reloadify3000.Build.Tasks.dll" target="build/Reloadify3000.Build.Tasks.dll" />
-    <file src="Reloadify3000.Build/bin/Debug/Reloadify3000.Build.Tasks.pdb" target="build/Reloadify3000.Build.Tasks.pdb" />
   </files>
 </package>
