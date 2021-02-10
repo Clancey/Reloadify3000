@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
   <metadata>
-    <id>Reloadify3000</id>
+    <id>Clancey.Comet.Reload</id>
     <version>0.0.13-alpha</version>
-    <title>Reloadify3000</title>
+    <title>Comet.Reload</title>
     <authors>James Clancey</authors>
     <owners>Clancey</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
@@ -14,23 +14,14 @@
     <repository type="git" url="https://github.com/clancey/Comet"/>
     <language>C#</language>
     <dependencies>
-        <dependency id="Newtonsoft.Json" version="12.0.2" />
-        <dependency id="Microsoft.CodeAnalysis.CSharp.Scripting" version="3.8.0" />
+        <dependency id="Reloadify3000" version="0.0.1-alpha" />
     </dependencies>
     <frameworkAssemblies>
       <frameworkAssembly assemblyName="Mono.CSharp"/>
     </frameworkAssemblies>
   </metadata>
   <files>
-    <file src="Reloadify3000/bin/Debug/netstandard2.0/Reloadify3000.dll" target="lib/netstandard2.0/Reloadify3000.dll" />
-    <file src="Reloadify3000/bin/Debug/netstandard2.0/Reloadify3000.pdb" target="lib/netstandard2.0/Reloadify3000.pdb" />
-    <file src="Reloadify3000/bin/Debug/netstandard2.0/Esp.dll" target="lib/netstandard2.0/Esp.dll" />
-    <file src="Reloadify3000/bin/Debug/netstandard2.0/Esp.pdb" target="lib/netstandard2.0/Esp.pdb" />
-    <file src="Reloadify3000/bin/Debug/netstandard2.0/Esp.Resources.dll" target="lib/netstandard2.0/Esp.Resources.dll" />
-    <file src="Reloadify3000/bin/Debug/netstandard2.0/Esp.Resources.pdb" target="lib/netstandard2.0/Esp.Resources.pdb" />
-    <file src="Reloadify3000.Build/bin/Debug/Mono.Cecil.dll" target="build\Mono.Cecil.dll" />
-    <file src="Reloadify3000.Build/Reloadify3000.targets" target="build\Reloadify3000.targets" />
-    <file src="Reloadify3000.Build/bin/Debug/Reloadify3000.Build.Tasks.dll" target="build/Reloadify3000.Build.Tasks.dll" />
-    <file src="Reloadify3000.Build/bin/Debug/Reloadify3000.Build.Tasks.pdb" target="build/Reloadify3000.Build.Tasks.pdb" />
+    <file src="Comet.Reload/bin/Debug/netstandard2.0/Comet.Reload.dll" target="lib/netstandard2.0/Comet.Reload.dll" />
+    <file src="Comet.Reload/bin/Debug/netstandard2.0/Comet.Reload.pdb" target="lib/netstandard2.0/Comet.Reload.pdb" />
   </files>
 </package>
