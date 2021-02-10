@@ -24,7 +24,9 @@ Reloadify then sends a notification of all the types that changed, so your libra
 
 # How do I use it?
 
-It's so simple! Just add the nuget.
+Install the [Extension](https://github.com/Clancey/Reloadify3000/releases)
+
+Install the [nuget](https://www.nuget.org/packages/Reloadify3000).
 
 Now just hook into the reload notification
 
