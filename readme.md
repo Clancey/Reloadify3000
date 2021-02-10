@@ -32,13 +32,16 @@ Install the [nuget](https://www.nuget.org/packages/Reloadify3000).
 
 Now just hook into the reload notification
 
-
 ``` cs 
 Reloadify.Reload.Instance.ReplaceType = (d) => {
 	string oldType = d.ClassName;
 	Type newType = d.Type;
-	//TODO: Reload that type!
 };
+
+Reloadify.Reload.Instance.FinishedReload = () =>{
+	//All new types are in! Lets reload!
+};
+
 ```
 And now initialize it!
 

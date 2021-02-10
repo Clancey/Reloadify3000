@@ -9,6 +9,7 @@ namespace Comet
 		public static Task<bool> Init(string ideIP = null, int idePort = Constants.DEFAULT_PORT)
 		{
 			Reloadify.Reload.Instance.ReplaceType = (d) => HotReloadHelper.RegisterReplacedView(d.ClassName, d.Type);
+			Reloadify.Reload.Instance.FinishedReload = () => HotReloadHelper.TriggerReload();
 			return Reloadify.Reload.Init(ideIP, idePort);
 		}
 	}
