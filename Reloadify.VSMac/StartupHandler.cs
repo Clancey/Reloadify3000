@@ -6,6 +6,8 @@ using MonoDevelop.Ide;
 using MonoDevelop.Projects;
 using Microsoft.VisualStudio.Text.UI;
 using Microsoft.VisualStudio.Text.Editor;
+using System.Linq;
+using Microsoft.CodeAnalysis.FindSymbols;
 
 namespace Reloadify {
 	public class StartupHandler : CommandHandler {
@@ -65,14 +67,11 @@ namespace Reloadify {
 
 
 		bool shouldRun;
-		private void ProjectOperations_BeforeStartProject (object sender, EventArgs e)
+		private async void ProjectOperations_BeforeStartProject (object sender, EventArgs e)
 		{
 			try
 			{
-				IDEManager.Shared.Solution = IdeApp.TypeSystemService.Workspace.CurrentSolution;
-				var proj = ActiveProject.FileName;
-				var dll = (ActiveProject.DefaultConfiguration as MonoDevelop.Projects.DotNetProjectConfiguration)?.CompiledOutputName;
-				shouldRun = RoslynCodeManager.Shared.ShouldHotReload (ActiveProject?.FileName);
+				var solution = IDEManager.Shared.Solution = IdeApp.TypeSystemService.Workspace.CurrentSolution;
 			} catch (Exception ex) {
 
 				LoggingService.Log (MonoDevelop.Core.Logging.LogLevel.Error, $"Reloadify Extension failed: {ex}");
@@ -86,8 +85,10 @@ namespace Reloadify {
 			return IdeApp.Workbench.ActiveDocument.TextBuffer.CurrentSnapshot.GetText ();
 		}
 		bool isDebugging;
-		private void DebuggingService_DebugSessionStarted (object sender, EventArgs e)
+		private async void DebuggingService_DebugSessionStarted (object sender, EventArgs e)
 		{
+			var activeProject = IdeApp.TypeSystemService.Workspace.CurrentSolution.Projects.FirstOrDefault(x => x.FilePath == ActiveProject.FileName);
+			shouldRun = (await SymbolFinder.FindDeclarationsAsync(activeProject, "Reloadify", true)).Any();
 			if (!shouldRun)
 				return;
 			isDebugging = true;

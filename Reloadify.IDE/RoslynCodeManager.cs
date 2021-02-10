@@ -62,6 +62,7 @@ namespace Reloadify {
 		}
 
 
+
 		public static async System.Threading.Tasks.Task<EvalRequestMessage> SearchForPartialClasses(string filePath, string fileContents,string projectPath, Microsoft.CodeAnalysis.Solution solution)
 		{
 			try
