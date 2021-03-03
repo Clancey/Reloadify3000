@@ -25,6 +25,7 @@ namespace Reloadify.Internal {
 	}
 
 	public class EvalRequestMessage : Message {
+		public string[] PreprocessorSymbolNames { get; set; }
 		public List<(string FileName, string Code)> Files { get; set; }
 		public List<(string NameSpace, string ClassName)> Classes { get; set; }
 	}
