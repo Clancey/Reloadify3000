@@ -103,6 +103,11 @@ namespace Reloadify {
 					return null;
 				var partialClasses = collector.PartialClasses.Select(x => x.GetClassNameWithNamespace()).ToList();
 
+				var newSyntaxTrees = new List<SyntaxTree>
+				{
+					syntaxTree
+				};
+
 				foreach (var c in partialClasses)
 				{
 					var symbols = compilation.GetSymbolsWithName(c.ClassName).ToList();// c.NameSpace == null ? c.ClassName : $"{c.NameSpace}.{c.ClassName}").ToList();
@@ -112,6 +117,7 @@ namespace Reloadify {
 					
 					await trees?.ForEachAsync(1, (tree) => Task.Run(() =>
 						{
+							newSyntaxTrees.Add(tree.SyntaxTree);
 							var file = tree.SyntaxTree.FilePath;
 							var contents = System.IO.File.ReadAllText(file);
 							newFiles.Add((file, contents));
