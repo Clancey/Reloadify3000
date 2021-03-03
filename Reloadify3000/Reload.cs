@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
+using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using Comet.Internal.Reload;
@@ -20,7 +22,6 @@ namespace Reloadify {
 		public Action StartingReload { get; set; }
 		public Action<(string ClassName, Type Type)> ReplaceType { get; set; }
 		public Action FinishedReload { get; set; }
-		IEvaluator eval;
 		//TaskScheduler mainScheduler;
 		bool isRunning;
 		ICommunicatorClient client;
@@ -54,7 +55,6 @@ namespace Reloadify {
 
 			//mainScheduler = TaskScheduler.FromCurrentSynchronizationContext ();
 
-			eval = new Evaluator ();
 			isRunning = true;
 			return true;
 		}
@@ -100,18 +100,28 @@ namespace Reloadify {
 			EvalResponse evalResponse = new EvalResponse ();
 			EvalResult result = new EvalResult ();
 			try {
-				var s = await eval.EvaluateCode (request, result);
-				Debug.WriteLine ($"Evaluating: {s} - {result.FoundClasses.Count}");
-				if (s && result.FoundClasses.Count > 0) {
-					StartingReload?.Invoke ();
-					foreach (var r in result.FoundClasses)
-						ReplaceType?.Invoke (r);
-					Debug.WriteLine ($"Triggering Reload");
-					FinishedReload?.Invoke ();
-				} else {
-					foreach (var m in result.Messages)
-						Debug.Write (m.Text);
+				//var s = await eval.EvaluateCode (request, result);
+				//Debug.WriteLine ($"Evaluating: {s} - {result.FoundClasses.Count}");
+				if(!request.Classes?.Any() ?? false)
+				{
+					//Nothing to load
+					return;
 				}
+				var assmebly = Assembly.Load(request.Assembly, request.Pdb);
+				var foundTypes = new List<(string, Type)>();
+				foreach(var c in request.Classes)
+				{
+					var fullName = $"{c.NameSpace}.{c.ClassName}";
+					var type = assmebly.GetType(fullName);
+					foundTypes.Add((fullName, type));
+				}
+				if (!foundTypes.Any())
+					return;
+				StartingReload?.Invoke();
+				foreach (var f in foundTypes)
+					ReplaceType?.Invoke(f);
+				FinishedReload?.Invoke();
+				
 			} catch (Exception ex) {
 				Debug.WriteLine (ex);
 			}

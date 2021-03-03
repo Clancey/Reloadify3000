@@ -9,6 +9,7 @@ using Microsoft.Build.Execution;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.CodeAnalysis.Emit;
 using Microsoft.CodeAnalysis.FindSymbols;
 using Microsoft.CodeAnalysis.MSBuild;
 using Reloadify.Internal;
@@ -23,45 +24,39 @@ namespace Reloadify {
 			var shouldRun = (await SymbolFinder.FindDeclarationsAsync(project, "Reloadify", true)).Any();
 			return shouldRun;
 		}
-		public void StartDebugging ()
+		public async Task<bool> ShouldStartDebugging ()
 		{
+			var projects = IDEManager.Shared.Solution.Projects.ToList();
+			CurrentActiveProject = projects?.FirstOrDefault(x => x.FilePath == IDEManager.Shared.CurrentProjectPath);
+			return await ShouldHotReload(CurrentActiveProject);
+
 		}
+		Project CurrentActiveProject;
 		public void StopDebugging ()
 		{
 			referencesForProjects.Clear ();
+			CleanupFiles();
 		}
 
-		public List<string> GetReferences (string projectPath, string currentReference)
+		void CleanupFiles()
 		{
-			if (referencesForProjects.TryGetValue (projectPath, out var references))
-				return references;
-			var project = new ProjectInstance (projectPath);
-			var result = BuildManager.DefaultBuildManager.Build (
-				new BuildParameters (),
-				new BuildRequestData (project, new []
-			{
-				"ResolveProjectReferences",
-				"ResolveAssemblyReferences"
-			}));
-
-			IEnumerable<string> GetResultItems (string targetName)
-			{
-				var buildResult = result.ResultsByTarget [targetName];
-				var buildResultItems = buildResult.Items;
-
-				return buildResultItems.Select (item => item.ItemSpec);
+			try
+			{ 
+				var outputDirectory = Path.GetDirectoryName(CurrentActiveProject.OutputFilePath);
+				var oldFiles = Directory.GetFiles(outputDirectory, $"{tempDllStart}*").ToList();
+				foreach (var f in oldFiles)
+					File.Delete(f);
 			}
+			catch
+			{
 
-			references = GetResultItems ("ResolveProjectReferences")
-				.Concat (GetResultItems ("ResolveAssemblyReferences")).Distinct ().ToList ();
-			if (!string.IsNullOrWhiteSpace (currentReference))
-				references.Add (currentReference);
-			referencesForProjects [projectPath] = references;
-			return references;
+			}
 		}
+		const string tempDllStart = "Reloadify-emit-";
+		
 
 
-
+		static int currentCompilationCount = 0;
 		public static async System.Threading.Tasks.Task<EvalRequestMessage> SearchForPartialClasses(string filePath, string fileContents,string projectPath, Microsoft.CodeAnalysis.Solution solution)
 		{
 			try
@@ -93,8 +88,8 @@ namespace Reloadify {
 				var oldSyntaxTree = compilation.SyntaxTrees.FirstOrDefault(X => X.FilePath == filePath);
 
 				var parseOptions = (CSharpParseOptions)oldSyntaxTree.Options;
-				var syntaxTree = Microsoft.CodeAnalysis.CSharp.CSharpSyntaxTree.ParseText(fileContents, parseOptions,path:filePath);
-
+				var syntaxTree = CSharpSyntaxTree.ParseText(fileContents, parseOptions,path:filePath,encoding: System.Text.Encoding.UTF8);
+				var ignoreSyntaxTree = CSharpSyntaxTree.ParseText(header);
 				var root = syntaxTree.GetCompilationUnitRoot();
 				var collector = new ClassCollector();
 				collector.Visit(root);
@@ -105,6 +100,7 @@ namespace Reloadify {
 
 				var newSyntaxTrees = new List<SyntaxTree>
 				{
+					ignoreSyntaxTree,
 					syntaxTree
 				};
 
@@ -123,20 +119,55 @@ namespace Reloadify {
 							newFiles.Add((file, contents));
 						}));
 				}
-				return new EvalRequestMessage
-				{
-					PreprocessorSymbolNames = parseOptions.PreprocessorSymbolNames.ToArray(),
-					Classes = classes,
-					Files = newFiles,
-				};
 
+
+				//Lets compile
+				var dllMS = new MemoryStream();
+				var pdbMS = new MemoryStream();
+				var newAssemblyName = $"tempDllStart{currentCompilationCount++}";
+				var outputDirectory = Path.GetDirectoryName(activeProject.OutputFilePath);
+				var compileReferences = compilation.References.ToList();
+				compileReferences.Add(MetadataReference.CreateFromFile(activeProject.OutputFilePath));
+
+				var compilationOptions = new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary).WithMetadataImportOptions(MetadataImportOptions.All);
+				var topLevelBinderFlagsProperty = typeof(CSharpCompilationOptions).GetProperty("TopLevelBinderFlags", BindingFlags.Instance | BindingFlags.NonPublic);
+				topLevelBinderFlagsProperty.SetValue(compilationOptions, (uint)1 << 22);
+
+				var newCompilation = CSharpCompilation.Create(newAssemblyName, syntaxTrees: newSyntaxTrees, references: compileReferences, options: compilationOptions);
+				var dllPath = Path.Combine(outputDirectory, $"{newAssemblyName}.dll");
+				var pdbPath = Path.Combine(outputDirectory, $"{newAssemblyName}.pdb");
+				var result = newCompilation.Emit(dllMS, pdbMS, options: new EmitOptions(debugInformationFormat: DebugInformationFormat.PortablePdb));
+				if (!result.Success)
+				{
+					IEnumerable<Diagnostic> failures = result.Diagnostics.Where(diagnostic =>
+						diagnostic.IsWarningAsError ||
+						diagnostic.Severity == DiagnosticSeverity.Error).ToList();
+
+					foreach (Diagnostic diagnostic in failures)
+					{
+						Console.Error.WriteLine("{0}: {1}", diagnostic.Id, diagnostic.GetMessage());
+					}
+				}
+				else
+				{
+					var resp  = new EvalRequestMessage
+					{
+						AssemblyName = newAssemblyName,
+						Assembly = dllMS.GetBuffer(),
+						Pdb = pdbMS.GetBuffer(),
+						Classes = classes,
+					};
+
+					File.WriteAllBytes(dllPath, resp.Assembly);
+					File.WriteAllBytes(pdbPath, resp.Pdb);
+					return resp;
+				}
 			}
 			catch(Exception ex)
 			{
 				Console.WriteLine(ex);
 			}
 			return null;
-
 		}
 
 	}

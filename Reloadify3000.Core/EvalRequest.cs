@@ -26,11 +26,11 @@ namespace Reloadify.Internal {
 
 	public class EvalRequestMessage : Message {
 		public string AssemblyName { get; set; }
-		public byte[] Pe { get; set; }
-		public byte[] Pd { get; set; }
+		public byte[] Assembly { get; set; }
+		public byte[] Pdb { get; set; }
 
 		public bool HasDebugSymbols =>
-			Pd != null && Pd.Length > 0;
+			Pdb != null && Pdb.Length > 0;
 
 		public List<(string NameSpace, string ClassName)> Classes { get; set; }
 	}
