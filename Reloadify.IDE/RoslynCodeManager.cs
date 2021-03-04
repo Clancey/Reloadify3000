@@ -21,6 +21,8 @@ namespace Reloadify {
 		Dictionary<string, List<string>> referencesForProjects = new Dictionary<string, List<string>> ();
 		public async Task<bool> ShouldHotReload (Project project)
 		{
+			if (project.Name == "Reloadify.VS" || project.Name == "Reloadify.VSMac")
+				return false;
 			var shouldRun = (await SymbolFinder.FindDeclarationsAsync(project, "Reloadify", true)).Any();
 			return shouldRun;
 		}
