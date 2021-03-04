@@ -36,6 +36,7 @@ namespace Reloadify {
 		public void StopDebugging ()
 		{
 			referencesForProjects.Clear ();
+			currentTrees.Clear();
 			CleanupFiles();
 		}
 
@@ -85,7 +86,7 @@ namespace Reloadify {
 				var compilation = model.Compilation;
 				var oldSyntaxTree = compilation.SyntaxTrees.FirstOrDefault(X => X.FilePath == filePath);
 				var parseOptions = (CSharpParseOptions)oldSyntaxTree.Options;
-				var syntaxTree = CSharpSyntaxTree.ParseText(fileContents, parseOptions,path:filePath,encoding: System.Text.Encoding.UTF8);
+				var syntaxTree = CSharpSyntaxTree.ParseText(fileContents, parseOptions,path:filePath,encoding: System.Text.Encoding.Default);
 				var ignoreSyntaxTree = CSharpSyntaxTree.ParseText(header, parseOptions);
 				var root = syntaxTree.GetCompilationUnitRoot();
 				var collector = new ClassCollector();
