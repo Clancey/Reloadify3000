@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using Comet.Internal.Reload;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Esp.Resources;
 using Reloadify.Internal;
+using Comet.Internal.Reload;
 
 namespace Reloadify {
 	public class IDEManager {
