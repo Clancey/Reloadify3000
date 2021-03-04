@@ -8,7 +8,7 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Esp.Resources;
 using Reloadify.Internal;
-using Comet.Internal.Reload;
+using Esp;
 
 namespace Reloadify {
 	public class IDEManager {
