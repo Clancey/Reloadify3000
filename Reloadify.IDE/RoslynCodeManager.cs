@@ -109,12 +109,12 @@ namespace Reloadify {
 					var trees = symbol?.DeclaringSyntaxReferences.Where(x => !string.Equals(x.SyntaxTree.FilePath, filePath, StringComparison.OrdinalIgnoreCase)).ToList();
 					
 					await trees?.ForEachAsync(1, (tree) => Task.Run(() =>
-						{
-							currentTrees[tree.SyntaxTree.FilePath] = tree.SyntaxTree;
-							var file = tree.SyntaxTree.FilePath;
-							var contents = System.IO.File.ReadAllText(file);
-							newFiles.Add(file);
-						}));
+					{
+						var fileTree = tree.SyntaxTree;
+						var file = fileTree.FilePath;
+						currentTrees[file] = fileTree;
+						newFiles.Add(file);
+					}));
 				}
 
 
