@@ -26,6 +26,7 @@ namespace Reloadify {
 		}
 		public async Task<bool> ShouldStartDebugging ()
 		{
+			currentCompilationCount = 0;
 			var projects = IDEManager.Shared.Solution.Projects.ToList();
 			CurrentActiveProject = projects?.FirstOrDefault(x => x.FilePath == IDEManager.Shared.CurrentProjectPath);
 			return await ShouldHotReload(CurrentActiveProject);
@@ -53,8 +54,8 @@ namespace Reloadify {
 			}
 		}
 		const string tempDllStart = "Reloadify-emit-";
-
 		static int currentCompilationCount = 0;
+		Dictionary<string, SyntaxTree> currentTrees = new Dictionary<string, SyntaxTree>();
 		public async System.Threading.Tasks.Task<EvalRequestMessage> SearchForPartialClasses(string filePath, string fileContents,string projectPath, Microsoft.CodeAnalysis.Solution solution)
 		{
 			try
@@ -94,11 +95,8 @@ namespace Reloadify {
 					return null;
 				var partialClasses = collector.PartialClasses.Select(x => x.GetClassNameWithNamespace()).ToList();
 
-				var newSyntaxTrees = new List<SyntaxTree>
-				{
-					ignoreSyntaxTree,
-					syntaxTree
-				};
+				currentTrees[filePath] = syntaxTree;
+				currentTrees["IgnoresAccessChecksTo"] = ignoreSyntaxTree;
 
 				foreach (var c in partialClasses)
 				{
@@ -109,7 +107,7 @@ namespace Reloadify {
 					
 					await trees?.ForEachAsync(1, (tree) => Task.Run(() =>
 						{
-							newSyntaxTrees.Add(tree.SyntaxTree);
+							currentTrees[tree.SyntaxTree.FilePath] = tree.SyntaxTree;
 							var file = tree.SyntaxTree.FilePath;
 							var contents = System.IO.File.ReadAllText(file);
 							newFiles.Add(file);
@@ -128,11 +126,12 @@ namespace Reloadify {
 				compileReferences.AddRange(activeCompilation.References);
 				compileReferences.Add(MetadataReference.CreateFromFile(activeProject.OutputFilePath));
 
+				//This allows you to compile using private references
 				var compilationOptions = new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary).WithMetadataImportOptions(MetadataImportOptions.All);
 				var topLevelBinderFlagsProperty = typeof(CSharpCompilationOptions).GetProperty("TopLevelBinderFlags", BindingFlags.Instance | BindingFlags.NonPublic);
 				topLevelBinderFlagsProperty.SetValue(compilationOptions, (uint)1 << 22);
 
-				var newCompilation = CSharpCompilation.Create(newAssemblyName, syntaxTrees: newSyntaxTrees, references: compileReferences, options: compilationOptions);
+				var newCompilation = CSharpCompilation.Create(newAssemblyName, syntaxTrees: currentTrees.Values, references: compileReferences, options: compilationOptions);
 				var dllPath = Path.Combine(outputDirectory, $"{newAssemblyName}.dll");
 				var pdbPath = Path.Combine(outputDirectory, $"{newAssemblyName}.pdb");
 
