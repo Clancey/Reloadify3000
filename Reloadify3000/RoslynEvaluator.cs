@@ -60,7 +60,7 @@ namespace Reloadify.Internal {
 				}
 
 
-				var assembly = Compile (newCodes);
+				var assembly = Compile (newCodes, request.PreprocessorSymbolNames);
 
 				foreach (var c in request.Classes) {
 					var code = $"{ToFullName (c.NameSpace, replacedClasses [c.ClassName])}";
@@ -83,10 +83,12 @@ namespace Reloadify.Internal {
 		}
 
 
-		Assembly Compile (List<string> code)
+		Assembly Compile (List<string> code, string[] preprocessorSymbolNames)
 		{
-			var syntaxTrees = code.Select(x=>  CSharpSyntaxTree.ParseText (x)).ToArray();
-
+			var syntaxTrees = code.Select(x=>  CSharpSyntaxTree.ParseText (x, CSharpParseOptions.Default
+						.WithKind(SourceCodeKind.Regular)
+						.WithPreprocessorSymbols(preprocessorSymbolNames)));
+			
 			string assemblyName = System.IO.Path.GetRandomFileName ();
 			//This awesome code allows us to compile new dll's that can reference internal bits from the rest of the app!
 			var compilationOptions = new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary).WithMetadataImportOptions(MetadataImportOptions.All);
@@ -98,6 +100,7 @@ namespace Reloadify.Internal {
 				syntaxTrees: syntaxTrees,
 				references: references,
 				options: compilationOptions);
+			
 
 			using (var ms = new MemoryStream ()) {
 				EmitResult emitResult = compilation.Emit (ms);
@@ -181,6 +184,7 @@ namespace Reloadify.Internal {
 			};
 			var assemblies = AppDomain.CurrentDomain.GetAssemblies ().Where (a => !a.IsDynamic && !string.IsNullOrWhiteSpace (a.Location)).ToArray ();
 			var o = new CSharpCompilationOptions (OutputKind.DynamicallyLinkedLibrary);
+			
 			foreach (var assembly in assemblies) {
 				var name = assembly.GetName ().Name;
 				if (name == "Comet") {

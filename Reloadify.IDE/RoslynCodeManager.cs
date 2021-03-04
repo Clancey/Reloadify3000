@@ -66,16 +66,6 @@ namespace Reloadify {
 		{
 			try
 			{
-				var tree = Microsoft.CodeAnalysis.CSharp.CSharpSyntaxTree.ParseText(fileContents);
-
-				var root = tree.GetCompilationUnitRoot();
-				var collector = new ClassCollector();
-				collector.Visit(root);
-				var classes = collector.Classes.Select(x => x.GetClassNameWithNamespace()).ToList();
-				if (classes.Count == 0)
-					return null;
-				var partialClasses = collector.PartialClasses.Select(x => x.GetClassNameWithNamespace()).ToList();
-
 				var projects = solution.Projects.ToList();
 				var activeProject = projects?.FirstOrDefault(x => x.FilePath == projectPath);
 				var references = activeProject.ProjectReferences.Select(x=> x.ProjectId).ToList();
@@ -87,7 +77,6 @@ namespace Reloadify {
 				//This doc is not part of the current running solution, lets not send it over
 				if (doc == null)
 					return null;
-
 
 				var assemblies = projects.Select(x => x.AssemblyName).Distinct();
 
@@ -101,20 +90,36 @@ namespace Reloadify {
 
 				var model = await doc.GetSemanticModelAsync();
 				var compilation = model.Compilation;
+				var oldSyntaxTree = compilation.SyntaxTrees.FirstOrDefault(X => X.FilePath == filePath);
+
+				var parseOptions = (CSharpParseOptions)oldSyntaxTree.Options;
+				var syntaxTree = Microsoft.CodeAnalysis.CSharp.CSharpSyntaxTree.ParseText(fileContents, parseOptions,path:filePath);
+
+				var root = syntaxTree.GetCompilationUnitRoot();
+				var collector = new ClassCollector();
+				collector.Visit(root);
+				var classes = collector.Classes.Select(x => x.GetClassNameWithNamespace()).ToList();
+				if (classes.Count == 0)
+					return null;
+				var partialClasses = collector.PartialClasses.Select(x => x.GetClassNameWithNamespace()).ToList();
+
 				foreach (var c in partialClasses)
 				{
 					var symbols = compilation.GetSymbolsWithName(c.ClassName).ToList();// c.NameSpace == null ? c.ClassName : $"{c.NameSpace}.{c.ClassName}").ToList();
+					
 					var symbol = symbols.FirstOrDefault();
-					var allFiles = symbol?.DeclaringSyntaxReferences.Select(x => x.SyntaxTree.FilePath).ToList();
-					var files = allFiles.Where(x => !string.Equals(x,filePath,StringComparison.OrdinalIgnoreCase));
-					await files?.ForEachAsync(1, (file) => Task.Run(() =>
+					var trees = symbol?.DeclaringSyntaxReferences.Where(x => !string.Equals(x.SyntaxTree.FilePath, filePath, StringComparison.OrdinalIgnoreCase)).ToList();
+					
+					await trees?.ForEachAsync(1, (tree) => Task.Run(() =>
 						{
+							var file = tree.SyntaxTree.FilePath;
 							var contents = System.IO.File.ReadAllText(file);
 							newFiles.Add((file, contents));
 						}));
 				}
 				return new EvalRequestMessage
 				{
+					PreprocessorSymbolNames = parseOptions.PreprocessorSymbolNames.ToArray(),
 					Classes = classes,
 					Files = newFiles,
 				};
