@@ -26,12 +26,12 @@ namespace Reloadify {
 			var shouldRun = (await SymbolFinder.FindDeclarationsAsync(project, "Reloadify", true)).Any();
 			return shouldRun;
 		}
-		public async Task<bool> ShouldStartDebugging ()
+		public void StartDebugging ()
 		{
 			currentCompilationCount = 0;
-			var projects = IDEManager.Shared.Solution.Projects.ToList();
-			CurrentActiveProject = projects?.FirstOrDefault(x => x.FilePath == IDEManager.Shared.CurrentProjectPath);
-			return await ShouldHotReload(CurrentActiveProject);
+			referencesForProjects.Clear();
+			currentTrees.Clear();
+			CleanupFiles();
 
 		}
 		Project CurrentActiveProject;

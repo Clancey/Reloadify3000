@@ -88,7 +88,7 @@ namespace Reloadify {
 		private async void DebuggingService_DebugSessionStarted (object sender, EventArgs e)
 		{
 			var activeProject = IdeApp.TypeSystemService.Workspace.CurrentSolution.Projects.FirstOrDefault(x => x.FilePath == ActiveProject.FileName);
-			shouldRun = (await SymbolFinder.FindDeclarationsAsync(activeProject, "Reloadify", true)).Any();
+			shouldRun = await RoslynCodeManager.Shared.ShouldHotReload(activeProject);
 			if (!shouldRun)
 				return;
 			isDebugging = true;

@@ -78,10 +78,8 @@ namespace Reloadify {
 
 		internal async void StartMonitoring (int port)
 		{
-
-			var shuoldStart = await RoslynCodeManager.Shared.ShouldStartDebugging();
-			if(shuoldStart)
-				await server.StartListening (port);
+			RoslynCodeManager.Shared.StartDebugging();
+			await server.StartListening (port);
 		}
 		public void StopMonitoring ()
 		{
