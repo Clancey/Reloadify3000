@@ -1,7 +1,7 @@
 ﻿using System;
 using Newtonsoft.Json;
 
-namespace Comet.Internal.Reload {
+namespace Esp {
 	public static class Serializer
 	{
 		static JsonSerializerSettings JsonSettings

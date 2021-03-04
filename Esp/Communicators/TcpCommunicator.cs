@@ -13,7 +13,7 @@ using Esp;
 using Esp.Resources;
 using Newtonsoft.Json.Linq;
 
-namespace Comet.Internal.Reload {
+namespace Esp {
 	public class TcpCommunicatorServer : TcpCommunicator, ITcpCommunicatorServer {
 
 		protected ConcurrentDictionary<Guid, Tuple<TcpClient, CancellationTokenSource>> clients = new ConcurrentDictionary<Guid, Tuple<TcpClient, CancellationTokenSource>> ();
