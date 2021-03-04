@@ -34,15 +34,7 @@ namespace Reloadify
 				ideErrors.EndTaskUpdates();
 			};
 		}
-		void DebuggingStarted()
-		{
-			IDEManager.Shared.StartMonitoring();
-		}
-		void DebuggingStopped()
-		{
 
-			IDEManager.Shared.StartMonitoring();
-		}
 		void OnDataReceived(object message)
 		{
 			Console.WriteLine("Data recieved");

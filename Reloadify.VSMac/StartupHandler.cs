@@ -22,8 +22,8 @@ namespace Reloadify {
 			IDEManager.Shared.GetActiveDocumentText = GetCurrentDocumentText;
 			IdeApp.Workbench.ActiveDocumentChanged += Workbench_ActiveDocumentChanged;
 			IdeApp.ProjectOperations.BeforeStartProject += ProjectOperations_BeforeStartProject;
-			MonoDevelop.Debugger.DebuggingService.DebugSessionStarted += DebuggingService_DebugSessionStarted;
-			MonoDevelop.Debugger.DebuggingService.StoppedEvent += DebuggingService_StoppedEvent;
+			MonoDevelop.Debugger.DebuggingService.SessionStarted += DebuggingService_DebugSessionStarted;
+			MonoDevelop.Debugger.DebuggingService.SessionStopped += DebuggingService_StoppedEvent;
 
 		}
 		MonoDevelop.Ide.Gui.Document currentDocument;
