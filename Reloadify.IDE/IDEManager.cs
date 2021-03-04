@@ -14,6 +14,7 @@ namespace Reloadify {
 	public class IDEManager {
 		public bool IsEnabled { get; set; } = true;
 		public static IDEManager Shared { get; set; } = new IDEManager ();
+		public Action<IEnumerable<Diagnostic>> OnErrors { get; set; }
 
 		ITcpCommunicatorServer server;
 		IDEManager ()
@@ -61,7 +62,7 @@ namespace Reloadify {
 			}
 
 			currentFiles [e.Filename] = e.Text;
-			var response = await RoslynCodeManager.SearchForPartialClasses(e.Filename, e.Text, CurrentProjectPath, Solution);
+			var response = await RoslynCodeManager.Shared.SearchForPartialClasses(e.Filename, e.Text, CurrentProjectPath, Solution);
 			if (response != null)
 				await server.Send (response);
 		}

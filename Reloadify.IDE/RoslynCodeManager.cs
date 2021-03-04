@@ -53,11 +53,9 @@ namespace Reloadify {
 			}
 		}
 		const string tempDllStart = "Reloadify-emit-";
-		
-
 
 		static int currentCompilationCount = 0;
-		public static async System.Threading.Tasks.Task<EvalRequestMessage> SearchForPartialClasses(string filePath, string fileContents,string projectPath, Microsoft.CodeAnalysis.Solution solution)
+		public async System.Threading.Tasks.Task<EvalRequestMessage> SearchForPartialClasses(string filePath, string fileContents,string projectPath, Microsoft.CodeAnalysis.Solution solution)
 		{
 			try
 			{
@@ -77,19 +75,17 @@ namespace Reloadify {
 
 				//We are going to build a file, with all the IgnoreAccessChecks so we don't get System.MethodAccessException when we call internal stuff
 				var header = string.Join("\r\n", assemblies.Select(x => $"[assembly: System.Runtime.CompilerServices.IgnoresAccessChecksTo(\"{x}\")]"));
-				var newFiles = new List<(string FileName, string Code)>
+				var newFiles = new List<string>
 				{
-					("IgnoreStuff",header),
-					(filePath, fileContents)
-				}; ;
-
+					filePath
+				};
 				var model = await doc.GetSemanticModelAsync();
+				
 				var compilation = model.Compilation;
 				var oldSyntaxTree = compilation.SyntaxTrees.FirstOrDefault(X => X.FilePath == filePath);
-
 				var parseOptions = (CSharpParseOptions)oldSyntaxTree.Options;
 				var syntaxTree = CSharpSyntaxTree.ParseText(fileContents, parseOptions,path:filePath,encoding: System.Text.Encoding.UTF8);
-				var ignoreSyntaxTree = CSharpSyntaxTree.ParseText(header);
+				var ignoreSyntaxTree = CSharpSyntaxTree.ParseText(header, parseOptions);
 				var root = syntaxTree.GetCompilationUnitRoot();
 				var collector = new ClassCollector();
 				collector.Visit(root);
@@ -116,7 +112,7 @@ namespace Reloadify {
 							newSyntaxTrees.Add(tree.SyntaxTree);
 							var file = tree.SyntaxTree.FilePath;
 							var contents = System.IO.File.ReadAllText(file);
-							newFiles.Add((file, contents));
+							newFiles.Add(file);
 						}));
 				}
 
@@ -124,9 +120,12 @@ namespace Reloadify {
 				//Lets compile
 				var dllMS = new MemoryStream();
 				var pdbMS = new MemoryStream();
-				var newAssemblyName = $"tempDllStart{currentCompilationCount++}";
+				var newAssemblyName = $"{tempDllStart}{currentCompilationCount++}";
 				var outputDirectory = Path.GetDirectoryName(activeProject.OutputFilePath);
+
+				var activeCompilation = await activeProject.GetCompilationAsync();
 				var compileReferences = compilation.References.ToList();
+				compileReferences.AddRange(activeCompilation.References);
 				compileReferences.Add(MetadataReference.CreateFromFile(activeProject.OutputFilePath));
 
 				var compilationOptions = new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary).WithMetadataImportOptions(MetadataImportOptions.All);
@@ -136,6 +135,7 @@ namespace Reloadify {
 				var newCompilation = CSharpCompilation.Create(newAssemblyName, syntaxTrees: newSyntaxTrees, references: compileReferences, options: compilationOptions);
 				var dllPath = Path.Combine(outputDirectory, $"{newAssemblyName}.dll");
 				var pdbPath = Path.Combine(outputDirectory, $"{newAssemblyName}.pdb");
+
 				var result = newCompilation.Emit(dllMS, pdbMS, options: new EmitOptions(debugInformationFormat: DebugInformationFormat.PortablePdb));
 				if (!result.Success)
 				{
@@ -143,6 +143,7 @@ namespace Reloadify {
 						diagnostic.IsWarningAsError ||
 						diagnostic.Severity == DiagnosticSeverity.Error).ToList();
 
+					IDEManager.Shared.OnErrors?.Invoke(failures);
 					foreach (Diagnostic diagnostic in failures)
 					{
 						Console.Error.WriteLine("{0}: {1}", diagnostic.Id, diagnostic.GetMessage());
@@ -150,6 +151,7 @@ namespace Reloadify {
 				}
 				else
 				{
+					IDEManager.Shared.OnErrors?.Invoke(null);
 					var resp  = new EvalRequestMessage
 					{
 						AssemblyName = newAssemblyName,
