@@ -28,6 +28,8 @@ namespace Reloadify {
 		}
 		public void StartDebugging ()
 		{
+			var projects = IDEManager.Shared.Solution.Projects.ToList();
+			CurrentActiveProject = projects?.FirstOrDefault(x => x.FilePath == IDEManager.Shared.CurrentProjectPath);
 			currentCompilationCount = 0;
 			referencesForProjects.Clear();
 			currentTrees.Clear();
@@ -86,7 +88,7 @@ namespace Reloadify {
 				var model = await doc.GetSemanticModelAsync();
 				
 				var compilation = model.Compilation;
-				var oldSyntaxTree = compilation.SyntaxTrees.FirstOrDefault(X => X.FilePath == filePath);
+				var oldSyntaxTree = compilation.SyntaxTrees.FirstOrDefault(X => string.Equals(X.FilePath, filePath, StringComparison.OrdinalIgnoreCase));
 				var parseOptions = (CSharpParseOptions)oldSyntaxTree.Options;
 				var syntaxTree = CSharpSyntaxTree.ParseText(fileContents, parseOptions,path:filePath,encoding: System.Text.Encoding.Default);
 				var ignoreSyntaxTree = CSharpSyntaxTree.ParseText(header, parseOptions);

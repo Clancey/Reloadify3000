@@ -35,6 +35,7 @@ namespace Comet.Internal.Reload {
 		async Task Run (TaskCompletionSource<bool> tcs)
 		{
 			try {
+				StopListening();
 				listener = new TcpListener (IPAddress.Any, serverPort);
 				listener.Start ();
 			} catch (Exception ex) {
