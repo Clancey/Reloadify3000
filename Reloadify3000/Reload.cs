@@ -6,7 +6,6 @@ using System.Linq;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
-using Comet.Internal.Reload;
 using Esp;
 using Esp.Resources;
 using Newtonsoft.Json.Linq;
