@@ -9,9 +9,8 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Host.Mef;
 using Microsoft.CodeAnalysis.MSBuild;
 using Mono.Unix;
-using VSCodeSample;
 
-namespace Reloadify.VSCode
+namespace Reloadify.CommandLine
 {
 	public class IDE
 	{

@@ -2,7 +2,7 @@
 using System.IO;
 using Reloadify;
 
-namespace VSCodeSample
+namespace Reloadify.CommandLine
 {
 	public class FileWatcher : IDisposable
 	{

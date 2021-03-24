@@ -38,7 +38,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReloadifySample", "Reloadif
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Reloadify.VSCode", "Reloadify.VSCode\Reloadify.VSCode.csproj", "{197CDE54-7B9E-4AF6-9E6F-1DB9CD95EDBB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VSCodeSample", "VSCodeSample\VSCodeSample.csproj", "{FA33C2C1-2663-40C7-88EE-CA8C31AB082E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Reloadify.CommandLine", "Reloadify.CommandLine\Reloadify.CommandLine.csproj", "{FA33C2C1-2663-40C7-88EE-CA8C31AB082E}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
