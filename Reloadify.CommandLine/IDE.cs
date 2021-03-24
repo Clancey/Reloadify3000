@@ -49,8 +49,9 @@ namespace Reloadify.CommandLine
 				var compilation = await project.GetCompilationAsync();
 				var errors = compilation.GetDiagnostics().Where(diagnostic => diagnostic.Severity == DiagnosticSeverity.Error).ToList();
 				
-				shouldRun = await RoslynCodeManager.Shared.ShouldHotReload(project);
 				currentProject = project;
+				IDEManager.Shared.CurrentProjectPath = csprojPath;
+				IDEManager.Shared.Solution = sln;
 				//var sln = project.Solution;
 				//var graph = sln.GetProjectDependencyGraph();
 				//Msbuild failed when processing the file '/Users/clancey/Projects/Comet/src/Comet/Comet.csproj' with message: The SDK 'Microsoft.NET.Sdk' specified could not be found.  / Users / clancey / Projects / Comet / src / Comet / Comet.csproj                    IDEManager.Shared.Solution = sln;
@@ -61,13 +62,10 @@ namespace Reloadify.CommandLine
 			}
 
 		}
-		bool shouldRun;
 		bool isDebugging;
 		public async Task StartHotReload()
 		{
-			
-			shouldRun = await RoslynCodeManager.Shared.ShouldHotReload(currentProject);
-			if (!shouldRun)
+			if (isDebugging)
 				return;
 			isDebugging = true;
 			IDEManager.Shared.CurrentProjectPath = csprojPath;
@@ -79,6 +77,7 @@ namespace Reloadify.CommandLine
 		{
 			if (isDebugging)
 				return;
+			isDebugging = false;
 			fileWatcher?.Dispose();
 			IDEManager.Shared.StopMonitoring();
 		}
@@ -103,11 +102,17 @@ namespace Reloadify.CommandLine
 			if (!Directory.Exists(xamarinDir))
 			{
 				const string realPath = "/Library/Frameworks/Xamarin.iOS.framework/Versions/Current/lib/msbuild";
-				CreateDirectorySymLink(realPath, msBuildCurrentDir);
+				CreateDirectorySymLink(realPath, xamarinDir);
 			}
 		}
 
-		static UnixSymbolicLinkInfo CreateDirectorySymLink(string source, string link) => new UnixDirectoryInfo(source).CreateSymbolicLink(link);
+		static void CreateDirectorySymLink(string source, string link)
+		{
+			var existing = new UnixDirectoryInfo(link);
+			if (existing.Exists)
+				return;
+			new UnixDirectoryInfo(source).CreateSymbolicLink(link);
+		}
 
 		private void CurrentWorkSpace_WorkspaceFailed(object sender, WorkspaceDiagnosticEventArgs e)
 		{

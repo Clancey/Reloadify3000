@@ -15,7 +15,6 @@ namespace Reloadify.CommandLine
 			{
 				Filter = "*.cs",
 				IncludeSubdirectories = true,
-				EnableRaisingEvents = true,
 			};
 			fileWatcher.NotifyFilter = NotifyFilters.Attributes
 								 | NotifyFilters.CreationTime
@@ -30,6 +29,7 @@ namespace Reloadify.CommandLine
 			fileWatcher.Deleted += FileWatcher_Deleted;
 			fileWatcher.Renamed += FileWatcher_Renamed;
 			fileWatcher.Error += FileWatcher_Error;
+			fileWatcher.EnableRaisingEvents = true;
 
 		}
 
