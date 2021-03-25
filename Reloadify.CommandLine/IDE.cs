@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
+using Microsoft.Build.Locator;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Host.Mef;
 using Microsoft.CodeAnalysis.MSBuild;
@@ -36,6 +37,8 @@ namespace Reloadify.CommandLine
 			this.csprojPath = csprojPath;
 			try
 			{
+
+				MSBuildLocator.RegisterDefaults();
 				var currentWorkSpace = MSBuildWorkspace.Create(new Dictionary<string,string>() {
 					["Configuration"] = configuration,
 					["Platform"] = platform,
