@@ -42,13 +42,16 @@ namespace Reloadify.CommandLine
 				});
 				currentWorkSpace.WorkspaceFailed += CurrentWorkSpace_WorkspaceFailed;
 				//var sln = await currentWorkSpace.OpenSolutionAsync(slnPath);
-				//var project = sln.Projects.FirstOrDefault(x => x.FilePath.Contains(csprojPath)) ?? await currentWorkSpace.OpenProjectAsync(csprojPath);
+				//var project = sln.Projects.FirstOrDefault(x => x.FilePath.Contains(csp rojPath)) ?? await currentWorkSpace.OpenProjectAsync(csprojPath);
+				Console.WriteLine($"Opening :{csprojPath}");
 				var project = await currentWorkSpace.OpenProjectAsync(csprojPath);
 				var sln = currentWorkSpace.CurrentSolution;
-
+				Console.WriteLine($"Compiling :{csprojPath}");
 				var compilation = await project.GetCompilationAsync();
 				var errors = compilation.GetDiagnostics().Where(diagnostic => diagnostic.Severity == DiagnosticSeverity.Error).ToList();
-				
+				Console.WriteLine($"Compiling Complete : Error Count: {errors?.Count() ?? 0}");
+				foreach (var e in errors)
+					Console.WriteLine($"\t: {e.GetMessage()}");
 				currentProject = project;
 				IDEManager.Shared.CurrentProjectPath = csprojPath;
 				IDEManager.Shared.Solution = sln;
@@ -89,6 +92,11 @@ namespace Reloadify.CommandLine
 											   .IsOSPlatform(OSPlatform.OSX);
 			if (!isMacOS)
 				return;
+
+
+			//AppDomain currentDomain = AppDomain.CurrentDomain;
+			//currentDomain.AssemblyResolve += new ResolveEventHandler(LoadFromSameFolder);
+
 			var location = Path.GetDirectoryName(typeof(Program).Assembly.Location);
 			var msBuildCurrentDir = Path.Combine(location, "Current");
 			if (!Directory.Exists(msBuildCurrentDir))
