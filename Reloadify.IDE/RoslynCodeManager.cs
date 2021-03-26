@@ -5,7 +5,6 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
-using Microsoft.Build.Execution;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -16,12 +15,12 @@ using Reloadify.Internal;
 
 namespace Reloadify {
 	public class RoslynCodeManager {
-		public static RoslynCodeManager Shared { get; set; } = new RoslynCodeManager ();
+		public static RoslynCodeManager Shared { get; set; } = new RoslynCodeManager (); 
 
 		Dictionary<string, List<string>> referencesForProjects = new Dictionary<string, List<string>> ();
 		public async Task<bool> ShouldHotReload (Project project)
 		{
-			if (project.Name == "Reloadify.VS" || project.Name == "Reloadify.VSMac")
+			if (project.Name == "Reloadify.VS" || project.Name == "Reloadify.VSMac" || project.Name == "Reloadify.CommandLine")
 				return false;
 			var shouldRun = (await SymbolFinder.FindDeclarationsAsync(project, "Reloadify", true)).Any();
 			return shouldRun;
@@ -61,6 +60,20 @@ namespace Reloadify {
 		const string tempDllStart = "Reloadify-emit-";
 		static int currentCompilationCount = 0;
 		Dictionary<string, SyntaxTree> currentTrees = new Dictionary<string, SyntaxTree>();
+
+		public void Rename(string oldPath, string newPath)
+		{
+			if(currentTrees.TryGetValue(oldPath, out var tree))
+			{
+				currentTrees[newPath] = tree;
+				currentTrees.Remove(oldPath);
+			}
+		}
+		public void Delete(string path)
+		{
+			if (currentTrees.ContainsKey(path))
+				currentTrees.Remove(path);
+		}
 		public async System.Threading.Tasks.Task<EvalRequestMessage> SearchForPartialClasses(string filePath, string fileContents,string projectPath, Microsoft.CodeAnalysis.Solution solution)
 		{
 			try

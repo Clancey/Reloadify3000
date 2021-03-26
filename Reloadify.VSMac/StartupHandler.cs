@@ -61,7 +61,7 @@ namespace Reloadify {
 
 		private void TextBuffer_Changed (object sender, Microsoft.VisualStudio.Text.TextContentChangedEventArgs e)
 		{
-			IDEManager.Shared.TextChanged (currentDocument.FilePath);
+			//IDEManager.Shared.TextChanged (currentDocument.FilePath);
 		}
 
 
