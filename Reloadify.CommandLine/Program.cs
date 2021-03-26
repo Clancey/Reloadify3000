@@ -41,12 +41,12 @@ namespace Reloadify.CommandLine
 				return;
 			}
 
-			if(string.IsNullOrWhiteSpace(csProj) || string.IsNullOrWhiteSpace(rootFolder))
+			if (string.IsNullOrWhiteSpace(csProj) || string.IsNullOrWhiteSpace(rootFolder))
 			{
 				shouldShowHelp = true;
 			}
 
-			if(shouldShowHelp)
+			if (shouldShowHelp)
 			{
 				ShowHelp(options);
 				return;
@@ -76,9 +76,6 @@ namespace Reloadify.CommandLine
 			{
 				IDE.Shared.Shutdown();
 			}
-
-				
-
 		}
 
 		private static void ShowHelp(OptionSet p)
