@@ -54,11 +54,16 @@ namespace Reloadify.CommandLine
 			try
 			{
 				await IDE.Shared.LoadProject(rootFolder, csProj, configuration, platform);
+				Console.WriteLine($"Activating HotReload");
 				bool isHotReloading = await IDE.Shared.StartHotReload();
 				if (!isHotReloading)
 				{
 					Console.WriteLine("Please add Reloadify3000 nuget to your project.");
 					return;
+				}
+				else
+				{
+					Console.WriteLine($"Hot Reload is running!");
 				}
 
 				Console.WriteLine("Type exit, to quit");

@@ -34,6 +34,7 @@ namespace Reloadify.CommandLine
 			{
 
 				MSBuildLocator.RegisterDefaults();
+				IDEManager.Shared.OnErrors = OnErrors;
 				var currentWorkSpace = MSBuildWorkspace.Create(new Dictionary<string,string>() {
 					["Configuration"] = configuration,
 					["Platform"] = platform,
@@ -44,12 +45,12 @@ namespace Reloadify.CommandLine
 				Console.WriteLine($"Opening :{csprojPath}");
 				var project = await currentWorkSpace.OpenProjectAsync(csprojPath);
 				var sln = currentWorkSpace.CurrentSolution;
-				Console.WriteLine($"Compiling :{csprojPath}");
-				var compilation = await project.GetCompilationAsync();
-				var errors = compilation.GetDiagnostics().Where(diagnostic => diagnostic.Severity == DiagnosticSeverity.Error).ToList();
-				Console.WriteLine($"Compiling Complete : Error Count: {errors?.Count() ?? 0}");
-				foreach (var e in errors)
-					Console.WriteLine($"\t: {e.GetMessage()}");
+				//Console.WriteLine($"Compiling :{csprojPath}");
+				//var compilation = await project.GetCompilationAsync();
+				//var errors = compilation.GetDiagnostics().Where(diagnostic => diagnostic.Severity == DiagnosticSeverity.Error).ToList();
+				//Console.WriteLine($"Compiling Complete : Error Count: {errors?.Count() ?? 0}");
+				//foreach (var e in errors)
+				//	Console.WriteLine($"\t: {e.GetMessage()}");
 				currentProject = project;
 				IDEManager.Shared.CurrentProjectPath = csprojPath;
 				IDEManager.Shared.Solution = sln;
@@ -62,6 +63,17 @@ namespace Reloadify.CommandLine
 				Console.WriteLine(ex);
 			}
 
+		}
+
+		void OnErrors(IEnumerable<Diagnostic> diagnostics)
+		{
+			if (!(diagnostics?.Any() ?? false))
+			{
+				Console.WriteLine("Building new Diff was Successful!");
+				return;
+			}
+			foreach(var e in diagnostics)
+				Console.WriteLine(e.GetMessage());
 		}
 		bool isDebugging;
 		public async Task<bool> StartHotReload()
@@ -91,7 +103,8 @@ namespace Reloadify.CommandLine
 	
 		private void CurrentWorkSpace_WorkspaceFailed(object sender, WorkspaceDiagnosticEventArgs e)
 		{
-			Console.WriteLine(e.Diagnostic);
+			if (e.Diagnostic.Kind == WorkspaceDiagnosticKind.Failure && !e.Diagnostic.Message.Contains("cannot be imported again."))
+				Console.WriteLine(e.Diagnostic);
 		}
 	}
 }
