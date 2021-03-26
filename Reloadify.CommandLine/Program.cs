@@ -12,7 +12,6 @@ namespace Reloadify.CommandLine
 	{
 		static async Task Main(string[] args)
 		{
-			_ = typeof(Microsoft.Build.FileSystem.MSBuildFileSystemBase);
 			string platform = "AnyCPU";
 			string configuration = "Debug";
 			string rootFolder = "";
@@ -52,19 +51,30 @@ namespace Reloadify.CommandLine
 				ShowHelp(options);
 				return;
 			}
-			
-			await IDE.Shared.LoadProject(rootFolder, csProj,configuration,platform);
-			await IDE.Shared.StartHotReload();
-
-			Console.WriteLine("Type exit, to quit");
-			while (true)
+			try
 			{
-				var shouldExit = Console.ReadLine() != "exit";
-				if (shouldExit)
+				await IDE.Shared.LoadProject(rootFolder, csProj, configuration, platform);
+				bool isHotReloading = await IDE.Shared.StartHotReload();
+				if (!isHotReloading)
 				{
-					//Shutdown and return;
+					Console.WriteLine("Please add Reloadify3000 nuget to your project.");
 					return;
 				}
+
+				Console.WriteLine("Type exit, to quit");
+				while (true)
+				{
+					var shouldExit = Console.ReadLine() != "exit";
+					if (shouldExit)
+					{
+						//Shutdown and return;
+						return;
+					}
+				}
+			}
+			finally
+			{
+				IDE.Shared.Shutdown();
 			}
 
 				
