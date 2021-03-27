@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Comet.Internal.Reload;
 using Esp;
 
 namespace Client {
