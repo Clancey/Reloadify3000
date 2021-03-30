@@ -48,7 +48,7 @@ namespace Reloadify {
 			try
 			{ 
 				var outputDirectory = Path.GetDirectoryName(CurrentActiveProject.OutputFilePath);
-				var oldFiles = Directory.GetFiles(outputDirectory, $"{tempDllStart}*").ToList();
+				var oldFiles = Directory.GetFiles(outputDirectory, $"{tempDllName}*").ToList();
 				foreach (var f in oldFiles)
 					File.Delete(f);
 			}
@@ -57,7 +57,7 @@ namespace Reloadify {
 
 			}
 		}
-		const string tempDllStart = "Reloadify-emit-";
+		const string tempDllName = "Reloadify-emit";
 		static int currentCompilationCount = 0;
 		Dictionary<string, SyntaxTree> currentTrees = new Dictionary<string, SyntaxTree>();
 
@@ -116,6 +116,8 @@ namespace Reloadify {
 				currentTrees[filePath] = syntaxTree;
 				currentTrees["IgnoresAccessChecksTo"] = ignoreSyntaxTree;
 
+				var assemblyVersion = currentCompilationCount++;
+				currentTrees["Relodify-Emit-AssemblyVersion"] = CSharpSyntaxTree.ParseText($"[assembly: System.Reflection.AssemblyVersionAttribute(\"1.0.{assemblyVersion}\")]", parseOptions);
 				foreach (var c in partialClasses)
 				{
 					var symbols = compilation.GetSymbolsWithName(c.ClassName).ToList();// c.NameSpace == null ? c.ClassName : $"{c.NameSpace}.{c.ClassName}").ToList();
@@ -136,7 +138,7 @@ namespace Reloadify {
 				//Lets compile
 				var dllMS = new MemoryStream();
 				var pdbMS = new MemoryStream();
-				var newAssemblyName = $"{tempDllStart}{currentCompilationCount++}";
+				var newAssemblyName = $"{tempDllName}-{assemblyVersion}";
 				var outputDirectory = Path.GetDirectoryName(activeProject.OutputFilePath);
 
 				var activeCompilation = await activeProject.GetCompilationAsync();
@@ -149,7 +151,7 @@ namespace Reloadify {
 				var topLevelBinderFlagsProperty = typeof(CSharpCompilationOptions).GetProperty("TopLevelBinderFlags", BindingFlags.Instance | BindingFlags.NonPublic);
 				topLevelBinderFlagsProperty.SetValue(compilationOptions, (uint)1 << 22);
 
-				var newCompilation = CSharpCompilation.Create(newAssemblyName, syntaxTrees: currentTrees.Values, references: compileReferences, options: compilationOptions);
+				var newCompilation = CSharpCompilation.Create(tempDllName, syntaxTrees: currentTrees.Values, references: compileReferences, options: compilationOptions);
 				var dllPath = Path.Combine(outputDirectory, $"{newAssemblyName}.dll");
 				var pdbPath = Path.Combine(outputDirectory, $"{newAssemblyName}.pdb");
 

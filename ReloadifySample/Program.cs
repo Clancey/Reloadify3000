@@ -1,7 +1,8 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Esp.Resources;
-
+[assembly: InternalsVisibleTo("Reloadify-emit")]
 namespace ReloadifySample
 {
 	class Program

@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
   <metadata>
     <id>Clancey.Comet.Reload</id>
-    <version>0.0.16-alpha</version>
+    <version>0.0.17</version>
     <title>Comet.Reload</title>
     <authors>James Clancey</authors>
     <owners>Clancey</owners>
@@ -15,7 +15,7 @@
     <repository type="git" url="https://github.com/Clancey/Reloadify3000"/>
     <language>C#</language>
     <dependencies>
-        <dependency id="Reloadify3000" version="0.0.2-alpha" />
+        <dependency id="Reloadify3000" version="1.0.0" />
     </dependencies>
     <frameworkAssemblies>
       <frameworkAssembly assemblyName="Mono.CSharp"/>

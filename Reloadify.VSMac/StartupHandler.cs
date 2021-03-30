@@ -15,7 +15,7 @@ namespace Reloadify {
 		   => (IdeApp.ProjectOperations.CurrentSelectedSolution?.StartupItem
 			?? IdeApp.ProjectOperations.CurrentSelectedBuildTarget)
 			as DotNetProject;
-
+		bool enableOnTyping = false;
 		protected override void Run ()
 		{
 			IDE.Init ();
@@ -26,6 +26,7 @@ namespace Reloadify {
 			MonoDevelop.Debugger.DebuggingService.SessionStopped += DebuggingService_StoppedEvent;
 
 		}
+
 		MonoDevelop.Ide.Gui.Document currentDocument;
 		bool editorBound;
 		private void Workbench_ActiveDocumentChanged (object sender, MonoDevelop.Ide.Gui.DocumentEventArgs e)
@@ -35,6 +36,7 @@ namespace Reloadify {
 				return;
 			if (currentDocument != null) {
 				if (editorBound) {
+					if(enableOnTyping)
 					currentDocument.TextBuffer.Changed -= TextBuffer_Changed;
 					editorBound = false;
 				}
@@ -50,8 +52,11 @@ namespace Reloadify {
 			}
 		}
 
+
 		private void CurrentDocument_ContentChanged (object sender, EventArgs e)
 		{
+			if (!enableOnTyping)
+				return;
 			if (currentDocument.TextBuffer != null) {
 				currentDocument.ContentChanged -= CurrentDocument_ContentChanged;
 				currentDocument.TextBuffer.Changed += TextBuffer_Changed;
@@ -61,7 +66,8 @@ namespace Reloadify {
 
 		private void TextBuffer_Changed (object sender, Microsoft.VisualStudio.Text.TextContentChangedEventArgs e)
 		{
-			//IDEManager.Shared.TextChanged (currentDocument.FilePath);
+			if(enableOnTyping)
+				IDEManager.Shared.TextChanged (currentDocument.FilePath);
 		}
 
 
