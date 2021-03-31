@@ -1,23 +1,9 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Project>
     <UsingTask TaskName="Reloadify3000.Build.Tasks.AssemblyWeaver" AssemblyFile="$(MSBuildThisFileDirectory)Reloadify3000.Build.Tasks.dll" />
-    <Choose>
-        <When Condition="$(TargetFrameworkIdentifier) == 'Xamarin.iOS'">
-            <PropertyGroup>
-                <EspAssemblyPath>$(MSBuildThisFileDirectory)..\lib\xamarinios10\Esp.Resources.dll</EspAssemblyPath>
-            </PropertyGroup>
-        </When>
-        <When Condition="$(TargetFrameworkIdentifier) == 'MonoAndroid'">
-            <PropertyGroup>
-                <EspAssemblyPath>$(MSBuildThisFileDirectory)..\lib\monoandroid81\Esp.Resources.dll</EspAssemblyPath>
-            </PropertyGroup>
-        </When>
-        <When Condition="$(TargetFrameworkIdentifier) != 'Xamarin.iOS' And $(TargetFrameworkIdentifier) != 'MonoAndroid'">
-            <PropertyGroup>
-                <EspAssemblyPath>$(MSBuildThisFileDirectory)..\lib\netstandard2.0\Esp.Resources.dll</EspAssemblyPath>
-            </PropertyGroup>
-        </When>
-    </Choose>
+    <PropertyGroup>
+        <EspAssemblyPath>$(MSBuildThisFileDirectory)..\lib\netstandard2.0\Esp.Resources.dll</EspAssemblyPath>
+    </PropertyGroup>
     <!-- this will automatically run after the 'Build' target -->
     <Target Name="WeaveEsp" BeforeTargets="_CopyFilesMarkedCopyLocal">
         <AssemblyWeaver Path="$(EspAssemblyPath)" />
