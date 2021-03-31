@@ -15,9 +15,16 @@ namespace Esp {
 			var groupedCommunicators = communicators.GroupBy (x => x.GetType ()).ToList ();
 			var tasks = groupedCommunicators.Select (x => Task.Run (async () => {
 				foreach (var c in x) {
-					var r = await c.Connect (cancellationTokenSource.Token);
-					if (r.Item1)
-						return r;
+					try
+					{
+						var r = await c.Connect(cancellationTokenSource.Token);
+						if (r.Item1)
+							return r;
+					}
+					catch(Exception ex)
+					{
+
+					}
 				}
 				return (false, null);
 			}));

@@ -148,22 +148,31 @@ namespace Esp {
 		public Task<bool> Connect (string ip, int port) => Connect (ip, port, CancellationToken.None);
 		public async Task<bool> Connect (string ip, int port, CancellationToken cancellationToken)
 		{
-			if (string.IsNullOrWhiteSpace (ip)) {
-				throw new ArgumentException ("Ip has not been set", nameof (ip));
+			try
+			{
+				if (string.IsNullOrWhiteSpace(ip))
+				{
+					throw new ArgumentException("Ip has not been set", nameof(ip));
+				}
+				Ip = ip;
+				Port = port;
+				await Disconnect();
+				ShouldBeConnected = true;
+				client = new TcpClient();
+				await client.ConnectAsync(ip, port);
+				readCancellationToken = new CancellationTokenSource();
+				if (cancellationToken.IsCancellationRequested)
+				{
+					await Disconnect();
+					return false;
+				}
+				Receive(client, readCancellationToken.Token);
+				return true;
 			}
-			Ip = ip;
-			Port = port;
-			await Disconnect ();
-			ShouldBeConnected = true;
-			client = new TcpClient ();
-			await client.ConnectAsync (ip, port);
-			readCancellationToken = new CancellationTokenSource ();
-			if (cancellationToken.IsCancellationRequested) {
-				await Disconnect ();
+			catch(Exception)
+			{
 				return false;
 			}
-			Receive (client, readCancellationToken.Token);
-			return true;
 		}
 
 		public async Task Disconnect ()
