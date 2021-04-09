@@ -8,4 +8,5 @@
   <ItemGroup>
     <ProjectReference Include="..\Reloadify3000\Reloadify3000.csproj" />
   </ItemGroup>
+  <Import Project="..\Reloadify3000.Build\Reloadify3000.targets" />
 </Project>

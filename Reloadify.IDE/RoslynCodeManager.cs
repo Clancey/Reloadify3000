@@ -74,6 +74,7 @@ namespace Reloadify {
 			if (currentTrees.ContainsKey(path))
 				currentTrees.Remove(path);
 		}
+		LanguageVersion currentLanguageVersion = LanguageVersion.Default;
 		public async System.Threading.Tasks.Task<EvalRequestMessage> SearchForPartialClasses(string filePath, string fileContents,string projectPath, Microsoft.CodeAnalysis.Solution solution)
 		{
 			try
@@ -103,6 +104,15 @@ namespace Reloadify {
 				var compilation = model.Compilation;
 				var oldSyntaxTree = compilation.SyntaxTrees.FirstOrDefault(X => string.Equals(X.FilePath, filePath, StringComparison.OrdinalIgnoreCase));
 				var parseOptions = (CSharpParseOptions)oldSyntaxTree.Options;
+				//parseOptions.WithLanguageVersion(LanguageVersion.Preview)
+				//Always use the highest version
+				currentLanguageVersion = (LanguageVersion)Math.Max((int)currentLanguageVersion, (int)parseOptions.LanguageVersion);
+				bool versionChanged = false;
+				if(parseOptions.LanguageVersion != currentLanguageVersion)
+				{
+					versionChanged = true;
+					parseOptions = parseOptions.WithLanguageVersion(currentLanguageVersion);
+				}
 				var syntaxTree = CSharpSyntaxTree.ParseText(fileContents, parseOptions,path:filePath,encoding: System.Text.Encoding.Default);
 				var ignoreSyntaxTree = CSharpSyntaxTree.ParseText(header, parseOptions);
 				var root = syntaxTree.GetCompilationUnitRoot();
@@ -150,6 +160,24 @@ namespace Reloadify {
 				var compilationOptions = new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary).WithMetadataImportOptions(MetadataImportOptions.All);
 				var topLevelBinderFlagsProperty = typeof(CSharpCompilationOptions).GetProperty("TopLevelBinderFlags", BindingFlags.Instance | BindingFlags.NonPublic);
 				topLevelBinderFlagsProperty.SetValue(compilationOptions, (uint)1 << 22);
+
+				//Version check the trees, if the version changed!
+				if(versionChanged)
+				{
+					foreach(var pair in currentTrees.ToList())
+					{
+						var tree = pair.Value;
+						var options = (CSharpParseOptions)tree.Options;
+						if (options.LanguageVersion != currentLanguageVersion)
+						{
+							var fileTree = pair.Value;
+							var file = fileTree.FilePath;
+							var text = fileTree.GetText().ToString();
+							fileTree = CSharpSyntaxTree.ParseText(text, options, path: file, encoding: System.Text.Encoding.Default);
+							currentTrees[file] = fileTree;
+						}
+					}
+				}
 
 				var newCompilation = CSharpCompilation.Create(tempDllName, syntaxTrees: currentTrees.Values, references: compileReferences, options: compilationOptions);
 				var dllPath = Path.Combine(outputDirectory, $"{newAssemblyName}.dll");
