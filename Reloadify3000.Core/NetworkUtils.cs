@@ -12,7 +12,7 @@ namespace Reloadify.Internal {
 				.SelectMany (x =>
 							 x.GetIPProperties ().UnicastAddresses
 							 .Where (y => y.Address.AddressFamily == AddressFamily.InterNetwork)
-							 .Select (y => y.Address.ToString ()));
+							 .Select (y => y.Address.ToString ())).Union(new[] { "127.0.0.1" }).OrderBy(x=> x);
 		}
 
 		public static IEnumerable<NetworkInterface> GoodInterfaces ()
