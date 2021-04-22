@@ -40,6 +40,7 @@ namespace Esp {
 				listener.Start ();
 			} catch (Exception ex) {
 				tcs.SetException (ex);
+				return;
 			}
 			Debug.WriteLine ($"Tcp server listening at port {serverPort}");
 			tcs.SetResult (true);
