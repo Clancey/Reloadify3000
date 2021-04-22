@@ -193,8 +193,10 @@ namespace Reloadify {
 					IDEManager.Shared.OnErrors?.Invoke(failures);
 					foreach (Diagnostic diagnostic in failures)
 					{
-
-						IDEManager.Shared.Log?.Invoke($"{diagnostic.Id}: {diagnostic.GetMessage()}");
+						var span = diagnostic.Location.GetLineSpan();
+						IDEManager.Shared.Log?.Invoke($"{diagnostic.Severity}: {diagnostic.Location.SourceTree.FilePath}");
+						IDEManager.Shared.Log?.Invoke($"\t Line: {span.StartLinePosition.Line} - {span.StartLinePosition.Character}");
+						IDEManager.Shared.Log?.Invoke($"\t{diagnostic.Id}: {diagnostic.GetMessage()}");
 					}
 				}
 				else
