@@ -50,6 +50,9 @@ namespace Reloadify {
 				tcpClients.Insert (0, new TcpCommunicatorClient { Ip = ideIP, Port = idePort });
 			this.client = await DiscoveryService.Shared.FindConnection (tcpClients.ToArray ());
 
+			if (client == null)
+				return false;
+
 			client.DataReceived = HandleDataReceived;
 
 			//mainScheduler = TaskScheduler.FromCurrentSynchronizationContext ();
