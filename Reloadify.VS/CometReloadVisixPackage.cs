@@ -54,7 +54,6 @@ namespace CometReloadVisix
     [ProvideAutoLoad(VSConstants.UICONTEXT.SolutionExists_string, PackageAutoLoadFlags.BackgroundLoad)]
     [ProvideAutoLoad(VSConstants.UICONTEXT.SolutionHasMultipleProjects_string, PackageAutoLoadFlags.BackgroundLoad)]
     [ProvideAutoLoad(VSConstants.UICONTEXT.SolutionHasSingleProject_string, PackageAutoLoadFlags.BackgroundLoad)]
-    [ProvideMenuResource("Menus.ctmenu", 1)]
 
     public sealed class CometReloadVisixPackage : AsyncPackage, IVsDebuggerEvents
     {
@@ -81,7 +80,7 @@ namespace CometReloadVisix
         uint docTableCookie = 0;
         DBGMODE debugMode = DBGMODE.DBGMODE_Design;
         bool isDebugging = false;
-
+        bool triggerReloadByTypeing = false;
 
         protected override async Task InitializeAsync(CancellationToken cancellationToken, IProgress<ServiceProgressData> progress)
         {
@@ -92,8 +91,8 @@ namespace CometReloadVisix
 
             await JoinableTaskFactory.SwitchToMainThreadAsync(cancellationToken);
 
-
             var dte = (DTE)(await GetServiceAsync(typeof(DTE)));
+           
             vsSolution = (IVsSolution)Package.GetGlobalService(typeof(IVsSolution));
 
             InitializeGeneralOutputPane();
@@ -122,8 +121,16 @@ namespace CometReloadVisix
             solutionEvents.AfterClosing += OnAfterSolutionClosing;
             documentEvents = dte.Events.DocumentEvents;
             documentEvents.DocumentSaved += DocumentEvents_DocumentSaved;
-            textEditorEvents = dte.Events.TextEditorEvents;
-            textEditorEvents.LineChanged += TextEditorEvents_LineChanged;
+
+            if (triggerReloadByTypeing)
+            {
+                textEditorEvents = dte.Events.TextEditorEvents;
+                textEditorEvents.LineChanged += TextEditorEvents_LineChanged;
+            }
+            //TODO: Connect the errors, so we output to the error pane
+            //IDEManager.Shared.OnErrors = 
+            generalOutputPane.OutputStringThreadSafe($"Reloadify: Initialized!\r\n");
+            IDEManager.Shared.Log = (s) => generalOutputPane.OutputStringThreadSafe($"{s}\r\n");
         }
 
         async Task<string> GetCodeFromActiveDocument(string filePath)
@@ -141,7 +148,7 @@ namespace CometReloadVisix
 
         private async void TextEditorEvents_LineChanged(TextPoint StartPoint, TextPoint EndPoint, int Hint)
         {
-            if (!isDebugging || !IDEManager.Shared.IsEnabled || !shouldRun)
+            if (!isDebugging || !IDEManager.Shared.IsEnabled || !shouldRun || !triggerReloadByTypeing)
                 return;
             await JoinableTaskFactory.SwitchToMainThreadAsync();
             var dte = (DTE)(await GetServiceAsync(typeof(DTE)));
@@ -393,19 +400,26 @@ namespace CometReloadVisix
             debugOutputPane = InitializeOutputPane(VSConstants.GUID_OutWindowDebugPane);
         }
 
+        Guid outputWindowGuid = Guid.Parse("82687221-7778-4483-b0ea-cc7c721fbf99");
         void InitializeGeneralOutputPane()
         {
             if (generalOutputPane != null)
                 return;
 
-            generalOutputPane = InitializeOutputPane(VSConstants.GUID_OutWindowGeneralPane);
+            generalOutputPane = InitializeOutputPane(outputWindowGuid,true);
         }
 
-        IVsOutputWindowPane InitializeOutputPane(Guid paneGuid)
+        IVsOutputWindowPane InitializeOutputPane(Guid paneGuid, bool create = false)
         {
             var outWindow = Package.GetGlobalService(typeof(SVsOutputWindow)) as IVsOutputWindow;
             IVsOutputWindowPane pane;
             outWindow.GetPane(ref paneGuid, out pane);
+
+            if(pane == null && create)
+			{
+                outWindow.CreatePane(ref paneGuid, "Reloadify", Convert.ToInt32(true), Convert.ToInt32(true));
+                outWindow.GetPane(ref paneGuid, out pane);
+            }
             return pane;
         }
 

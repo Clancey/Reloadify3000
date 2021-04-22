@@ -14,6 +14,10 @@ namespace Reloadify.CommandLine
 {
 	public class IDE
 	{
+		public IDE()
+		{
+			IDEManager.Shared.Log = (s) => Console.WriteLine(s);
+		}
 		//MSBuildWorkspace currentWorkSpace;
 		public static IDE Shared { get; set; } = new IDE();
 		Project currentProject;
@@ -40,24 +44,15 @@ namespace Reloadify.CommandLine
 					["Platform"] = platform,
 				});
 				currentWorkSpace.WorkspaceFailed += CurrentWorkSpace_WorkspaceFailed;
-				//var sln = await currentWorkSpace.OpenSolutionAsync(slnPath);
-				//var project = sln.Projects.FirstOrDefault(x => x.FilePath.Contains(csp rojPath)) ?? await currentWorkSpace.OpenProjectAsync(csprojPath);
+
 				Console.WriteLine($"Opening :{csprojPath}");
 				var project = await currentWorkSpace.OpenProjectAsync(csprojPath);
 				var sln = currentWorkSpace.CurrentSolution;
-				//Console.WriteLine($"Compiling :{csprojPath}");
-				//var compilation = await project.GetCompilationAsync();
-				//var errors = compilation.GetDiagnostics().Where(diagnostic => diagnostic.Severity == DiagnosticSeverity.Error).ToList();
-				//Console.WriteLine($"Compiling Complete : Error Count: {errors?.Count() ?? 0}");
-				//foreach (var e in errors)
-				//	Console.WriteLine($"\t: {e.GetMessage()}");
+				
 				currentProject = project;
 				IDEManager.Shared.CurrentProjectPath = csprojPath;
 				IDEManager.Shared.Solution = sln;
-				//var sln = project.Solution;
-				//var graph = sln.GetProjectDependencyGraph();
-				//Msbuild failed when processing the file '/Users/clancey/Projects/Comet/src/Comet/Comet.csproj' with message: The SDK 'Microsoft.NET.Sdk' specified could not be found.  / Users / clancey / Projects / Comet / src / Comet / Comet.csproj                    IDEManager.Shared.Solution = sln;
-			}
+							}
 			catch (Exception ex)
 			{
 				Console.WriteLine(ex);

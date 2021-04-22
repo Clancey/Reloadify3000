@@ -193,7 +193,8 @@ namespace Reloadify {
 					IDEManager.Shared.OnErrors?.Invoke(failures);
 					foreach (Diagnostic diagnostic in failures)
 					{
-						Console.Error.WriteLine("{0}: {1}", diagnostic.Id, diagnostic.GetMessage());
+
+						IDEManager.Shared.Log?.Invoke($"{diagnostic.Id}: {diagnostic.GetMessage()}");
 					}
 				}
 				else
@@ -214,6 +215,7 @@ namespace Reloadify {
 			}
 			catch(Exception ex)
 			{
+				IDEManager.Shared.Log?.Invoke(ex.Message);
 				Console.WriteLine(ex);
 			}
 			return null;
