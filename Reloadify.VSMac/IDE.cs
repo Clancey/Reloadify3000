@@ -23,7 +23,7 @@ namespace Reloadify
 					{
 						var line = x.Location.GetLineSpan();					
 						return new MonoDevelop.Ide.Tasks.TaskListEntry(
-							new MonoDevelop.Projects.BuildError(x.Location.SourceTree.FilePath,
+							new MonoDevelop.Projects.BuildError(x.Location?.SourceTree?.FilePath,
 							 line.StartLinePosition.Line,
 							 line.StartLinePosition.Character,
 							 x.Severity.ToString(),

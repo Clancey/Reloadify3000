@@ -153,8 +153,14 @@ namespace Reloadify {
 				var outputDirectory = Path.GetDirectoryName(activeProject.OutputFilePath);
 
 				var activeCompilation = await activeProject.GetCompilationAsync();
-				var compileReferences = compilation.References.ToList();
-				compileReferences.AddRange(activeCompilation.References);
+				
+				var compilationDictionary = compilation.References.ToDictionary(x => Path.GetFileName(x.Display), x => x);
+				foreach(var r in activeCompilation.References)
+				{
+					compilationDictionary[Path.GetFileName(r.Display)] = r;
+				}
+				var activeReferences = activeCompilation.References.OrderBy(x => x.Display).ToList();
+				var compileReferences = compilationDictionary.Values.ToList();
 				compileReferences.Add(MetadataReference.CreateFromFile(activeProject.OutputFilePath));
 
 				//This allows you to compile using private references
