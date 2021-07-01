@@ -153,8 +153,11 @@ namespace Reloadify {
 				var outputDirectory = Path.GetDirectoryName(activeProject.OutputFilePath);
 
 				var activeCompilation = await activeProject.GetCompilationAsync();
-				
-				var compilationDictionary = compilation.References.ToDictionary(x => Path.GetFileName(x.Display), x => x);
+
+				var compilationDictionary = new Dictionary<string, MetadataReference>();
+				foreach (var r in compilation.References)
+					compilationDictionary[Path.GetFileName(r.Display)] = r;
+
 				foreach(var r in activeCompilation.References)
 				{
 					compilationDictionary[Path.GetFileName(r.Display)] = r;

@@ -30,7 +30,7 @@ using Mono.Addins.Description;
 [assembly: Addin (
 	"Reloadify.VSMac",
 	Namespace = "Reloadify",
-	Version = "1.1.3"
+	Version = "1.1.5"
 )]
 
 [assembly: AddinName ("Reloadify3000")]
