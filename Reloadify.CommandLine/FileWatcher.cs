@@ -46,11 +46,18 @@ namespace Reloadify.CommandLine
 		Timer searchTimer;
 	
 
-
-
-		async void FileWatcher_Changed(object sender, FileSystemEventArgs e)
+		static string CleanseFilePath(string filePath)
 		{
-			var filePath = e.FullPath;
+			//On Mac, it may send // for root paths.
+			//MSBuild just has /, so we need to cleanse it
+			if (!filePath.StartsWith("//"))
+				return filePath;
+			return filePath[1..];
+		}
+
+		void FileWatcher_Changed(object sender, FileSystemEventArgs e)
+		{
+			var filePath = CleanseFilePath(e.FullPath);
 			if (ShouldExcludePath(filePath))
 				return;
 

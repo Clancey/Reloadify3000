@@ -31,6 +31,8 @@ namespace Reloadify.CommandLine
 			{
 				// parse the command line
 				extra = options.Parse(args);
+				if (string.IsNullOrWhiteSpace(rootFolder) && !string.IsNullOrWhiteSpace(csProj))
+					rootFolder = Path.GetDirectoryName(csProj);
 			}
 			catch (OptionException e)
 			{
