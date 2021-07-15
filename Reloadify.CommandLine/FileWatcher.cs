@@ -67,7 +67,7 @@ namespace Reloadify.CommandLine
 					{
 						Console.WriteLine($"Reading: {f}");
 						var fileData = File.ReadAllText(f);
-						IDEManager.Shared.HandleDocumentChanged(new DocumentChangedEventArgs(f, f));
+						IDEManager.Shared.HandleDocumentChanged(new DocumentChangedEventArgs(f, fileData));
 					}
 				};
 			}
