@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Threading.Tasks;
+using System.Timers;
 using Reloadify;
 
 namespace Reloadify.CommandLine
@@ -16,14 +19,6 @@ namespace Reloadify.CommandLine
 				Filter = "*.cs",
 				IncludeSubdirectories = true,
 			};
-			fileWatcher.NotifyFilter = NotifyFilters.Attributes
-								 | NotifyFilters.CreationTime
-								 | NotifyFilters.DirectoryName
-								 | NotifyFilters.FileName
-								 | NotifyFilters.LastAccess
-								 | NotifyFilters.LastWrite
-								 | NotifyFilters.Security
-								 | NotifyFilters.Size;
 			fileWatcher.Changed += FileWatcher_Changed;
 			fileWatcher.Created += FileWatcher_Created;
 			fileWatcher.Deleted += FileWatcher_Deleted;
@@ -47,9 +42,55 @@ namespace Reloadify.CommandLine
 			//Lets ignore created for now. IT won't have any code worth dealing with until its saved anyways
 		}
 
-		void FileWatcher_Changed(object sender, FileSystemEventArgs e) =>
-			IDEManager.Shared.HandleDocumentChanged(new DocumentChangedEventArgs(e.FullPath, File.ReadAllText(e.FullPath)));
+		List<string> currentfiles = new();
+		Timer searchTimer;
+	
 
+
+
+		async void FileWatcher_Changed(object sender, FileSystemEventArgs e)
+		{
+			var filePath = e.FullPath;
+			if (ShouldExcludePath(filePath))
+				return;
+
+			if (!currentfiles.Contains(filePath))
+				currentfiles.Add(filePath);
+			if (searchTimer == null)
+			{
+				searchTimer = new Timer(100);
+				searchTimer.Elapsed += (s, e) =>
+				{
+					var files = currentfiles.ToArray();
+					currentfiles.Clear();
+					foreach(var f in files)
+					{
+						Console.WriteLine($"Reading: {f}");
+						var fileData = File.ReadAllText(f);
+						IDEManager.Shared.HandleDocumentChanged(new DocumentChangedEventArgs(f, f));
+					}
+				};
+			}
+			else
+				searchTimer.Stop();
+			searchTimer.Start();
+			
+		}
+
+
+		static bool ShouldExcludePath(string path)
+		{
+			foreach (var dir in excludedDirs)
+				if (path.Contains(dir))
+					return true;
+			return false;
+		}
+		static char slash => Path.DirectorySeparatorChar;
+		static List<string> excludedDirs = new()
+		{
+			$"{slash}obj{slash}",
+			$"{slash}bin{slash}"
+		};
 
 		static void PrintException(Exception ex)
 		{
