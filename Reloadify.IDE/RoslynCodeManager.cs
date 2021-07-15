@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -59,20 +60,20 @@ namespace Reloadify {
 		}
 		const string tempDllName = "Reloadify-emit";
 		static int currentCompilationCount = 0;
-		Dictionary<string, SyntaxTree> currentTrees = new Dictionary<string, SyntaxTree>();
+		ConcurrentDictionary<string, SyntaxTree> currentTrees = new ConcurrentDictionary<string, SyntaxTree>();
 
 		public void Rename(string oldPath, string newPath)
 		{
 			if(currentTrees.TryGetValue(oldPath, out var tree))
 			{
 				currentTrees[newPath] = tree;
-				currentTrees.Remove(oldPath);
+				currentTrees.TryRemove(oldPath, out var f);
 			}
 		}
 		public void Delete(string path)
 		{
 			if (currentTrees.ContainsKey(path))
-				currentTrees.Remove(path);
+				currentTrees.TryRemove(path, out var f);
 		}
 		LanguageVersion currentLanguageVersion = LanguageVersion.Default;
 		public async System.Threading.Tasks.Task<EvalRequestMessage> SearchForPartialClasses(string filePath, string fileContents,string projectPath, Microsoft.CodeAnalysis.Solution solution)
