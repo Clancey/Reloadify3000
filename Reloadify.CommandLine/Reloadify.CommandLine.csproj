@@ -4,6 +4,9 @@
     <OutputType>Exe</OutputType>
     <TargetFramework>net6.0</TargetFramework>
     <AssemblyName>Reloadify</AssemblyName>
+    <PackAsTool>true</PackAsTool>
+    <ToolCommandName>reloadify</ToolCommandName>
+    <PackageOutputPath>./nupkg</PackageOutputPath>
   </PropertyGroup>
 
   <ItemGroup>
