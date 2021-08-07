@@ -21,7 +21,7 @@ namespace Reloadify.CommandLine
 
 			var options = new OptionSet {
 				{ "p|Platform=", "Platform ", x => platform = x },
-				{ "pf|flavor=", "Flavor (net6.0-ios,net6.0-android) ", x => flavor = x },
+				{ "t|target=", "TargetFramework (net6.0-ios,net6.0-android) ", x => flavor = x },
 				{ "c|configuration=", "the number of times to repeat the greeting.", x => configuration = x },
 				{ "f|folder=", "Root folder for the solution", x=> rootFolder = x },
 				{ "h|help", "show this message and exit", h => shouldShowHelp = h != null },
@@ -57,6 +57,10 @@ namespace Reloadify.CommandLine
 			}
 			try
 			{
+				if (!string.IsNullOrWhiteSpace(flavor))
+				{
+					RoslynCodeManager.Shared.ProjectFlavor = flavor;
+				}
 				await IDE.Shared.LoadProject(rootFolder, csProj, configuration, platform);
 				Console.WriteLine($"Activating HotReload");
 				bool isHotReloading = await IDE.Shared.StartHotReload();
