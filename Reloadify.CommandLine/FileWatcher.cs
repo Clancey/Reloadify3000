@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Threading.Tasks;
 using System.Timers;
 using Reloadify;
+using Timer = System.Timers.Timer;
 
 namespace Reloadify.CommandLine
 {
