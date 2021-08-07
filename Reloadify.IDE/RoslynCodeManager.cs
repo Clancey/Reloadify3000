@@ -29,12 +29,21 @@ namespace Reloadify {
 		public void StartDebugging ()
 		{
 			var projects = IDEManager.Shared.Solution.Projects.ToList();
-			CurrentActiveProject = projects?.FirstOrDefault(x => x.FilePath == IDEManager.Shared.CurrentProjectPath);
+			CurrentActiveProject = GetActiveProject(projects);
 			currentCompilationCount = 0;
 			referencesForProjects.Clear();
 			currentTrees.Clear();
 			CleanupFiles();
 
+		}
+		public string ProjectFlavor;
+
+		Project GetActiveProject(List<Project> projects)
+		{
+			Project project = null;
+			if(!string.IsNullOrWhiteSpace(ProjectFlavor))
+				project = projects?.FirstOrDefault(x => x.FilePath == IDEManager.Shared.CurrentProjectPath && x.Name.Contains(ProjectFlavor));
+			return project ?? projects?.FirstOrDefault(x => x.FilePath == IDEManager.Shared.CurrentProjectPath);
 		}
 		Project CurrentActiveProject;
 		public void StopDebugging ()
@@ -81,7 +90,7 @@ namespace Reloadify {
 			try
 			{
 				var projects = solution.Projects.ToList();
-				var activeProject = projects?.FirstOrDefault(x => x.FilePath == projectPath);
+				var activeProject = GetActiveProject(projects);
 				var references = activeProject.ProjectReferences.Select(x=> x.ProjectId).ToList();
 				var referencedProjects = projects.Where(x => references.Any(y => y == x.Id)).ToList();
 				var docs = activeProject.Documents.Where(x => string.Equals(x.FilePath ,filePath, StringComparison.OrdinalIgnoreCase)).ToList();

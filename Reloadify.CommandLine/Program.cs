@@ -13,6 +13,7 @@ namespace Reloadify.CommandLine
 		static async Task Main(string[] args)
 		{
 			string platform = "AnyCPU";
+			string flavor = "net6.0-ios";
 			string configuration = "Debug";
 			string rootFolder = "";
 			string csProj = args.FirstOrDefault();
@@ -20,6 +21,7 @@ namespace Reloadify.CommandLine
 
 			var options = new OptionSet {
 				{ "p|Platform=", "Platform ", x => platform = x },
+				{ "pf|flavor=", "Flavor (net6.0-ios,net6.0-android) ", x => flavor = x },
 				{ "c|configuration=", "the number of times to repeat the greeting.", x => configuration = x },
 				{ "f|folder=", "Root folder for the solution", x=> rootFolder = x },
 				{ "h|help", "show this message and exit", h => shouldShowHelp = h != null },
