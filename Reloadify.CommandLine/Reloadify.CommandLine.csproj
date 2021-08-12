@@ -7,6 +7,8 @@
     <PackAsTool>true</PackAsTool>
     <ToolCommandName>reloadify</ToolCommandName>
     <PackageOutputPath>./nupkg</PackageOutputPath>
+    <Version>1.0.1</Version>
+    <LangVersion>Preview</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
