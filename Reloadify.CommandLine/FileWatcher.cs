@@ -72,7 +72,7 @@ namespace Reloadify.CommandLine
 					currentfiles.Clear();
 					foreach(var f in files)
 					{
-						Console.WriteLine($"Reading: {f}");
+						//Console.WriteLine($"Reading: {f}");
 						var fileData = File.ReadAllText(f);
 						IDEManager.Shared.HandleDocumentChanged(new DocumentChangedEventArgs(f, fileData));
 					}

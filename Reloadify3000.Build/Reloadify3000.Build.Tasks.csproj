@@ -8,8 +8,9 @@
     <OutputType>Library</OutputType>
     <RootNamespace>Reloadify3000.Build.Tasks</RootNamespace>
     <AssemblyName>Reloadify3000.Build.Tasks</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <PrimaryOutputKind>build</PrimaryOutputKind>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>

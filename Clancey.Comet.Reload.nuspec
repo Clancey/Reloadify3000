@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
+  <metadata>
+    <id>Clancey.Comet.Reload</id>
+    <version>0.0.20</version>
+    <title>Comet.Reload</title>
+    <authors>James Clancey</authors>
+    <owners>Clancey</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <license type="expression">MIT</license>
+    <licenseUrl>https://licenses.nuget.org/MIT</licenseUrl>
+    <projectUrl>https://github.com/Clancey/Reloadify3000</projectUrl>
+    <description>Hot Reload plugin for Comet</description>
+    <summary>Comet Hot Reload plugin, Just call Comet.Reload.Init() for debug builds.</summary>
+    <copyright>James Clancey</copyright>
+    <language>C#</language>
+    <repository type="git" url="https://github.com/Clancey/Reloadify3000" />
+    <dependencies>
+      <dependency id="Reloadify3000" version="1.0.8" />
+    </dependencies>
+    <frameworkAssemblies>
+      <frameworkAssembly assemblyName="Mono.CSharp" targetFramework="" />
+    </frameworkAssemblies>
+  </metadata>
+</package>
