@@ -8,6 +8,7 @@ using Microsoft.Maui.HotReload;
 using Esp.Resources;
 using System.Reflection;
 using Microsoft.Maui.Hosting;
+using Microsoft.Maui;
 
 [assembly: AssemblyMetadata("IsTrimmable", "True")]
 namespace Comet

@@ -1,10 +1,12 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>netstandard2.1</TargetFramework>
+    <TargetFrameworks>netstandard2.1;net6.0</TargetFrameworks>
+    <PackageId>Clancey.Comet.Reload</PackageId>
+	 <version>0.0.20</version>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Clancey.Comet" Version="0.3.80-beta" />
+    <PackageReference Include="Clancey.Comet" Version="0.3.417-beta" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Reloadify3000\Reloadify3000.csproj" />

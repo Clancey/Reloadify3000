@@ -1,6 +1,6 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.29025.244
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.31909.179
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "IDE", "IDE", "{6EA10C36-41FC-4FDF-B3F7-1F2828ABC896}"
 EndProject
@@ -36,7 +36,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Comet.Reload", "Comet.Reloa
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReloadifySample", "ReloadifySample\ReloadifySample.csproj", "{D6C3B8FD-348B-4630-8C8C-5746E2892EC4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Reloadify.CommandLine", "Reloadify.CommandLine\Reloadify.CommandLine.csproj", "{FA33C2C1-2663-40C7-88EE-CA8C31AB082E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Reloadify.CommandLine", "Reloadify.CommandLine\Reloadify.CommandLine.csproj", "{FA33C2C1-2663-40C7-88EE-CA8C31AB082E}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
@@ -45,6 +45,7 @@ Global
 		Reloadify.IDE\Reloadify.IDE.projitems*{4f101b9a-ef2c-47b6-b7e0-007fe8b97168}*SharedItemsImports = 13
 		Tests\Comet.Reload.Tests.Shared\Comet.Reload.Tests.Shared.projitems*{c6e7d0df-824b-4a57-9bc0-af7874e0e49b}*SharedItemsImports = 4
 		Tests\Comet.Reload.Tests.Shared\Comet.Reload.Tests.Shared.projitems*{d7b239b7-2883-4b53-8873-5a3dd82578ac}*SharedItemsImports = 13
+		Reloadify.IDE\Reloadify.IDE.projitems*{fa33c2c1-2663-40c7-88ee-ca8c31ab082e}*SharedItemsImports = 5
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
