@@ -164,6 +164,10 @@ namespace Reloadify {
 
 				var activeCompilation = await activeProject.GetCompilationAsync();
 
+				var usings = activeCompilation.SyntaxTrees.SelectMany(x=> x.GetRoot().DescendantNodes().OfType<UsingDirectiveSyntax>().Where(x=> x.GlobalKeyword.ValueText == "global")).Select(x=> x.ToString()).Distinct().ToList();
+
+
+				currentTrees["GlobalUsings"] = CSharpSyntaxTree.ParseText( string.Join(" ",usings), parseOptions);
 				var compilationDictionary = new Dictionary<string, MetadataReference>();
 				foreach (var r in compilation.References)
 					compilationDictionary[Path.GetFileName(r.Display)] = r;
