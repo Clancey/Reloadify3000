@@ -2,11 +2,11 @@
   <PropertyGroup>
     <TargetFrameworks>netstandard2.1;net6.0</TargetFrameworks>
     <PackageId>Clancey.Comet.Reload</PackageId>
-	 <version>0.0.20</version>
+	 <version>0.0.21</version>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Clancey.Comet" Version="0.3.417-beta" />
+    <PackageReference Include="Clancey.Comet" Version="0.3.423-beta" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Reloadify3000\Reloadify3000.csproj" />

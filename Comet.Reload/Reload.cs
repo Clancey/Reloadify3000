@@ -42,7 +42,7 @@ namespace Comet
 
 			public async void Initialize(IServiceProvider services)
 			{
-				var handlers = services.GetRequiredService<IMauiHandlersServiceProvider>();
+				var handlers = services.GetRequiredService<IMauiHandlersFactory>();
 
 				MauiHotReloadHelper.Init(handlers.GetCollection());
 
