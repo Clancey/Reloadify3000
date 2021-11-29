@@ -36,7 +36,13 @@ namespace Reloadify {
 		{
 			NamespaceDeclarationSyntax namespaceDeclaration;
 			TryGetParentSyntax (c, out namespaceDeclaration);
-			var theNameSpace = namespaceDeclaration?.Name?.ToString () ?? "";
+			var theNameSpace = namespaceDeclaration?.Name?.ToString();
+			if(namespaceDeclaration == null)
+			{
+				FileScopedNamespaceDeclarationSyntax fileNamespace;
+				TryGetParentSyntax (c, out fileNamespace);
+				theNameSpace = fileNamespace?.Name?.ToString() ?? "";
+			}
 			return (theNameSpace, c.Identifier.ToString ());
 		}
 	}

@@ -121,7 +121,16 @@ namespace Reloadify {
 					return;
 				StartingReload?.Invoke();
 				foreach (var f in foundTypes)
-					ReplaceType?.Invoke(f);
+				{
+					try
+					{
+						ReplaceType?.Invoke(f);
+					}
+					catch (Exception e)
+					{
+						Debug.WriteLine(e);
+					}
+				}
 				FinishedReload?.Invoke();
 				
 			} catch (Exception ex) {
