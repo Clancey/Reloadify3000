@@ -20,10 +20,10 @@ namespace Reloadify.CommandLine
 			var shouldShowHelp = false;
 
 			var options = new OptionSet {
-				{ "p|Platform=", "Platform ", x => platform = x },
-				{ "t|target=", "TargetFramework (net6.0-ios,net6.0-android) ", x => flavor = x },
-				{ "c|configuration=", "the number of times to repeat the greeting.", x => configuration = x },
-				{ "f|folder=", "Root folder for the solution", x=> rootFolder = x },
+				{ "p|Platform=", "Platform (AnyCPU, iPhone, iPhoneSimulator)", x => platform = x },
+				{ "t|target=", "TargetFramework (net6.0-ios,net6.0-android,net6.0-maccatalyst) ", x => flavor = x },
+				{ "c|configuration=", "Configuration (Debug, Release)", x => configuration = x },
+				{ "f|folder=", "Root folder for the solution (Defaults to the CSProj Folder)", x=> rootFolder = x },
 				{ "h|help", "show this message and exit", h => shouldShowHelp = h != null },
 			};
 
