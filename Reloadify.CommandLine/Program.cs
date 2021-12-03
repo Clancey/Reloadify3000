@@ -34,7 +34,7 @@ namespace Reloadify.CommandLine
 				// parse the command line
 				extra = options.Parse(args);
 				if (string.IsNullOrWhiteSpace(rootFolder) && !string.IsNullOrWhiteSpace(csProj))
-					rootFolder = Path.GetDirectoryName(csProj);
+					rootFolder = GetRootDirectory(csProj);
 			}
 			catch (OptionException e)
 			{
@@ -89,6 +89,19 @@ namespace Reloadify.CommandLine
 			{
 				IDE.Shared.Shutdown();
 			}
+		}
+		static string GetRootDirectory(string csProjPath){
+			try{
+				var root = Path.GetDirectoryName(csProjPath);
+				if(!string.IsNullOrWhiteSpace(root))
+					return root;
+
+			}
+			catch(Exception ex){
+				Console.WriteLine(ex.Message);
+			}
+			return Directory.GetCurrentDirectory();
+
 		}
 
 		private static void ShowHelp(OptionSet p)
