@@ -62,9 +62,9 @@ namespace Reloadify.CommandLine
 					RoslynCodeManager.Shared.ProjectFlavor = flavor;
 				}
 				await IDE.Shared.LoadProject(rootFolder, csProj, configuration, platform);
+				Console.WriteLine($"{flavor} - {configuration} - {platform}");
 				Console.WriteLine($"Activating HotReload");
 				Console.WriteLine($"Watching: {rootFolder}");
-				Console.WriteLine($"{csProj} - {configuration} - {platform}");
 				bool isHotReloading = await IDE.Shared.StartHotReload();
 				if (!isHotReloading)
 				{
