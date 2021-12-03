@@ -63,6 +63,8 @@ namespace Reloadify.CommandLine
 				}
 				await IDE.Shared.LoadProject(rootFolder, csProj, configuration, platform);
 				Console.WriteLine($"Activating HotReload");
+				Console.WriteLine($"Watching: {rootFolder}");
+				Console.WriteLine($"{csProj} - {configuration} - {platform}");
 				bool isHotReloading = await IDE.Shared.StartHotReload();
 				if (!isHotReloading)
 				{
