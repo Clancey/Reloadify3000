@@ -44,8 +44,8 @@ namespace Reloadify {
 		{
 			Project project = null;
 			if(!string.IsNullOrWhiteSpace(ProjectFlavor))
-				project = projects?.FirstOrDefault(x => x.FilePath == IDEManager.Shared.CurrentProjectPath && x.Name.Contains(ProjectFlavor));
-			return project ?? projects?.FirstOrDefault(x => x.FilePath == IDEManager.Shared.CurrentProjectPath);
+				project = projects?.FirstOrDefault(x => x.FilePath.EndsWith(IDEManager.Shared.CurrentProjectPath) && x.Name.Contains(ProjectFlavor));
+			return project ?? projects?.FirstOrDefault(x => x.FilePath.EndsWith(IDEManager.Shared.CurrentProjectPath));
 		}
 		Project CurrentActiveProject;
 		public void StopDebugging ()

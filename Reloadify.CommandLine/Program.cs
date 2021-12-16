@@ -79,15 +79,15 @@ namespace Reloadify.CommandLine
 
 				Console.WriteLine("Type exit, to quit");
 				await Task.Run(()=>{
-				while (true)
-				{
-					var shouldExit = Console.ReadLine() != "exit";
-					if (shouldExit)
+					while (true)
 					{
-						//Shutdown and return;
-						return;
+						var shouldExit = Console.ReadLine() != "exit";
+						if (shouldExit)
+						{
+							//Shutdown and return;
+							return;
+						}
 					}
-				}
 				});
 			}
 			finally
