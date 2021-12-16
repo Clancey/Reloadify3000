@@ -86,6 +86,7 @@ namespace Reloadify {
 			if (currentTrees.ContainsKey(path))
 				currentTrees.TryRemove(path, out var f);
 		}
+		public HashSet<string> NewFiles = new ();
 		LanguageVersion currentLanguageVersion = LanguageVersion.Default;
 		public async System.Threading.Tasks.Task<EvalRequestMessage> SearchForPartialClasses(string filePath, string fileContents,string projectPath, Microsoft.CodeAnalysis.Solution solution)
 		{
@@ -103,12 +104,14 @@ namespace Reloadify {
 				if(docs.Count == 0)
 					docs = referencedProjects?.SelectMany(x => x.Documents.Where(y => y?.FilePath?.EndsWith(filePath, StringComparison.OrdinalIgnoreCase) ?? false)).ToList();
 				var doc = docs.FirstOrDefault();
+				//"/Users/clancey/Projects/FashionPactPos/App/FashionPact/Views/Test2.cs"
+				//"/Users/clancey/Projects/FashionPactPos/App/FashionPact/Views/Test2.cs"
 				//This doc is not part of the current running solution, lets not send it over
-				if (doc == null){
+				if (doc == null && !NewFiles.Any(x=> x.EndsWith(filePath, StringComparison.OrdinalIgnoreCase))){
 					Console.WriteLine("The doc was not found in part of a project. Ignoring");
 					return null;
 				}
-
+				
 				//On windows sometimes its a file path...
 				var assemblies = projects.Where(x=> !x.AssemblyName.Contains(x.FilePath)).Select(x => x.AssemblyName).Distinct();
 				
@@ -118,11 +121,11 @@ namespace Reloadify {
 				{
 					filePath
 				};
-				var model = await doc.GetSemanticModelAsync();
-				
-				var compilation = model.Compilation;
-				var oldSyntaxTree = compilation.SyntaxTrees.FirstOrDefault(X => X.FilePath.EndsWith(filePath, StringComparison.OrdinalIgnoreCase));
-				var parseOptions = (CSharpParseOptions)oldSyntaxTree.Options;
+				var model = await (doc?.GetSemanticModelAsync() ?? Task.FromResult<SemanticModel>(null));
+
+				var compilation = model?.Compilation;
+				var oldSyntaxTree = compilation?.SyntaxTrees.FirstOrDefault(X => X.FilePath.EndsWith(filePath, StringComparison.OrdinalIgnoreCase));
+				var parseOptions = (CSharpParseOptions)(oldSyntaxTree?.Options ?? activeProject.ParseOptions);
 				//parseOptions.WithLanguageVersion(LanguageVersion.Preview)
 				//Always use the highest version
 				currentLanguageVersion = (LanguageVersion)Math.Max((int)currentLanguageVersion, (int)parseOptions.LanguageVersion);
@@ -151,9 +154,9 @@ namespace Reloadify {
 				currentTrees["Relodify-Emit-AssemblyVersion"] = CSharpSyntaxTree.ParseText($"[assembly: System.Reflection.AssemblyVersionAttribute(\"1.0.{assemblyVersion}\")]", parseOptions);
 				foreach (var c in partialClasses)
 				{
-					var symbols = compilation.GetSymbolsWithName(c.ClassName).ToList();// c.NameSpace == null ? c.ClassName : $"{c.NameSpace}.{c.ClassName}").ToList();
+					var symbols = compilation?.GetSymbolsWithName(c.ClassName).ToList();// c.NameSpace == null ? c.ClassName : $"{c.NameSpace}.{c.ClassName}").ToList();
 					
-					var symbol = symbols.FirstOrDefault();
+					var symbol = symbols?.FirstOrDefault();
 					var trees = symbol?.DeclaringSyntaxReferences.Where(x => !x.SyntaxTree.FilePath.EndsWith(filePath, StringComparison.OrdinalIgnoreCase)).ToList();
 					
 					await trees?.ForEachAsync(1, (tree) => Task.Run(() =>
@@ -179,6 +182,7 @@ namespace Reloadify {
 
 				currentTrees["GlobalUsings"] = CSharpSyntaxTree.ParseText( string.Join(" ",usings), parseOptions);
 				var compilationDictionary = new Dictionary<string, MetadataReference>();
+				if(compilation != null)
 				foreach (var r in compilation.References)
 					compilationDictionary[Path.GetFileName(r.Display)] = r;
 

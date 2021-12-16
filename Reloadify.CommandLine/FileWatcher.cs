@@ -37,10 +37,7 @@ namespace Reloadify.CommandLine
 
 		void FileWatcher_Deleted(object sender, FileSystemEventArgs e) => RoslynCodeManager.Shared.Delete(e.FullPath);
 
-		private void FileWatcher_Created(object sender, FileSystemEventArgs e)
-		{
-			//Lets ignore created for now. IT won't have any code worth dealing with until its saved anyways
-		}
+		void FileWatcher_Created(object sender, FileSystemEventArgs e) => RoslynCodeManager.Shared.NewFiles.Add(e.FullPath);
 
 		List<string> currentfiles = new();
 		Timer searchTimer;
