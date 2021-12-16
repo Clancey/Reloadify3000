@@ -24,6 +24,8 @@ namespace Reloadify {
 			if (project.Name == "Reloadify.VS" || project.Name == "Reloadify.VSMac" || project.Name == "Reloadify.CommandLine")
 				return false;
 			var shouldRun = (await SymbolFinder.FindDeclarationsAsync(project, "Reloadify", true)).Any();
+			if(!shouldRun)
+				shouldRun = (await SymbolFinder.FindDeclarationsAsync(project, "Comet.Reload", true)).Any();
 			return shouldRun;
 		}
 		public void StartDebugging ()
@@ -91,8 +93,8 @@ namespace Reloadify {
 			{
 				var projects = solution.Projects.ToList();
 				var activeProject = GetActiveProject(projects);
-				var references = activeProject.ProjectReferences.Select(x=> x.ProjectId).ToList();
-				var referencedProjects = projects.Where(x => references.Any(y => y == x.Id)).ToList();
+				var references = activeProject?.ProjectReferences?.Select(x=> x.ProjectId).ToList();
+				var referencedProjects = projects.Where(x => references?.Any(y => y == x.Id) ?? false).ToList();
 				var docs = activeProject.Documents.Where(x => string.Equals(x.FilePath ,filePath, StringComparison.OrdinalIgnoreCase)).ToList();
 				if(docs.Count == 0)
 					docs = referencedProjects?.SelectMany(x => x.Documents.Where(y => string.Equals(y.FilePath, filePath, StringComparison.OrdinalIgnoreCase))).ToList();

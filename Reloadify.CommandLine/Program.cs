@@ -57,6 +57,7 @@ namespace Reloadify.CommandLine
 			}
 			try
 			{
+				flavor = cleanseTarget(flavor);
 				if (!string.IsNullOrWhiteSpace(flavor))
 				{
 					RoslynCodeManager.Shared.ProjectFlavor = flavor;
@@ -77,6 +78,7 @@ namespace Reloadify.CommandLine
 				}
 
 				Console.WriteLine("Type exit, to quit");
+				await Task.Run(()=>{
 				while (true)
 				{
 					var shouldExit = Console.ReadLine() != "exit";
@@ -86,11 +88,27 @@ namespace Reloadify.CommandLine
 						return;
 					}
 				}
+				});
 			}
 			finally
 			{
 				IDE.Shared.Shutdown();
 			}
+		}
+		static string cleanseTarget(string target)
+		{
+			if (target.StartsWith("ios", StringComparison.InvariantCultureIgnoreCase)) { 
+				return "net6.0-ios";
+			}
+			if (target.StartsWith("mac", StringComparison.InvariantCultureIgnoreCase))
+			{
+				return "net6.0-maccatalyst";
+			}
+			if (target.StartsWith("android", StringComparison.InvariantCultureIgnoreCase))
+			{
+				return "net6.0-android";
+			}
+			return target;
 		}
 		static string GetRootDirectory(string csProjPath){
 			try{
@@ -108,7 +126,7 @@ namespace Reloadify.CommandLine
 
 		private static void ShowHelp(OptionSet p)
 		{
-			Console.WriteLine("Usage: dotnet run Reloadify.dll <Project> [OPTIONS] ");
+			Console.WriteLine("Usage: reloadify <Project> [OPTIONS] ");
 			Console.WriteLine();
 			Console.WriteLine("Options:");
 			p.WriteOptionDescriptions(Console.Out);
