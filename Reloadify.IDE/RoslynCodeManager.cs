@@ -99,13 +99,15 @@ namespace Reloadify {
 				}
 				var references = activeProject.ProjectReferences?.Select(x=> x.ProjectId).ToList();
 				var referencedProjects = projects.Where(x => references?.Any(y => y == x.Id) ?? false).ToList();
-				var docs = activeProject.Documents.Where(x => string.Equals(x.FilePath ,filePath, StringComparison.OrdinalIgnoreCase)).ToList();
+				var docs = activeProject.Documents.Where(x => x?.FilePath?.EndsWith(filePath, StringComparison.OrdinalIgnoreCase) ?? false).ToList();
 				if(docs.Count == 0)
-					docs = referencedProjects?.SelectMany(x => x.Documents.Where(y => string.Equals(y.FilePath, filePath, StringComparison.OrdinalIgnoreCase))).ToList();
+					docs = referencedProjects?.SelectMany(x => x.Documents.Where(y => y?.FilePath?.EndsWith(filePath, StringComparison.OrdinalIgnoreCase) ?? false)).ToList();
 				var doc = docs.FirstOrDefault();
 				//This doc is not part of the current running solution, lets not send it over
-				if (doc == null)
+				if (doc == null){
+					Console.WriteLine("The doc was not found in part of a project. Ignoring");
 					return null;
+				}
 
 				//On windows sometimes its a file path...
 				var assemblies = projects.Where(x=> !x.AssemblyName.Contains(x.FilePath)).Select(x => x.AssemblyName).Distinct();
@@ -119,7 +121,7 @@ namespace Reloadify {
 				var model = await doc.GetSemanticModelAsync();
 				
 				var compilation = model.Compilation;
-				var oldSyntaxTree = compilation.SyntaxTrees.FirstOrDefault(X => string.Equals(X.FilePath, filePath, StringComparison.OrdinalIgnoreCase));
+				var oldSyntaxTree = compilation.SyntaxTrees.FirstOrDefault(X => X.FilePath.EndsWith(filePath, StringComparison.OrdinalIgnoreCase));
 				var parseOptions = (CSharpParseOptions)oldSyntaxTree.Options;
 				//parseOptions.WithLanguageVersion(LanguageVersion.Preview)
 				//Always use the highest version
@@ -136,8 +138,10 @@ namespace Reloadify {
 				var collector = new ClassCollector();
 				collector.Visit(root);
 				var classes = collector.Classes.Select(x => x.GetClassNameWithNamespace()).ToList();
-				if (classes.Count == 0)
+				if (classes.Count == 0){
+					Console.WriteLine("No classes found in the file");
 					return null;
+				}
 				var partialClasses = collector.PartialClasses.Select(x => x.GetClassNameWithNamespace()).ToList();
 
 				currentTrees[filePath] = syntaxTree;
@@ -150,7 +154,7 @@ namespace Reloadify {
 					var symbols = compilation.GetSymbolsWithName(c.ClassName).ToList();// c.NameSpace == null ? c.ClassName : $"{c.NameSpace}.{c.ClassName}").ToList();
 					
 					var symbol = symbols.FirstOrDefault();
-					var trees = symbol?.DeclaringSyntaxReferences.Where(x => !string.Equals(x.SyntaxTree.FilePath, filePath, StringComparison.OrdinalIgnoreCase)).ToList();
+					var trees = symbol?.DeclaringSyntaxReferences.Where(x => !x.SyntaxTree.FilePath.EndsWith(filePath, StringComparison.OrdinalIgnoreCase)).ToList();
 					
 					await trees?.ForEachAsync(1, (tree) => Task.Run(() =>
 					{

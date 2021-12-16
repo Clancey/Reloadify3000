@@ -69,11 +69,11 @@ namespace Reloadify {
 			if (currentFiles.TryGetValue (e.Filename, out var oldFile) && oldFile == e.Text) {
 				return;
 			}
-			Log?.Invoke($"Hot Reloading: {e.Filename}");
 			currentFiles [e.Filename] = e.Text;
 			var response = await RoslynCodeManager.Shared.SearchForPartialClasses(e.Filename, e.Text, CurrentProjectPath, Solution);
 			if (response != null)
 			{
+				Log?.Invoke($"Hot Reloading: {e.Filename}");
 				Log?.Invoke("Sending Data to the client");
 				await server.Send(response);
 			}
