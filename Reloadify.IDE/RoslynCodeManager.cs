@@ -93,7 +93,11 @@ namespace Reloadify {
 			{
 				var projects = solution.Projects.ToList();
 				var activeProject = GetActiveProject(projects);
-				var references = activeProject?.ProjectReferences?.Select(x=> x.ProjectId).ToList();
+				if (activeProject == null){
+					Console.WriteLine("Error: There is no active Projects");
+					return null;
+				}
+				var references = activeProject.ProjectReferences?.Select(x=> x.ProjectId).ToList();
 				var referencedProjects = projects.Where(x => references?.Any(y => y == x.Id) ?? false).ToList();
 				var docs = activeProject.Documents.Where(x => string.Equals(x.FilePath ,filePath, StringComparison.OrdinalIgnoreCase)).ToList();
 				if(docs.Count == 0)
