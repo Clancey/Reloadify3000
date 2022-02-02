@@ -19,7 +19,11 @@ namespace Reloadify.CommandLine
 				Filter = "*.cs",
 				IncludeSubdirectories = true,
 			};
-			fileWatcher.Changed += FileWatcher_Changed;
+			
+			// Visual Studio (on Windows) renames files before "saveing" which causes the "file change" not fire
+			// this NotifyFilter remedies that
+            fileWatcher.NotifyFilter = NotifyFilters.CreationTime;
+            fileWatcher.Changed += FileWatcher_Changed;
 			fileWatcher.Created += FileWatcher_Created;
 			fileWatcher.Deleted += FileWatcher_Deleted;
 			fileWatcher.Renamed += FileWatcher_Renamed;
@@ -31,8 +35,15 @@ namespace Reloadify.CommandLine
 		void FileWatcher_Error(object sender, ErrorEventArgs e) =>
 			PrintException(e.GetException());
 
-		void FileWatcher_Renamed(object sender, RenamedEventArgs e) =>
+		void FileWatcher_Renamed(object sender, RenamedEventArgs e)
+		{
+			// Visual Studio (on Windows) makes this fire on files not ending with ".cs" even though we have specified that in the FileSystemWatcher
+			// ignore all others file types
+			if (!e.Name.EndsWith(".cs", StringComparison.Ordinal))
+				return;
+
 			RoslynCodeManager.Shared.Rename(e.OldFullPath, e.FullPath);
+		}
 
 
 		void FileWatcher_Deleted(object sender, FileSystemEventArgs e) => RoslynCodeManager.Shared.Delete(e.FullPath);
