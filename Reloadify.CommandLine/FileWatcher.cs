@@ -20,10 +20,10 @@ namespace Reloadify.CommandLine
 				IncludeSubdirectories = true,
 			};
 			
-			// Visual Studio (on Windows) renames files before "saveing" which causes the "file change" not fire
+			// Visual Studio (on Windows) renames files before "saving" which causes the "file change" not fire
 			// this NotifyFilter remedies that
-            fileWatcher.NotifyFilter = NotifyFilters.CreationTime;
-            fileWatcher.Changed += FileWatcher_Changed;
+			fileWatcher.NotifyFilter = NotifyFilters.CreationTime;
+			fileWatcher.Changed += FileWatcher_Changed;
 			fileWatcher.Created += FileWatcher_Created;
 			fileWatcher.Deleted += FileWatcher_Deleted;
 			fileWatcher.Renamed += FileWatcher_Renamed;
