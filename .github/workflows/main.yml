@@ -25,21 +25,14 @@ jobs:
           Invoke-WebRequest -Uri "https://dot.net/v1/dotnet-install.ps1" -OutFile dotnet-install.ps1
           & .\dotnet-install.ps1 -InstallDir "$env:ProgramFiles\dotnet\" -Verbose -Channel STS
           & dotnet --list-sdks    
-              
-      # - name: Install Visual Studio Preview
-      #   shell: pwsh
-      #   run: powershell .\build\install-vs.ps1
-      
-      - name: Add msbuild to PATH
-        uses: microsoft/setup-msbuild@v1.1
-        with:
-          vs-prerelease: true
-     
-      - name: Restore Reloadify.sln
-        run: msbuild /r Reloadify.sln
- 
-      - name: Build Reloadify.sln
-        run: MSBuild Reloadify.sln
+    
+      - name: Build Comet.Reload
+        run: dotnet build /r /p:Configuration=Debug Comet.Reload/Comet.Reload.csproj
+        
+      - name: Build Reloadify3000
+        run: |
+          dotnet build /r /p:Configuration=Debug Reloadify3000/Reloadify3000.csproj  
+          dotnet msbuild /r /p:Configuration=Debug Reloadify3000.Build/Reloadify3000.Build.Tasks.csproj
         
       - name: Nuget Pack step
         shell: bash
