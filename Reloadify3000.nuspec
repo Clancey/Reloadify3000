@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
   <metadata>
     <id>Reloadify3000</id>
-    <version>1.0.7</version>
+    <version>1.0.9</version>
     <title>Reloadify3000</title>
     <authors>James Clancey</authors>
     <owners>Clancey</owners>
@@ -16,6 +16,7 @@
     <language>C#</language>
     <dependencies>
         <dependency id="Newtonsoft.Json" version="13.0.1" />
+        <dependency id="Mono.Cecil" version="0.11.4" />
     </dependencies>
     <frameworkAssemblies>
       <frameworkAssembly assemblyName="Mono.CSharp"/>
@@ -30,8 +31,7 @@
     <file src="Reloadify3000/bin/Debug/netstandard2.0/Esp.pdb" target="lib/netstandard2.0/Esp.pdb" />
     <file src="Reloadify3000/bin/Debug/netstandard2.0/Esp.Resources.dll" target="lib/netstandard2.0/Esp.Resources.dll" />
     <file src="Reloadify3000/bin/Debug/netstandard2.0/Esp.Resources.pdb" target="lib/netstandard2.0/Esp.Resources.pdb" />
-    <file src="Reloadify3000.Build/bin/Debug/Reloadify3000.Build.Tasks.dll" target="build/Reloadify3000.Build.Tasks.dll" />
+    <file src="Reloadify3000.Build/bin/Debug/netstandard2.0/Reloadify3000.Build.Tasks.dll" target="build/Reloadify3000.Build.Tasks.dll" />
     <file src="Reloadify3000.Build/Reloadify3000.targets" target="build/Reloadify3000.targets" />
-    <file src="Reloadify3000.Build/bin/Debug/Mono.Cecil.dll" target="build/Mono.Cecil.dll" />
   </files>
 </package>
