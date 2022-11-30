@@ -1,0 +1,63 @@
+name: main-build
+
+#this drops to nuget
+
+on:
+  push:
+
+  workflow_dispatch:
+  
+jobs:
+  build:
+    name: Build Reloadify3000
+    env:
+        NUPKG_MAJOR: 0.2
+        BASE: 334
+    runs-on: windows-2022
+
+    steps: 
+      - uses: actions/checkout@v2
+          
+      - name:  install .NET 
+        shell: pwsh
+        run: |
+          $ProgressPreference = 'SilentlyContinue'
+          Invoke-WebRequest -Uri "https://dot.net/v1/dotnet-install.ps1" -OutFile dotnet-install.ps1
+          & .\dotnet-install.ps1 -InstallDir "$env:ProgramFiles\dotnet\" -Verbose -Channel STS
+          & dotnet --list-sdks    
+              
+      # - name: Install Visual Studio Preview
+      #   shell: pwsh
+      #   run: powershell .\build\install-vs.ps1
+      
+      - name: Add msbuild to PATH
+        uses: microsoft/setup-msbuild@v1.1
+        with:
+          vs-prerelease: true
+     
+      - name: Restore Reloadify.sln
+        run: msbuild /r Reloadify.sln
+ 
+      - name: Build Reloadify.sln
+        run: MSBuild Reloadify.sln
+        
+      - name: Nuget Pack step
+        shell: bash
+        run: |
+          MINOR_VERSION=$(( $BASE + $GITHUB_RUN_NUMBER ))
+          VERSION=0.3.$MINOR_VERSION-beta
+          echo "PACKAGE VERSION: $VERSION"
+          nuget pack Reloadify3000.nuspec -version $VERSION -Symbols -SymbolPackageFormat snupkg
+          nuget pack Clancey.Comet.Reload.nuspec -version $VERSION -Symbols -SymbolPackageFormat snupkg
+
+
+      - uses: actions/upload-artifact@v2
+        name: Upload Nuget Artifact
+        with:
+          name: nuget-artifact
+          path: |
+            **\*.nupkg
+            **\*.snupkg
+            **\*.symbols.nupkg
+  
+ 
