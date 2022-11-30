@@ -11,7 +11,7 @@ jobs:
   build:
     name: Build Reloadify3000
     env:
-      NUPKG_MAJOR: 1.0
+      NUPKG_MAJOR: 1.0.
       BASE: 8
     runs-on: windows-2022
 
@@ -35,7 +35,7 @@ jobs:
         shell: bash
         run: |
           MINOR_VERSION=$(( $BASE + $GITHUB_RUN_NUMBER ))
-          VERSION=$NUPKG_MAJOR.$MINOR_VERSION-beta
+          VERSION=$NUPKG_MAJOR$MINOR_VERSION-beta
           echo "PACKAGE VERSION: $VERSION"
           nuget pack Reloadify3000.nuspec -version $VERSION -Symbols -SymbolPackageFormat snupkg
 
