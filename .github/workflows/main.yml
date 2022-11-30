@@ -6,34 +6,34 @@ on:
   push:
 
   workflow_dispatch:
-  
+
 jobs:
   build:
     name: Build Reloadify3000
     env:
-        NUPKG_MAJOR: 0.2
-        BASE: 334
+      NUPKG_MAJOR: 0.2
+      BASE: 334
     runs-on: windows-2022
 
-    steps: 
+    steps:
       - uses: actions/checkout@v2
-          
-      - name:  install .NET 
+
+      - name: install .NET
         shell: pwsh
         run: |
           $ProgressPreference = 'SilentlyContinue'
           Invoke-WebRequest -Uri "https://dot.net/v1/dotnet-install.ps1" -OutFile dotnet-install.ps1
           & .\dotnet-install.ps1 -InstallDir "$env:ProgramFiles\dotnet\" -Verbose -Channel STS
-          & dotnet --list-sdks    
-    
+          & dotnet --list-sdks
+
       - name: Build Comet.Reload
         run: dotnet build /r /p:Configuration=Debug Comet.Reload/Comet.Reload.csproj
-        
+
       - name: Build Reloadify3000
         run: |
           dotnet build /r /p:Configuration=Debug Reloadify3000/Reloadify3000.csproj  
           dotnet msbuild /r /p:Configuration=Debug Reloadify3000.Build/Reloadify3000.Build.Tasks.csproj
-        
+
       - name: Nuget Pack step
         shell: bash
         run: |
@@ -43,7 +43,6 @@ jobs:
           nuget pack Reloadify3000.nuspec -version $VERSION -Symbols -SymbolPackageFormat snupkg
           nuget pack Clancey.Comet.Reload.nuspec -version $VERSION -Symbols -SymbolPackageFormat snupkg
 
-
       - uses: actions/upload-artifact@v2
         name: Upload Nuget Artifact
         with:
@@ -52,5 +51,3 @@ jobs:
             **\*.nupkg
             **\*.snupkg
             **\*.symbols.nupkg
-  
- 
