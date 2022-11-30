@@ -11,8 +11,8 @@ jobs:
   build:
     name: Build Reloadify3000
     env:
-      NUPKG_MAJOR: 0.2
-      BASE: 334
+      NUPKG_MAJOR: 1.0
+      BASE: 8
     runs-on: windows-2022
 
     steps:
@@ -26,9 +26,6 @@ jobs:
           & .\dotnet-install.ps1 -InstallDir "$env:ProgramFiles\dotnet\" -Verbose -Channel STS
           & dotnet --list-sdks
 
-      - name: Build Comet.Reload
-        run: dotnet build /r /p:Configuration=Debug Comet.Reload/Comet.Reload.csproj
-
       - name: Build Reloadify3000
         run: |
           dotnet build /r /p:Configuration=Debug Reloadify3000/Reloadify3000.csproj  
@@ -38,10 +35,9 @@ jobs:
         shell: bash
         run: |
           MINOR_VERSION=$(( $BASE + $GITHUB_RUN_NUMBER ))
-          VERSION=0.3.$MINOR_VERSION-beta
+          VERSION=$NUPKG_MAJOR.$MINOR_VERSION-beta
           echo "PACKAGE VERSION: $VERSION"
           nuget pack Reloadify3000.nuspec -version $VERSION -Symbols -SymbolPackageFormat snupkg
-          nuget pack Clancey.Comet.Reload.nuspec -version $VERSION -Symbols -SymbolPackageFormat snupkg
 
       - uses: actions/upload-artifact@v2
         name: Upload Nuget Artifact
