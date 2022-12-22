@@ -28,6 +28,7 @@ namespace Reloadify {
 				shouldRun = (await SymbolFinder.FindDeclarationsAsync(project, "Comet.Reload", true)).Any();
 			return shouldRun;
 		}
+		bool isUnity = false;
 		public void StartDebugging ()
 		{
 			var projects = IDEManager.Shared.Solution.Projects.ToList();
@@ -58,7 +59,9 @@ namespace Reloadify {
 		void CleanupFiles()
 		{
 			try
-			{ 
+			{
+				if (string.IsNullOrWhiteSpace(CurrentActiveProject?.OutputFilePath))
+					return;
 				var outputDirectory = Path.GetDirectoryName(CurrentActiveProject.OutputFilePath);
 				var oldFiles = Directory.GetFiles(outputDirectory, $"{tempDllName}*").ToList();
 				foreach (var f in oldFiles)
@@ -192,7 +195,8 @@ namespace Reloadify {
 				}
 				var activeReferences = activeCompilation.References.OrderBy(x => x.Display).ToList();
 				var compileReferences = compilationDictionary.Values.ToList();
-				compileReferences.Add(MetadataReference.CreateFromFile(activeProject.OutputFilePath));
+				var isUnity = activeProject.AnalyzerReferences.Any(x => x.Display == "Microsoft.Unity.Analyzers");
+				compileReferences.Add(CreateMetaReference(activeProject.OutputFilePath,isUnity));
 
 				//This allows you to compile using private references
 				var compilationOptions = new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary).WithMetadataImportOptions(MetadataImportOptions.All);
@@ -261,5 +265,18 @@ namespace Reloadify {
 			return null;
 		}
 
-	}
+		static MetadataReference CreateMetaReference(string filePath, bool isUnity)
+        {
+			var foundFilePath = filePath;
+			if (!File.Exists(filePath) && !isUnity)
+			{
+				var filename = Path.GetFileName(filePath);
+				var libFilePath = filePath.Substring(0,filePath.IndexOf("Temp"));
+				libFilePath = Path.Combine(libFilePath,"Library", "ScriptAssemblies", filename);
+				foundFilePath = libFilePath;
+			}
+			return MetadataReference.CreateFromFile(foundFilePath);
+        }
+
+    }
 }

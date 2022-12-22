@@ -13,7 +13,7 @@ namespace Reloadify.CommandLine
 		static async Task Main(string[] args)
 		{
 			string platform = "AnyCPU";
-			string flavor = "net7.0-ios";
+			string flavor = "";// "net7.0-ios";
 			string configuration = "Debug";
 			string rootFolder = "";
 			string csProj = args.FirstOrDefault();

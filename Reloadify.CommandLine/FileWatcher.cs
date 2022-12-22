@@ -22,7 +22,7 @@ namespace Reloadify.CommandLine
 			
 			// Visual Studio (on Windows) renames files before "saving" which causes the "file change" not fire
 			// this NotifyFilter remedies that
-			fileWatcher.NotifyFilter = NotifyFilters.CreationTime;
+			fileWatcher.NotifyFilter = NotifyFilters.CreationTime | NotifyFilters.LastWrite;
 			fileWatcher.Changed += FileWatcher_Changed;
 			fileWatcher.Created += FileWatcher_Created;
 			fileWatcher.Deleted += FileWatcher_Deleted;
