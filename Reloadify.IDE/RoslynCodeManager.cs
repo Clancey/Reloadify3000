@@ -217,7 +217,7 @@ namespace Reloadify {
 					}
 				}
 
-				var newCompilation = CSharpCompilation.Create(tempDllName, syntaxTrees: currentTrees.Values, references: compileReferences, options: compilationOptions);
+				var newCompilation = CSharpCompilation.Create($"{tempDllName}-{assemblyVersion}", syntaxTrees: currentTrees.Values, references: compileReferences, options: compilationOptions);
 				var dllPath = Path.Combine(outputDirectory, $"{newAssemblyName}.dll");
 				var pdbPath = Path.Combine(outputDirectory, $"{newAssemblyName}.pdb");
 
