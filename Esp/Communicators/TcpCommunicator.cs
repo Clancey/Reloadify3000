@@ -20,7 +20,7 @@ namespace Esp {
 		int serverPort;
 		TcpListener listener;
 
-		public event EventHandler ClientConnected;
+		public event EventHandler<ClientConnectedEventArgs> ClientConnected;
 
 		public int ClientsCount => clients.Count;
 
@@ -59,11 +59,28 @@ namespace Esp {
 					await SendToClient (client, GetBytesForObject (new ConnectMessage { ClientId = guid.ToString () }));
 				});
 				Debug.WriteLine ($"New client connection: {guid}");
-				ClientConnected?.Invoke (this, null);
+				ClientConnected?.Invoke (this, new ClientConnectedEventArgs { ClientId = guid});
 			}
 		}
 
-		public void StopListening ()
+		public async Task<bool> SendToClient<T>(Guid clientId,T obj)
+        {
+			try
+			{
+				var client = clients[clientId].Item1;
+				byte[] bytesToSend = GetBytesForObject(obj);
+				await client.GetStream().WriteAsync(bytesToSend, 0, bytesToSend.Length);
+				return true;
+			}
+			catch(Exception ex)
+            {
+				Console.WriteLine(ex);
+				return false;
+            }
+        }
+
+
+        public void StopListening ()
 		{
 			foreach (var client in clients) {
 				client.Value.Item1.Close ();

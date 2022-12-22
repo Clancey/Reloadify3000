@@ -10,7 +10,7 @@ namespace Esp {
 		Action<object> DataReceived { get; set; }
 
 		Task<bool> Send<T>(T obj);
-	}
+    }
 
 	public interface ICommunicatorClient : ICommunicator {
 		Task<(bool success, ICommunicatorClient client)> Connect (CancellationToken cancellationToken);
@@ -22,10 +22,17 @@ namespace Esp {
 		Task<bool> Connect (string ip, int port);
 	}
 
-	public interface ITcpCommunicatorServer : ICommunicator {
-		event EventHandler ClientConnected;
+	public class ClientConnectedEventArgs : EventArgs
+	{
+		public Guid ClientId { get; set; }
+	}
 
-		int ClientsCount { get; }
+	public interface ITcpCommunicatorServer : ICommunicator {
+		event EventHandler<ClientConnectedEventArgs> ClientConnected;
+
+        Task<bool> SendToClient<T>(Guid clientId, T obj);
+
+        int ClientsCount { get; }
 
 		Task<bool> StartListening (int serverPort);
 
