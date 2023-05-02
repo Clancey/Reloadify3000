@@ -16,7 +16,7 @@ namespace Reloadify {
 		public static IDEManager Shared { get; set; } = new IDEManager ();
 		public Action<IEnumerable<Diagnostic>> OnErrors { get; set; }
 
-		public Action<string> Log { get; set; }
+		public Action<string> LogAction { get; set; }
 
         TcpCommunicatorServer server;
 		IDEManager ()
@@ -28,7 +28,7 @@ namespace Reloadify {
 
 		private async void Server_ClientConnected(object sender, ClientConnectedEventArgs e)
 		{
-			Log?.Invoke("Client Connected");
+			Log("Client Connected");
 			await Task.Delay(1000);
 			foreach(var message in currentMessages)
             {
@@ -79,8 +79,8 @@ namespace Reloadify {
 			var response = await RoslynCodeManager.Shared.SearchForPartialClasses(e.Filename, e.Text, CurrentProjectPath, Solution);
 			if (response != null)
 			{
-				Log?.Invoke($"Hot Reloading: {e.Filename}");
-				Log?.Invoke("Sending Data to the client");
+				Log($"Hot Reloading: {e.Filename}");
+				Log("Sending Data to the client");
 				currentMessages.Add(response);
                 await server.Send(response);
 			}
@@ -101,11 +101,11 @@ namespace Reloadify {
 			{
 				RoslynCodeManager.Shared.StartDebugging();
 				await server.StartListening(port);
-				Log?.Invoke("Listening for clients");
+				Log("Listening for clients");
 			}
 			catch(Exception ex)
 			{
-				Log?.Invoke($"Error starting server: {ex}");
+				Log($"Error starting server: {ex}");
 			}
 		}
 		public void StopMonitoring ()
@@ -113,7 +113,12 @@ namespace Reloadify {
 			server.StopListening ();
 			currentFiles.Clear ();
 			RoslynCodeManager.Shared.StopDebugging();
-			Log?.Invoke("Server Shutdown");
+			Log("Server Shutdown");
+		}
+
+		public void Log(string log)
+		{
+			LogAction?.Invoke(log);
 		}
 	}
 }
