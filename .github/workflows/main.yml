@@ -8,12 +8,12 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
-    name: Build Reloadify3000
+  buildOnWindows:
+    name: Build on Windows
     env:
       NUPKG_MAJOR: 1.0.
       BASE: 8
-    runs-on: macos-latest
+    runs-on: windows-latest
 
     steps:
       - uses: actions/checkout@v2
@@ -40,6 +40,12 @@ jobs:
             **/*.snupkg
             **/*.symbols.nupkg
 
+  buildOnMac:
+    name: Build on Mac
+    runs-on: macos-latest
+
+    steps:
+      - uses: actions/checkout@v2
       - name: Build and pack VSMac extension
         run: |
           dotnet build /r /p:Configuration=Debug Reloadify3000/Reloadify3000.csproj  
@@ -51,4 +57,3 @@ jobs:
           name: VSMac-extension
           path: |
             **/*.mpack
-
