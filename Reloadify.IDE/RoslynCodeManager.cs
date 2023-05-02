@@ -232,9 +232,9 @@ namespace Reloadify {
 					foreach (Diagnostic diagnostic in failures)
 					{
 						var span = diagnostic.Location.GetLineSpan();
-						IDEManager.Shared.Log?.Invoke($"{diagnostic.Severity}: {diagnostic.Location.SourceTree.FilePath}");
-						IDEManager.Shared.Log?.Invoke($"\t Line: {span.StartLinePosition.Line} - {span.StartLinePosition.Character}");
-						IDEManager.Shared.Log?.Invoke($"\t{diagnostic.Id}: {diagnostic.GetMessage()}");
+						IDEManager.Shared.Log($"{diagnostic.Severity}: {diagnostic.Location.SourceTree.FilePath}");
+						IDEManager.Shared.Log($"\t Line: {span.StartLinePosition.Line} - {span.StartLinePosition.Character}");
+						IDEManager.Shared.Log($"\t{diagnostic.Id}: {diagnostic.GetMessage()}");
 					}
 				}
 				else
@@ -255,7 +255,7 @@ namespace Reloadify {
 			}
 			catch(Exception ex)
 			{
-				IDEManager.Shared.Log?.Invoke(ex.Message);
+				IDEManager.Shared.Log(ex.Message);
 				Console.WriteLine(ex);
 			}
 			return null;

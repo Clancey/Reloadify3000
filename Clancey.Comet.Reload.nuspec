@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
   <metadata>
     <id>Clancey.Comet.Reload</id>
-    <version>0.0.21</version>
+    <version>0.0.22</version>
     <title>Comet.Reload</title>
     <authors>James Clancey</authors>
     <owners>Clancey</owners>
@@ -16,13 +16,15 @@
     <language>C#</language>
     <repository type="git" url="https://github.com/Clancey/Reloadify3000" />
     <dependencies>
-      <dependency id="Reloadify3000" version="1.0.8" />
+      <dependency id="Reloadify3000" version="1.0.9" />
       <dependency id="Clancey.Comet" version="0.3.423-beta" />
     </dependencies>
   </metadata>
    <files>
     <file src="Comet.Reload/bin/Debug/netstandard2.1/Comet.Reload.dll" target="lib/netstandard2.1/Comet.Reload.dll" />
     <file src="Comet.Reload/bin/Debug/netstandard2.1/Comet.Reload.pdb" target="lib/netstandard2.1/Comet.Reload.pdb" />
+    <file src="Comet.Reload/bin/Debug/net6.0/Comet.Reload.dll" target="lib/net6.0/Comet.Reload.dll" />
+    <file src="Comet.Reload/bin/Debug/net6.0/Comet.Reload.pdb" target="lib/net6.0/Comet.Reload.pdb" />
     <file src="Comet.Reload/bin/Debug/net7.0/Comet.Reload.dll" target="lib/net7.0/Comet.Reload.dll" />
     <file src="Comet.Reload/bin/Debug/net7.0/Comet.Reload.pdb" target="lib/net7.0/Comet.Reload.pdb" />
   </files>

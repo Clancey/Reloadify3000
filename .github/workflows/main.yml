@@ -8,26 +8,15 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
-    name: Build Reloadify3000
+  buildOnWindows:
+    name: Build on Windows
     env:
-      NUPKG_MAJOR: 0.2
-      BASE: 334
-    runs-on: windows-2022
+      NUPKG_MAJOR: 1.0.
+      BASE: 8
+    runs-on: windows-latest
 
     steps:
       - uses: actions/checkout@v2
-
-      - name: install .NET
-        shell: pwsh
-        run: |
-          $ProgressPreference = 'SilentlyContinue'
-          Invoke-WebRequest -Uri "https://dot.net/v1/dotnet-install.ps1" -OutFile dotnet-install.ps1
-          & .\dotnet-install.ps1 -InstallDir "$env:ProgramFiles\dotnet\" -Verbose -Channel STS
-          & dotnet --list-sdks
-
-      - name: Build Comet.Reload
-        run: dotnet build /r /p:Configuration=Debug Comet.Reload/Comet.Reload.csproj
 
       - name: Build Reloadify3000
         run: |
@@ -38,16 +27,33 @@ jobs:
         shell: bash
         run: |
           MINOR_VERSION=$(( $BASE + $GITHUB_RUN_NUMBER ))
-          VERSION=0.3.$MINOR_VERSION-beta
+          VERSION=$NUPKG_MAJOR$MINOR_VERSION-beta
           echo "PACKAGE VERSION: $VERSION"
           nuget pack Reloadify3000.nuspec -version $VERSION -Symbols -SymbolPackageFormat snupkg
-          nuget pack Clancey.Comet.Reload.nuspec -version $VERSION -Symbols -SymbolPackageFormat snupkg
 
       - uses: actions/upload-artifact@v2
         name: Upload Nuget Artifact
         with:
           name: nuget-artifact
           path: |
-            **\*.nupkg
-            **\*.snupkg
-            **\*.symbols.nupkg
+            **/*.nupkg
+            **/*.snupkg
+            **/*.symbols.nupkg
+
+  buildOnMac:
+    name: Build on Mac
+    runs-on: macos-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build and pack VSMac extension
+        run: |
+          dotnet build /r /p:Configuration=Debug Reloadify3000/Reloadify3000.csproj  
+          dotnet msbuild /r /t:Build /p:Configuration=Debug Reloadify.VSMac/Reloadify.VSMac.csproj /p:CreatePackage=true
+
+      - uses: actions/upload-artifact@v2
+        name: Upload VS Mac extension
+        with:
+          name: VSMac-extension
+          path: |
+            **/*.mpack

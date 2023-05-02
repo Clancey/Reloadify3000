@@ -30,10 +30,12 @@ using Mono.Addins.Description;
 [assembly: Addin (
 	"Reloadify.VSMac",
 	Namespace = "Reloadify",
-	Version = "1.1.5"
+	Version = "1.1.6"
 )]
 
 [assembly: AddinName ("Reloadify3000")]
 [assembly: AddinCategory ("IDE extensions")]
 [assembly: AddinDescription ("Reloadify 3000")]
 [assembly: AddinAuthor ("James Clancey")]
+[assembly: AddinDependency ("::MonoDevelop.Core", "17.5")]
+[assembly: AddinDependency ("::MonoDevelop.Ide", "17.5")]
