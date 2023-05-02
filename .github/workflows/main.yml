@@ -36,9 +36,9 @@ jobs:
         with:
           name: nuget-artifact
           path: |
-            **\*.nupkg
-            **\*.snupkg
-            **\*.symbols.nupkg
+            **/*.nupkg
+            **/*.snupkg
+            **/*.symbols.nupkg
 
       - name: Build and pack VSMac extension
         run: |
@@ -50,5 +50,5 @@ jobs:
         with:
           name: VSMac-extension
           path: |
-            **\*.mpack
+            **/*.mpack
 
