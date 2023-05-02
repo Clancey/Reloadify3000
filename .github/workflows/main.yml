@@ -18,14 +18,6 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: install .NET
-        shell: pwsh
-        run: |
-          $ProgressPreference = 'SilentlyContinue'
-          Invoke-WebRequest -Uri "https://dot.net/v1/dotnet-install.ps1" -OutFile dotnet-install.ps1
-          & .\dotnet-install.ps1 -InstallDir "$env:ProgramFiles\dotnet\" -Verbose -Channel STS
-          & dotnet --list-sdks
-
       - name: Build Reloadify3000
         run: |
           dotnet build /r /p:Configuration=Debug Reloadify3000/Reloadify3000.csproj  
@@ -51,7 +43,7 @@ jobs:
       - name: Build and pack VSMac extension
         run: |
           dotnet build /r /p:Configuration=Debug Reloadify3000/Reloadify3000.csproj  
-          dotnet msbuild /t:Build /p:Configuration=Debug Reloadify.VSMac/Reloadify.VSMac.csproj /p:CreatePackage=true
+          dotnet msbuild /r /t:Build /p:Configuration=Debug Reloadify.VSMac/Reloadify.VSMac.csproj /p:CreatePackage=true
 
       - uses: actions/upload-artifact@v2
         name: Upload VS Mac extension
