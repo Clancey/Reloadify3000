@@ -47,3 +47,16 @@ jobs:
             **\*.nupkg
             **\*.snupkg
             **\*.symbols.nupkg
+
+      - name: Build and pack VSMac extension
+        run: |
+          dotnet build /r /p:Configuration=Debug Reloadify3000/Reloadify3000.csproj  
+          dotnet msbuild /t:Build /p:Configuration=Debug Reloadify.VSMac/Reloadify.VSMac.csproj /p:CreatePackage=true
+
+      - uses: actions/upload-artifact@v2
+        name: Upload VS Mac extension
+        with:
+          name: VSMac-extension
+          path: |
+            **\*.mpack
+

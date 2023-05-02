@@ -1,4 +1,5 @@
-﻿using System;
+﻿using System.IO;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
@@ -17,8 +18,10 @@ namespace Reloadify.VSMac
 			var doc = Controller?.Document;
 			if (doc != null)
 			{
+				var fileName = doc.FileName;
+				var text = File.ReadAllText(doc.FilePath);
 				IDEManager.Shared.Solution = IdeApp.TypeSystemService.Workspace.CurrentSolution;
-				IDEManager.Shared.HandleDocumentChanged(new DocumentChangedEventArgs(doc?.FileName, doc.Editor?.Text));
+				IDEManager.Shared.HandleDocumentChanged(new DocumentChangedEventArgs(fileName, text));
 			}
 		}
 	}
