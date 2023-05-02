@@ -18,7 +18,7 @@ namespace Reloadify {
 
 		public Action<string> LogAction { get; set; }
 
-		ITcpCommunicatorServer server;
+        TcpCommunicatorServer server;
 		IDEManager ()
 		{
 			server = new TcpCommunicatorServer ();
@@ -26,9 +26,15 @@ namespace Reloadify {
 			server.DataReceived = (o) => DataRecieved?.Invoke (o);
 		}
 
-		private void Server_ClientConnected(object sender, EventArgs e)
+		private async void Server_ClientConnected(object sender, ClientConnectedEventArgs e)
 		{
 			Log("Client Connected");
+			await Task.Delay(1000);
+			foreach(var message in currentMessages)
+            {
+				await server.SendToClient(e.ClientId, message);
+				await Task.Delay(100);
+            }
 		}
 
 		string textChangedFile;
@@ -51,7 +57,7 @@ namespace Reloadify {
 
 		public Func<string, Task<string>> GetActiveDocumentText { get; set; }
 		FixedSizeDictionary<string, string> currentFiles = new FixedSizeDictionary<string, string> (10);
-
+		List<EvalRequestMessage> currentMessages = new List<EvalRequestMessage>();
 		public async void HandleDocumentChanged (DocumentChangedEventArgs e)
 		{
 			textChangedTimer?.Stop ();
@@ -75,7 +81,8 @@ namespace Reloadify {
 			{
 				Log($"Hot Reloading: {e.Filename}");
 				Log("Sending Data to the client");
-				await server.Send(response);
+				currentMessages.Add(response);
+                await server.Send(response);
 			}
 		}
 

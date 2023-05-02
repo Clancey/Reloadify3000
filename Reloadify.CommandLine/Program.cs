@@ -13,7 +13,7 @@ namespace Reloadify.CommandLine
 		static async Task Main(string[] args)
 		{
 			string platform = "AnyCPU";
-			string flavor = "net7.0-ios";
+			string flavor = "";// "net7.0-ios";
 			string configuration = "Debug";
 			string rootFolder = "";
 			string csProj = args.FirstOrDefault();
@@ -35,6 +35,8 @@ namespace Reloadify.CommandLine
 				extra = options.Parse(args);
 				if (string.IsNullOrWhiteSpace(rootFolder) && !string.IsNullOrWhiteSpace(csProj))
 					rootFolder = GetRootDirectory(csProj);
+				if (rootFolder == ".")
+					rootFolder = Directory.GetCurrentDirectory();
 			}
 			catch (OptionException e)
 			{
