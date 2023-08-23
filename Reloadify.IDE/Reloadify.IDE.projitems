@@ -9,6 +9,7 @@
     <Import_RootNamespace>Reloadify.IDE</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)FieldCollectorWriter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)IDEManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DocumentChangedEventArgs.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ClassCollector.cs" />

@@ -13,7 +13,7 @@ namespace Reloadify.CommandLine
 		static async Task Main(string[] args)
 		{
 			string platform = "AnyCPU";
-			string flavor = "";// "net7.0-ios";
+			string flavor = "net7.0";// "net7.0-ios";
 			string configuration = "Debug";
 			string rootFolder = "";
 			string csProj = args.FirstOrDefault();
@@ -83,7 +83,13 @@ namespace Reloadify.CommandLine
 				await Task.Run(()=>{
 					while (true)
 					{
-						var shouldExit = Console.ReadLine() != "exit";
+						var line = Console.ReadLine();
+						if (line == "reset")
+						{
+							IDEManager.Shared.Reset();
+							RoslynCodeManager.Shared.Reset();
+						}
+						var shouldExit = line != "exit";
 						if (shouldExit)
 						{
 							//Shutdown and return;

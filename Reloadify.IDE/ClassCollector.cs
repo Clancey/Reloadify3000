@@ -4,6 +4,7 @@ using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.CodeAnalysis.Operations;
 
 namespace Reloadify {
 	public class ClassCollector : CSharpSyntaxWalker
@@ -23,8 +24,10 @@ namespace Reloadify {
 			//If its a nested class we don't care
 			if (node.Parent is ClassDeclarationSyntax)
 				return;
-
+			//Lets check for old stuff
 			 Classes.Add(node);
+			var c = node.GetClassNameWithNamespace();
+		
 			if (node.Modifiers.Any(x => (string)x.Value == "partial"))
 				PartialClasses.Add(node);
 		}

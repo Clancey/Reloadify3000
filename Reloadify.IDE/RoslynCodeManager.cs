@@ -12,6 +12,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Emit;
 using Microsoft.CodeAnalysis.FindSymbols;
 using Microsoft.CodeAnalysis.MSBuild;
+using Reloadify.IDE;
 using Reloadify.Internal;
 
 namespace Reloadify {
@@ -114,12 +115,11 @@ namespace Reloadify {
 					Console.WriteLine("The doc was not found in part of a project. Ignoring");
 					return null;
 				}
-				
 				//On windows sometimes its a file path...
 				var assemblies = projects.Where(x=> !x.AssemblyName.Contains(x.FilePath)).Select(x => x.AssemblyName).Distinct();
 				
 				//We are going to build a file, with all the IgnoreAccessChecks so we don't get System.MethodAccessException when we call internal stuff
-				var header = string.Join("\r\n", assemblies.Select(x => $"[assembly: System.Runtime.CompilerServices.IgnoresAccessChecksTo(\"{x}\")]"));
+				var header =  string.Join("\r\n", assemblies.Select(x => $"[assembly: System.Runtime.CompilerServices.IgnoresAccessChecksTo(\"{x}\")]"));
 				var newFiles = new List<string>
 				{
 					filePath
@@ -141,17 +141,36 @@ namespace Reloadify {
 				var syntaxTree = CSharpSyntaxTree.ParseText(fileContents, parseOptions,path:filePath,encoding: System.Text.Encoding.Default);
 				var ignoreSyntaxTree = CSharpSyntaxTree.ParseText(header, parseOptions);
 				var root = syntaxTree.GetCompilationUnitRoot();
-				var collector = new ClassCollector();
+				var collector = new ClassCollector ();
 				collector.Visit(root);
 				var classes = collector.Classes.Select(x => x.GetClassNameWithNamespace()).ToList();
 				if (classes.Count == 0){
 					Console.WriteLine("No classes found in the file");
 					return null;
 				}
+				foreach (var c in classes)
+				{
+					var fullName = string.IsNullOrWhiteSpace(c.NameSpace) ? c.ClassName : $"{c.NameSpace}.{c.ClassName}";
+					if (!ExistingFields.TryGetValue(c, out var existingFields)){
+						var oldC = compilation.GetTypeByMetadataName(fullName);
+						ExistingFields[c] = existingFields = new();
+						foreach (var field in oldC.GetMembers().OfType<IFieldSymbol>().ToList())
+						{
+							existingFields[field.Name] = field.Type;
+						}
+					}
+				}
+				var syntaxWriter = new FieldCollectorWriter { ExistingFields = ExistingFields };
+				var newRoot = syntaxWriter.Visit(root);
+				var oWriter = new ClassFieldCollectorWriter { FoundFields = syntaxWriter.FoundFields }.Visit(newRoot);
+				var newCode = oWriter.ToFullString();
+				syntaxTree = CSharpSyntaxTree.ParseText(newCode, parseOptions, path: filePath, encoding: System.Text.Encoding.Default);
 				var partialClasses = collector.PartialClasses.Select(x => x.GetClassNameWithNamespace()).ToList();
 
 				currentTrees[filePath] = syntaxTree;
+				
 				currentTrees["IgnoresAccessChecksTo"] = ignoreSyntaxTree;
+				
 
 				var assemblyVersion = currentCompilationCount++;
 				currentTrees["Relodify-Emit-AssemblyVersion"] = CSharpSyntaxTree.ParseText($"[assembly: System.Reflection.AssemblyVersionAttribute(\"1.0.{assemblyVersion}\")]", parseOptions);
@@ -264,6 +283,7 @@ namespace Reloadify {
 			}
 			return null;
 		}
+		static Dictionary<(string Namespace, string ClassName), Dictionary<string, ITypeSymbol>> ExistingFields = new();
 
 		static MetadataReference CreateMetaReference(string filePath, bool isUnity)
         {
@@ -278,5 +298,9 @@ namespace Reloadify {
 			return MetadataReference.CreateFromFile(foundFilePath);
         }
 
-    }
+		public void Reset()
+		{
+			ExistingFields.Clear();
+		}
+	}
 }

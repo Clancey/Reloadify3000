@@ -55,6 +55,11 @@ namespace Reloadify {
 			textChangedTimer.Start ();
 		}
 
+		public void Reset()
+		{
+			currentMessages.Clear();
+			currentFiles.Clear();
+		}
 		public Func<string, Task<string>> GetActiveDocumentText { get; set; }
 		FixedSizeDictionary<string, string> currentFiles = new FixedSizeDictionary<string, string> (10);
 		List<EvalRequestMessage> currentMessages = new List<EvalRequestMessage>();

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="..\Comet.Reload.Tests.Shared\Comet.Reload.Tests.Shared.projitems" Label="Shared" Condition="Exists('..\Comet.Reload.Tests.Shared\Comet.Reload.Tests.Shared.projitems')" />
   <Import Project="..\..\..\packages\NUnit.3.12.0\build\NUnit.props" Condition="Exists('..\..\..\packages\NUnit.3.12.0\build\NUnit.props')" />
@@ -9,7 +9,8 @@
     <OutputType>Library</OutputType>
     <RootNamespace>Comet.Tests</RootNamespace>
     <AssemblyName>Comet.Reload.Tests</AssemblyName>
-    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -30,7 +31,7 @@
     <Reference Include="System" />
     <Reference Include="Mono.CSharp" />
   </ItemGroup>
-  <ItemGroup>  
+  <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" version="12.0.2" />
     <PackageReference Include="NUnit">
       <Version>3.12.0</Version>

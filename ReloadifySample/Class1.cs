@@ -1,15 +1,42 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Runtime.CompilerServices;
+
 namespace ReloadifySample
 {
 	public partial class Class1
 	{
-		static string foo = "Hey Guys!!! this was hotreloaded";
+		string test; 
+		string bar = "barValue";    
+		string bar2 = "barValue";   
+		string foo;
+		string bar3 = "Test Value";
+		string bar4 = "HotReloaded Test Value";
+		public string Bar2{
+			get => bar3;
+			set => bar3 = value;
+		}
 		public static void Init()
 		{
-			Console.WriteLine("New init was called");  
+			Console.WriteLine("New init was called!!");   
 			//This calls an internal method, and we can still hot reload it!
-			Program.FooBar();
+			//Program.FooBar();
+			var c = new Class1
+			{
+				//Test7 = "New Class Test 7"
+			};
+			Program.C.Foo = "Test6!!";
+			Console.WriteLine(Program.C.ToString());
+			Console.WriteLine($"Compare: {c.Foo} : {Program.C.Foo}");
 		}
-		public string Foo { get; set; } 
+		public string Foo 
+		{
+			get => foo ?? bar4;
+			set => foo = value;
+		}
+		public override string ToString() => $"To String:{bar4}";
+
 	}
+	
 }
+

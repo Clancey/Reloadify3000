@@ -7,6 +7,7 @@
     <Authors>James Clancey</Authors>
     <PackageVersion>1.0</PackageVersion>
     <PackageId>Reloadify3000</PackageId>
+	<LangVersion>Latest</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
