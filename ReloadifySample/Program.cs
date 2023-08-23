@@ -36,24 +36,9 @@ namespace ReloadifySample
 
 		static async void RunHotReload(string ideIP = null, int idePort = Constants.DEFAULT_PORT)
 		{
-			HarmonyHotReloadHelper.Init();
-			Reloadify.Reload.Instance.ReplaceType = (d) => HarmonyHotReloadHelper.ReplaceType(d.ClassName, d.Type);
-			//	(d) =>
-			//{
-			//	Console.WriteLine($"HotReloaded: {d.ClassName} -{d.Type}");
-			//	foreach (var prop in d.Type.GetProperties())
-			//	{
-			//		Console.WriteLine($"\t{prop.Name}");
-			//	}
-			//	//Call static init if it exists on new classes!
-			//	var staticInit = d.Type.GetMethod("Init", System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Public);
-			//	if (staticInit != null)
-			//	{
-			//		Console.WriteLine($"Calling static Init on :{d.Type}");
-			//		staticInit?.Invoke(null, null);
-			//		Console.WriteLine("Init completed");
-			//	}
-			//};
+			Reloadify.Reload.Instance.ReplaceType = (d) => {
+				Console.WriteLine($"HotReloaded: {d.ClassName} -{d.Type}");
+			};
 			var loaded = await Reloadify.Reload.Init(ideIP, idePort);
 			Console.WriteLine($"Hot Reload Initialized: {loaded}");
 		}

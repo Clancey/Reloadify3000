@@ -4,11 +4,6 @@
     <OutputType>Exe</OutputType>
     <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Lib.Harmony" Version="2.3.0-prerelease.2" />
-  </ItemGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\Reloadify3000\Reloadify3000.csproj">
       <Aliases></Aliases>

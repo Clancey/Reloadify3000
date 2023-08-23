@@ -16,7 +16,7 @@ namespace Reloadify.CommandLine
 	{
 		public IDE()
 		{
-			IDEManager.Shared.Log = (s) => Console.WriteLine(s);
+			IDEManager.Shared.LogAction = (s) => Console.WriteLine(s);
 		}
 		//MSBuildWorkspace currentWorkSpace;
 		public static IDE Shared { get; set; } = new IDE();

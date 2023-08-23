@@ -10,6 +10,17 @@ using System.Text;
 
 namespace Reloadify.IDE
 {
+	public static class ClassCodeRewriter
+	{
+		public static SyntaxTree FixCode(CompilationUnitSyntax root, CSharpParseOptions parseOptions, string filePath, Dictionary<(string Namespace, string ClassName), Dictionary<string, ITypeSymbol>> ExistingFields)
+		{
+			var syntaxWriter = new FieldCollectorWriter { ExistingFields = ExistingFields };
+			var newRoot = syntaxWriter.Visit(root);
+			var oWriter = new ClassFieldCollectorWriter { FoundFields = syntaxWriter.FoundFields }.Visit(newRoot);
+			var newCode = oWriter.ToFullString();
+			return CSharpSyntaxTree.ParseText(newCode, parseOptions, path: filePath, encoding: System.Text.Encoding.Default);
+		}
+	}
 	public class FieldCollectorWriter : CSharpSyntaxRewriter
 	{
 		public List<(string Name, string Type, string Value)> FoundFields { get; set; } = new();
@@ -23,14 +34,14 @@ namespace Reloadify.IDE
 			//We need to comment out, and change all new fields, we ignore existing fields and statics
 			if (node.Modifiers.Any(x => (string)x.Value == "static"))
 				return base.VisitFieldDeclaration(node);
-			//if (ExistingFields.TryGetValue(fullName, out var oldFields))
-			//{
-			//	if (oldFields.TryGetValue(name, out var oldType) && oldType.ToString() == type)
-			//	{
-			//		return base.VisitFieldDeclaration(node);
+			if (ExistingFields.TryGetValue(fullName, out var oldFields))
+			{
+				if (oldFields.TryGetValue(name, out var oldType) && oldType.ToString() == type)
+				{
+					return base.VisitFieldDeclaration(node);
 
-			//	}
-			//}
+				}
+			}
 
 			//Ok, this is an new field. or a new return type. Lets fix it!
 			var leading = node.GetLeadingTrivia();

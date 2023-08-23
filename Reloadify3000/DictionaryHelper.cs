@@ -12,11 +12,15 @@ namespace Reloadify
 
 			if (!values.TryGetValue(obj, out var data))
 			{
-				data = values[obj] = new(defaults);
+				data = values[obj] = new();
 			}
 			if (data.TryGetValue(key, out var value) && value is T t)
 			{
 				return t;
+			}
+			if (defaults.TryGetValue(key, out  value) && value is T dt)
+			{
+				return dt;
 			}
 			return default;
 		}

@@ -160,11 +160,7 @@ namespace Reloadify {
 						}
 					}
 				}
-				var syntaxWriter = new FieldCollectorWriter { ExistingFields = ExistingFields };
-				var newRoot = syntaxWriter.Visit(root);
-				var oWriter = new ClassFieldCollectorWriter { FoundFields = syntaxWriter.FoundFields }.Visit(newRoot);
-				var newCode = oWriter.ToFullString();
-				syntaxTree = CSharpSyntaxTree.ParseText(newCode, parseOptions, path: filePath, encoding: System.Text.Encoding.Default);
+				syntaxTree = ClassCodeRewriter.FixCode(root,parseOptions, filePath,ExistingFields);
 				var partialClasses = collector.PartialClasses.Select(x => x.GetClassNameWithNamespace()).ToList();
 
 				currentTrees[filePath] = syntaxTree;
@@ -183,7 +179,8 @@ namespace Reloadify {
 					
 					await trees?.ForEachAsync(1, (tree) => Task.Run(() =>
 					{
-						var fileTree = tree.SyntaxTree;
+						var treeRoot = tree.SyntaxTree.GetCompilationUnitRoot();
+						var fileTree = ClassCodeRewriter.FixCode(treeRoot, parseOptions, filePath, ExistingFields); ;
 						var file = fileTree.FilePath;
 						currentTrees[file] = fileTree;
 						newFiles.Add(file);
