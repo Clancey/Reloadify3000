@@ -37,7 +37,7 @@ jobs:
           MINOR_VERSION=$(( $BASE + $GITHUB_RUN_NUMBER ))
           VERSION=$NUPKG_MAJOR$MINOR_VERSION-beta
           echo "PACKAGE VERSION: $VERSION"
-          dotnet pack Reloadify.Hosted/Reloadify.Hosted.csproj --version-suffix $MINOR_VERSION-beta --include-symbols --include-source --configuration Debug
+          dotnet pack Reloadify.Hosted/Reloadify.Hosted.csproj --version-suffix $MINOR_VERSION-beta --include-symbols --include-source --configuration Debug --output .
 
       - name: Nuget Pack Command Line Utility step
         shell: bash
@@ -45,7 +45,7 @@ jobs:
           MINOR_VERSION=$(( $BASE + $GITHUB_RUN_NUMBER ))
           VERSION=$NUPKG_MAJOR$MINOR_VERSION-beta
           echo "PACKAGE VERSION: $VERSION"
-          dotnet pack Reloadify.CommandLine/Reloadify.CommandLine.csproj --version-suffix $MINOR_VERSION-beta --include-symbols --include-source --configuration Debug
+          dotnet pack Reloadify.CommandLine/Reloadify.CommandLine.csproj --version-suffix $MINOR_VERSION-beta --include-symbols --include-source --configuration Debug --output .
 
       - uses: actions/upload-artifact@v2
         name: Upload Nuget Artifact
