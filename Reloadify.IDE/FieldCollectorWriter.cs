@@ -8,7 +8,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 
-namespace Reloadify.IDE
+namespace Reloadify
 {
 	public static class ClassCodeRewriter
 	{
