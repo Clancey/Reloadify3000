@@ -11,7 +11,7 @@ jobs:
   buildOnWindows:
     name: Build on Windows
     env:
-      NUPKG_MAJOR: 1.0.
+      NUPKG_MAJOR: 1.1.
       BASE: 8
     runs-on: windows-latest
 
@@ -23,6 +23,10 @@ jobs:
           dotnet build /r /p:Configuration=Debug Reloadify3000/Reloadify3000.csproj  
           dotnet msbuild /r /p:Configuration=Debug Reloadify3000.Build/Reloadify3000.Build.Tasks.csproj
 
+      - name: Build Reloadify.Hosted
+        run: |
+          dotnet build /r /p:Configuration=Debug Reloadify.Hosted/Reloadify.Hosted.csproj 
+
       - name: Nuget Pack step
         shell: bash
         run: |
@@ -31,13 +35,13 @@ jobs:
           echo "PACKAGE VERSION: $VERSION"
           nuget pack Reloadify3000.nuspec -version $VERSION -Symbols -SymbolPackageFormat snupkg
 
-      - name: Dotnet Pack Hosting Utility step
+      - name: Nuget Pack step
         shell: bash
         run: |
           MINOR_VERSION=$(( $BASE + $GITHUB_RUN_NUMBER ))
           VERSION=$NUPKG_MAJOR$MINOR_VERSION-beta
           echo "PACKAGE VERSION: $VERSION"
-          dotnet pack Reloadify.Hosted/Reloadify.Hosted.csproj --version-suffix $MINOR_VERSION-beta --include-symbols --include-source --configuration Debug --output .
+          nuget pack Reloadify.Hosting.nuspec -version $VERSION -Symbols -SymbolPackageFormat snupkg
 
       - name: Nuget Pack Command Line Utility step
         shell: bash
