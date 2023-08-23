@@ -13,14 +13,15 @@ namespace Reloadify
 											  BindingFlags.Static | BindingFlags.Instance |
 											  BindingFlags.FlattenHierarchy;
 		static Type _patchTools;
-		static Type PatchTools => _patchTools ??= typeof(HarmonyLib.HarmonyPatch).Assembly.GetType("HarmonyLib.PatchTools");
+		static Assembly HarmonyLib => typeof(HarmonyLib.Harmony).Assembly;
+
+		//From Harmonylib 2.2 -> 2.3 Memory becomes internal, and changes names. This lets it work for either version
+		static Type PatchTools => _patchTools ??= HarmonyLib.GetType("HarmonyLib.Memory") ?? HarmonyLib.GetType("HarmonyLib.PatchTools");
 
 		static MethodBase _detourMethod;
 		static MethodBase DetourMethodCall => _detourMethod ??= PatchTools.GetMethod("DetourMethod", ALL_BINDING_FLAGS);
 
-		public static void DetourMethod(MethodBase method, MethodBase replacement)
-		{
-			DetourMethodCall.Invoke(null, new object[] { method, replacement });
-		}
+		public static void DetourMethod(MethodBase method, MethodBase replacement) => DetourMethodCall.Invoke(null, new object[] { method, replacement });
+		//TODO: Handle crashes
 	}
 }

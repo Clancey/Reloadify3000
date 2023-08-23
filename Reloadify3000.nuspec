@@ -2,13 +2,13 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
   <metadata>
     <id>Reloadify3000</id>
-    <version>1.0.9</version>
+    <version>1.1.0</version>
     <title>Reloadify3000</title>
     <authors>James Clancey</authors>
     <owners>Clancey</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>Hot Reload plugin for Comet</description>
-    <summary>Comet.Reload plugin, Just call Comet.Reload.Init() for debug builds.</summary>
+    <description>Hot Reload plugin for Mono/Dotnet</description>
+    <summary>Hot Reload all your code, Just call Reloadify.Reload.Init(); for debug builds. (Everything except Generic Methods)</summary>
     <copyright>James Clancey</copyright>
     <projectUrl>https://github.com/Clancey/Reloadify3000</projectUrl>
     <repository type="git" url="https://github.com/Clancey/Reloadify3000"/>
@@ -16,6 +16,7 @@
     <language>C#</language>
     <dependencies>
         <dependency id="Newtonsoft.Json" version="13.0.1" />
+        <dependency id="Lib.Harmony" version="2.2.2" />
     </dependencies>
     <frameworkAssemblies>
       <frameworkAssembly assemblyName="Mono.CSharp"/>
