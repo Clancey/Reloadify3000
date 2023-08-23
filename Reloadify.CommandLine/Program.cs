@@ -89,7 +89,7 @@ namespace Reloadify.CommandLine
 							IDEManager.Shared.Reset();
 							RoslynCodeManager.Shared.Reset();
 						}
-						var shouldExit = line != "exit";
+						var shouldExit = line == "exit";
 						if (shouldExit)
 						{
 							//Shutdown and return;

@@ -10,16 +10,20 @@ namespace ReloadifySample
 		string bar = "barValue";    
 		string bar2 = "barValue";   
 		string foo;
-		string bar3 = "Test Value";
-		string bar4 = "HotReloaded Test Value";
+		string bar3 = "barValue";
+		string bar4 = "barValue"; 
+		string bar5 = "barValue"; 
+		string bar6 = "barValue"; 
+		string foo22 = "gfgfd";
+		string bar7 = "barValue";
 		public string Bar2{
-			get => bar3;
-			set => bar3 = value;
+			get => bar3;  
+			set => bar3 = value; 
 		}
 		public static void Init()
 		{
-			Console.WriteLine("New init was called!!");   
-			//This calls an internal method, and we can still hot reload it!
+			Console.WriteLine("New init was called!!");    
+			//This calls an internal method, and we can still hot reload it! 
 			//Program.FooBar();
 			var c = new Class1
 			{
@@ -29,12 +33,12 @@ namespace ReloadifySample
 			Console.WriteLine(Program.C.ToString());
 			Console.WriteLine($"Compare: {c.Foo} : {Program.C.Foo}");
 		}
-		public string Foo 
+		public string Foo  
 		{
-			get => foo ?? bar4;
+			get => foo;
 			set => foo = value;
-		}
-		public override string ToString() => $"To String:{bar4}";
+		} 
+		public override string ToString() => $"To String!!!:{foo22}"; 
 
 	}
 	

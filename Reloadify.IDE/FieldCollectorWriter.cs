@@ -16,9 +16,9 @@ namespace Reloadify.IDE
 		{
 			var syntaxWriter = new FieldCollectorWriter { ExistingFields = ExistingFields };
 			var newRoot = syntaxWriter.Visit(root);
-			var oWriter = new ClassFieldCollectorWriter { FoundFields = syntaxWriter.FoundFields }.Visit(newRoot);
-			var newCode = oWriter.ToFullString();
-			return CSharpSyntaxTree.ParseText(newCode, parseOptions, path: filePath, encoding: System.Text.Encoding.Default);
+			newRoot = new ClassFieldCollectorWriter { FoundFields = syntaxWriter.FoundFields }.Visit(newRoot);
+			var newCode = newRoot.ToFullString();
+			return CSharpSyntaxTree.ParseText(newCode, parseOptions, encoding: System.Text.Encoding.Default);
 		}
 	}
 	public class FieldCollectorWriter : CSharpSyntaxRewriter
@@ -49,18 +49,16 @@ namespace Reloadify.IDE
 			FoundFields.Add((name, type, firstVar.Initializer?.Value.ToFullString()));
 
 			return node.WithLeadingTrivia(leading.Add(SyntaxFactory.Comment("/*"))).WithTrailingTrivia(trailing.Insert(0, SyntaxFactory.Comment(" */")));
-
-
 		}
 
 	}
 	public class ClassFieldCollectorWriter : CSharpSyntaxRewriter
 	{
 		public List<(string Name, string Type, string Value)> FoundFields { get; set; } = new();
-		static string GetGetValue(string name, string type) => $"Reloadify.DictionaryHelper.GetValue<{type}>(this, \"{name}\", __ReloadifyNewFields__, __ReloadifyNewFieldsDefaultValues__)";
-		static string GetSetValue(string name, string type) => $"Reloadify.DictionaryHelper.SetValue(this, \"{name}\", value, __ReloadifyNewFields__, __ReloadifyNewFieldsDefaultValues__)";
-		const string newFieldsProperty = "static Dictionary<object, Dictionary<string, object>> __ReloadifyNewFields__ = new Dictionary<object, Dictionary<string, object>>();";
-		static string newFieldsDefaultProperty (string values) => $"static Dictionary<string, object> __ReloadifyNewFieldsDefaultValues__ = new Dictionary<string, object>(){{ {values} }};";
+		static string GetGetValue(string name, string type) => $"\t\tReloadify.DictionaryHelper.GetValue<{type}>(this, \"{name}\", __ReloadifyNewFields__, __ReloadifyNewFieldsDefaultValues__)\r\n";
+		static string GetSetValue(string name, string type) => $"\t\tReloadify.DictionaryHelper.SetValue(this, \"{name}\", value, __ReloadifyNewFields__, __ReloadifyNewFieldsDefaultValues__)\r\n";
+		const string newFieldsProperty = "\t\tstatic Dictionary<object, Dictionary<string, object>> __ReloadifyNewFields__ = new Dictionary<object, Dictionary<string, object>>();\r\n";
+		static string newFieldsDefaultProperty (string values) => $"\t\tstatic Dictionary<string, object> __ReloadifyNewFieldsDefaultValues__ = new Dictionary<string, object>(){{ {values} }};\r\n";
 
 		public Dictionary<(string Namespace, string ClassName), Dictionary<string, ITypeSymbol>> ExistingFields = new();
 

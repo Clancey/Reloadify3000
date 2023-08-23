@@ -100,7 +100,7 @@ namespace Reloadify {
 											   BindingFlags.Static | BindingFlags.Instance |
 											   BindingFlags.FlattenHierarchy;
 
-		const BindingFlags ALL_DECLARED_METHODS_BINDING_FLAGS = BindingFlags.Public | BindingFlags.NonPublic |
+		public const BindingFlags ALL_DECLARED_METHODS_BINDING_FLAGS = BindingFlags.Public | BindingFlags.NonPublic |
 																BindingFlags.Static | BindingFlags.Instance |
 																BindingFlags.DeclaredOnly;
 
@@ -109,37 +109,68 @@ namespace Reloadify {
             typeof(System.Object)
 		};
 		Dictionary<string, Type> previousReplacement = new();
+		Dictionary<string, Type> originalType = new();
+
+		Type GetOriginalType(string className)
+		{
+			if (originalType.TryGetValue(className, out var type))
+				return type;
+			type = Type.GetType(className);
+			if (type == null)
+			{
+				foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
+				{
+					//Lets start without using emit namespaces
+					if (assembly.FullName.StartsWith("Reloadify-emit"))
+						continue;
+					type = assembly.GetType(className);
+					if (type != null)
+						return type;
+				}
+			}
+			return type;
+		}
+
 		protected virtual void HarmonyReplaceType(string className, Type newType)
 		{
 
 			try
 			{
 				Console.WriteLine($"HotReloaded!: {className} - {newType}");
-			
+
 				foreach (var prop in newType.GetProperties())
 				{
 					Console.WriteLine($"\t{prop.Name}");
 				}
-				var oldClass = Type.GetType(className);
-				var oldMethods = oldClass.GetMethods(ALL_DECLARED_METHODS_BINDING_FLAGS);
-				var newMethods = newType.GetMethods(ALL_DECLARED_METHODS_BINDING_FLAGS);
-				var allDeclaredMethodsInExistingType = oldClass.GetMethods(ALL_DECLARED_METHODS_BINDING_FLAGS)
-								.Where(m => !ExcludeMethodsDefinedOnTypes.Contains(m.DeclaringType))
-								.ToList();
-				foreach (var method in newMethods)
+				Type oldClass = GetOriginalType(className);
+				if (oldClass != null)
 				{
-					Console.WriteLine($"Method: {method.Name}");
-					var oldMethod = oldMethods.FirstOrDefault(m => m.Name == method.Name);
-					if (oldMethod != null && !method.IsGenericMethod)
+					var oldMethods = oldClass.GetMethods(Reload.ALL_DECLARED_METHODS_BINDING_FLAGS);
+					var newMethods = newType.GetMethods(Reload.ALL_DECLARED_METHODS_BINDING_FLAGS);
+					var allDeclaredMethodsInExistingType = oldClass.GetMethods(Reload.ALL_DECLARED_METHODS_BINDING_FLAGS)
+									.Where(m => !Reload.Instance.ExcludeMethodsDefinedOnTypes.Contains(m.DeclaringType))
+									.ToList();
+					foreach (var method in newMethods)
 					{
-						//Found the method. Lets Monkey patch it
-						Harmony.DetourMethod(oldMethod, method);
-					}
-					else
-					{
-						//Lets not worry about it for now
-					}
+						Console.WriteLine($"Method: {method.Name}");
+						var oldMethod = oldMethods.FirstOrDefault(m => m.Name == method.Name);
+						if (oldMethod != null && !method.IsGenericMethod)
+						{
+							//Found the method. Lets Monkey patch it
+							Harmony.DetourMethod(oldMethod, method);
+						}
+						else
+						{
+							//Lets not worry about it for now
+						}
 
+					}
+				}
+				else
+				{
+					//This must be a new type, not in the original 
+					Console.WriteLine($"Found a new type: {className}");
+					originalType[className] = newType;
 				}
 				//Call static init if it exists on new classes!
 				var staticInit = newType.GetMethod("Init", System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Public);
@@ -153,12 +184,13 @@ namespace Reloadify {
 				//Lets copy over the default Values
 				if (previousReplacement.TryGetValue(className, out var oldType))
 				{
-					var oldFieldsProperty = oldType.GetProperty("__ReloadifyNewFields__", System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Public);
-					var newFieldsProperty = newType.GetProperty("__ReloadifyNewFields__", System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Public);
+					var oldFieldsProperty = oldType.GetField("__ReloadifyNewFields__", System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.NonPublic);
+					var newFieldsProperty = newType.GetField("__ReloadifyNewFields__", System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.NonPublic);
 					if (oldFieldsProperty != null && newFieldsProperty != null)
 					{
-						var oldValues = oldFieldsProperty.GetValue(null, null);
-						newFieldsProperty.SetValue(null, oldValues);
+						var oldValues = oldFieldsProperty.GetValue(null);
+						if(oldValues != null)
+							newFieldsProperty.SetValue(null, oldValues);
 					}
 				}
 				previousReplacement[className] = newType;
