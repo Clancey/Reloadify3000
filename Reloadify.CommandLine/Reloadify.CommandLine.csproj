@@ -10,7 +10,10 @@
     <Version>1.0.10</Version>
     <LangVersion>Preview</LangVersion>
   </PropertyGroup>
-
+  <PropertyGroup>
+      <IncludeSymbols>true</IncludeSymbols>
+      <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+  </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\Reloadify.Hosted\Reloadify.Hosted.csproj" />
 	  <ProjectReference Include="..\Esp.Resources\Esp.Resources.csproj" />
