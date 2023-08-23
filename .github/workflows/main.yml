@@ -31,6 +31,14 @@ jobs:
           echo "PACKAGE VERSION: $VERSION"
           nuget pack Reloadify3000.nuspec -version $VERSION -Symbols -SymbolPackageFormat snupkg
 
+      - name: Dotnet Pack Hosting Utility step
+        shell: bash
+        run: |
+          MINOR_VERSION=$(( $BASE + $GITHUB_RUN_NUMBER ))
+          VERSION=$NUPKG_MAJOR$MINOR_VERSION-beta
+          echo "PACKAGE VERSION: $VERSION"
+          dotnet pack Reloadify.Hosted/Reloadify.Hosted.csproj --version-suffix $MINOR_VERSION-beta --include-symbols --include-source --configuration Debug
+
       - name: Nuget Pack Command Line Utility step
         shell: bash
         run: |
