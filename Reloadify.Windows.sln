@@ -34,7 +34,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Reloadify.VS", "Reloadify.V
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Reloadify.CommandLine", "Reloadify.CommandLine\Reloadify.CommandLine.csproj", "{BC531B27-261D-4168-B717-281CB9C0F4B3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Reloadify.Hosted", "Reloadify.Hosted\Reloadify.Hosted.csproj", "{9EA072CA-F336-4701-8592-7791A94AC94E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Reloadify.Hosted", "Reloadify.Hosted\Reloadify.Hosted.csproj", "{9EA072CA-F336-4701-8592-7791A94AC94E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -213,7 +213,6 @@ Global
 		Reloadify.IDE\Reloadify.IDE.projitems*{4e8fddac-4925-4ac3-848d-b9485da980d4}*SharedItemsImports = 4
 		Reloadify.IDE\Reloadify.IDE.projitems*{4f101b9a-ef2c-47b6-b7e0-007fe8b97168}*SharedItemsImports = 13
 		Reloadify.IDE\Reloadify.IDE.projitems*{9ea072ca-f336-4701-8592-7791a94ac94e}*SharedItemsImports = 5
-		Reloadify.IDE\Reloadify.IDE.projitems*{bc531b27-261d-4168-b717-281cb9c0f4b3}*SharedItemsImports = 5
 		Tests\Comet.Reload.Tests.Shared\Comet.Reload.Tests.Shared.projitems*{c6e7d0df-824b-4a57-9bc0-af7874e0e49b}*SharedItemsImports = 4
 		Tests\Comet.Reload.Tests.Shared\Comet.Reload.Tests.Shared.projitems*{d7b239b7-2883-4b53-8873-5a3dd82578ac}*SharedItemsImports = 13
 	EndGlobalSection

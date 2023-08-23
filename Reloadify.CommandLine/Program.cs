@@ -64,11 +64,11 @@ namespace Reloadify.CommandLine
 				{
 					RoslynCodeManager.Shared.ProjectFlavor = flavor;
 				}
-				await IDE.Shared.LoadProject(rootFolder, csProj, configuration, platform);
+				await ReloadifyManager.Shared.LoadProject(rootFolder, csProj, configuration, platform);
 				Console.WriteLine($"{flavor} - {configuration} - {platform}");
 				Console.WriteLine($"Activating HotReload");
 				Console.WriteLine($"Watching: {rootFolder}");
-				bool isHotReloading = await IDE.Shared.StartHotReload();
+				bool isHotReloading = await ReloadifyManager.Shared.StartHotReload();
 				if (!isHotReloading)
 				{
 					Console.WriteLine("Please add Reloadify3000 nuget to your project.");
@@ -100,7 +100,7 @@ namespace Reloadify.CommandLine
 			}
 			finally
 			{
-				IDE.Shared.Shutdown();
+				ReloadifyManager.Shared.Shutdown();
 			}
 		}
 		static string cleanseTarget(string target)

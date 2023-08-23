@@ -19,6 +19,7 @@ namespace Reloadify
 		public Action<string> CurrentProjectPathChanged { get; set; }
 		public Action<Solution> CurrentSolutionChanged { get; set; }
 		public Action<Exception> OnError { get; set; }
+		public Action<WorkspaceDiagnosticEventArgs> OnWorkspaceLoadError { get; set; }
 		public Action OnHotReloadStarted { get; set; }
 		public Action OnHotReloadStopped { get; set; }
 
@@ -26,7 +27,12 @@ namespace Reloadify
 
 		public ReloadifyManager()
 		{
-			IDEManager.Shared.LogAction = (s) => Console.WriteLine(s);
+			IDEManager.Shared.LogAction = (s) => {
+				if (OnLog != null)
+					OnLog(s);
+				else
+					Console.WriteLine(s);
+			};
 		}
 		//MSBuildWorkspace currentWorkSpace;
 		public static ReloadifyManager Shared { get; set; } = new ReloadifyManager();
@@ -97,6 +103,7 @@ namespace Reloadify
 			if(ShouldUseFileWatcher)
 				fileWatcher = new FileWatcher(this,projectRoot);
 			IDEManager.Shared.StartMonitoring();
+			OnHotReloadStarted?.Invoke();
 			return true;
 		}
 
@@ -106,6 +113,7 @@ namespace Reloadify
 				return;
 			isDebugging = false;
 			fileWatcher?.Dispose();
+			OnHotReloadStopped?.Invoke();
 			IDEManager.Shared.StopMonitoring();
 		}
 
@@ -113,13 +121,24 @@ namespace Reloadify
 
 		private void CurrentWorkSpace_WorkspaceFailed(object sender, WorkspaceDiagnosticEventArgs e)
 		{
-			if (e.Diagnostic.Kind == WorkspaceDiagnosticKind.Failure && !e.Diagnostic.Message.Contains("cannot be imported again."))
-				Console.WriteLine(e.Diagnostic);
+			if (OnWorkspaceLoadError != null)
+				OnWorkspaceLoadError?.Invoke(e);
+			else
+			{
+				if (e.Diagnostic.Kind == WorkspaceDiagnosticKind.Failure && !e.Diagnostic.Message.Contains("cannot be imported again."))
+					Console.WriteLine(e.Diagnostic);
+			}
 		}
 
 		public void OnFileChanged(string filePath)
 		{
-
+			if(FileWatcher.ShouldExcludePath(filePath)) 
+				return;
+			var fileData = File.ReadAllText(filePath);
+			IDEManager.Shared.HandleDocumentChanged(new DocumentChangedEventArgs(filePath, fileData));
 		}
+		public void OnFileRenamed(string oldFilePath,string  newFilePath) => RoslynCodeManager.Shared.Rename(oldFilePath, newFilePath);
+		public void OnFileCreated(string filePath) => RoslynCodeManager.Shared.NewFiles.Add(filePath);
+		public void OnFileDeleted (string filePath) => RoslynCodeManager.Shared.Delete(filePath);
 	}
 }

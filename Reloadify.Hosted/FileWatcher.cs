@@ -42,7 +42,7 @@ namespace Reloadify.Hosted
 			if (!e.Name.EndsWith(".cs", StringComparison.Ordinal))
 				return;
 
-			RoslynCodeManager.Shared.Rename(e.OldFullPath, e.FullPath);
+			ReloadifyManager.Shared.OnFileRenamed(e.OldFullPath, e.FullPath);
 		}
 
 
@@ -51,7 +51,7 @@ namespace Reloadify.Hosted
 			var filePath = CleanseFilePath(e.FullPath);
 			if (ShouldExcludePath(filePath))
 				return;
-			RoslynCodeManager.Shared.Delete(filePath);
+			ReloadifyManager.Shared.OnFileDeleted(filePath);
 		}
 
 		void FileWatcher_Created(object sender, FileSystemEventArgs e)
@@ -59,7 +59,7 @@ namespace Reloadify.Hosted
 			var filePath = CleanseFilePath(e.FullPath);
 			if (ShouldExcludePath(filePath))
 				return;
-			RoslynCodeManager.Shared.NewFiles.Add(filePath);
+			ReloadifyManager.Shared.OnFileCreated(filePath);
 
 		}
 
@@ -86,16 +86,14 @@ namespace Reloadify.Hosted
 				currentfiles.Add(filePath);
 			if (searchTimer == null)
 			{
-				searchTimer = new Timer(100);
+				searchTimer = new Timer(500);
 				searchTimer.Elapsed += (s, e) =>
 				{
 					var files = currentfiles.ToArray();
 					currentfiles.Clear();
 					foreach(var f in files)
 					{
-						//Console.WriteLine($"Reading: {f}");
-						var fileData = File.ReadAllText(f);
-						IDEManager.Shared.HandleDocumentChanged(new DocumentChangedEventArgs(f, fileData));
+						ReloadifyManager.Shared.OnFileChanged(f);
 					}
 				};
 			}

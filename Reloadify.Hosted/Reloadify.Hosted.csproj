@@ -5,6 +5,11 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
+
+	<PropertyGroup>
+		<IncludeSymbols>true</IncludeSymbols>
+		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
+	</PropertyGroup>
 	<ItemGroup>
 		<ProjectReference Include="..\Esp.Resources\Esp.Resources.csproj" />
 		<ProjectReference Include="..\Esp\Esp.csproj" />
