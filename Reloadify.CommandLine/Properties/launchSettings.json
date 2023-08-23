@@ -1,0 +1,9 @@
+{
+  "profiles": {
+    "Reloadify.CommandLine": {
+      "commandName": "Project",
+      "commandLineArgs": "ReloadifySample.csproj",
+      "workingDirectory": "..\\ReloadifySample"
+    }
+  }
+}

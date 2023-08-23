@@ -5,14 +5,14 @@ using System.Timers;
 using Reloadify;
 using Timer = System.Timers.Timer;
 
-namespace Reloadify.CommandLine
+namespace Reloadify.Hosted
 {
 	public class FileWatcher : IDisposable
 	{
 		FileSystemWatcher fileWatcher;
 		private bool disposedValue;
 
-		public FileWatcher(string filePath)
+		public FileWatcher(ReloadifyManager manager,string filePath)
 		{
 			fileWatcher = new FileSystemWatcher(filePath)
 			{
@@ -29,7 +29,7 @@ namespace Reloadify.CommandLine
 			fileWatcher.Renamed += FileWatcher_Renamed;
 			fileWatcher.Error += FileWatcher_Error;
 			fileWatcher.EnableRaisingEvents = true;
-
+			this.manager = manager;
 		}
 
 		void FileWatcher_Error(object sender, ErrorEventArgs e) =>
@@ -46,9 +46,22 @@ namespace Reloadify.CommandLine
 		}
 
 
-		void FileWatcher_Deleted(object sender, FileSystemEventArgs e) => RoslynCodeManager.Shared.Delete(e.FullPath);
+		void FileWatcher_Deleted(object sender, FileSystemEventArgs e)
+		{
+			var filePath = CleanseFilePath(e.FullPath);
+			if (ShouldExcludePath(filePath))
+				return;
+			RoslynCodeManager.Shared.Delete(filePath);
+		}
 
-		void FileWatcher_Created(object sender, FileSystemEventArgs e) => RoslynCodeManager.Shared.NewFiles.Add(e.FullPath);
+		void FileWatcher_Created(object sender, FileSystemEventArgs e)
+		{
+			var filePath = CleanseFilePath(e.FullPath);
+			if (ShouldExcludePath(filePath))
+				return;
+			RoslynCodeManager.Shared.NewFiles.Add(filePath);
+
+		}
 
 		List<string> currentfiles = new();
 		Timer searchTimer;
@@ -93,7 +106,7 @@ namespace Reloadify.CommandLine
 		}
 
 
-		static bool ShouldExcludePath(string path)
+		public static bool ShouldExcludePath(string path)
 		{
 			foreach (var dir in excludedDirs)
 				if (path.Contains(dir))
@@ -106,6 +119,7 @@ namespace Reloadify.CommandLine
 			$"{slash}obj{slash}",
 			$"{slash}bin{slash}"
 		};
+		private readonly ReloadifyManager manager;
 
 		static void PrintException(Exception ex)
 		{

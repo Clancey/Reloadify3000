@@ -4,7 +4,7 @@ VisualStudioVersion = 17.0.31808.319
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "IDE", "IDE", "{6EA10C36-41FC-4FDF-B3F7-1F2828ABC896}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Reloadify3000.Build.Tasks", "Reloadify3000.Build\Reloadify3000.Build.Tasks.csproj", "{9DFC84AF-936D-4A8D-8700-564B333FA65A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Reloadify3000.Build.Tasks", "Reloadify3000.Build\Reloadify3000.Build.Tasks.csproj", "{9DFC84AF-936D-4A8D-8700-564B333FA65A}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{F36B5545-F798-4371-A17C-B0CB5EE1C76B}"
 EndProject
@@ -34,15 +34,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Reloadify.VS", "Reloadify.V
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Reloadify.CommandLine", "Reloadify.CommandLine\Reloadify.CommandLine.csproj", "{BC531B27-261D-4168-B717-281CB9C0F4B3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Reloadify.Hosted", "Reloadify.Hosted\Reloadify.Hosted.csproj", "{9EA072CA-F336-4701-8592-7791A94AC94E}"
+EndProject
 Global
-	GlobalSection(SharedMSBuildProjectFiles) = preSolution
-		Tests\Comet.Reload.Tests.Shared\Comet.Reload.Tests.Shared.projitems*{18ef3c1f-c3b0-4a4d-8929-86f54e9491aa}*SharedItemsImports = 5
-		Reloadify.IDE\Reloadify.IDE.projitems*{4e8fddac-4925-4ac3-848d-b9485da980d4}*SharedItemsImports = 4
-		Reloadify.IDE\Reloadify.IDE.projitems*{4f101b9a-ef2c-47b6-b7e0-007fe8b97168}*SharedItemsImports = 13
-		Reloadify.IDE\Reloadify.IDE.projitems*{bc531b27-261d-4168-b717-281cb9c0f4b3}*SharedItemsImports = 5
-		Tests\Comet.Reload.Tests.Shared\Comet.Reload.Tests.Shared.projitems*{c6e7d0df-824b-4a57-9bc0-af7874e0e49b}*SharedItemsImports = 4
-		Tests\Comet.Reload.Tests.Shared\Comet.Reload.Tests.Shared.projitems*{d7b239b7-2883-4b53-8873-5a3dd82578ac}*SharedItemsImports = 13
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Debug|iPhone = Debug|iPhone
@@ -184,6 +178,18 @@ Global
 		{BC531B27-261D-4168-B717-281CB9C0F4B3}.Release|iPhone.Build.0 = Release|Any CPU
 		{BC531B27-261D-4168-B717-281CB9C0F4B3}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
 		{BC531B27-261D-4168-B717-281CB9C0F4B3}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
+		{9EA072CA-F336-4701-8592-7791A94AC94E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9EA072CA-F336-4701-8592-7791A94AC94E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9EA072CA-F336-4701-8592-7791A94AC94E}.Debug|iPhone.ActiveCfg = Debug|Any CPU
+		{9EA072CA-F336-4701-8592-7791A94AC94E}.Debug|iPhone.Build.0 = Debug|Any CPU
+		{9EA072CA-F336-4701-8592-7791A94AC94E}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{9EA072CA-F336-4701-8592-7791A94AC94E}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
+		{9EA072CA-F336-4701-8592-7791A94AC94E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9EA072CA-F336-4701-8592-7791A94AC94E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9EA072CA-F336-4701-8592-7791A94AC94E}.Release|iPhone.ActiveCfg = Release|Any CPU
+		{9EA072CA-F336-4701-8592-7791A94AC94E}.Release|iPhone.Build.0 = Release|Any CPU
+		{9EA072CA-F336-4701-8592-7791A94AC94E}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
+		{9EA072CA-F336-4701-8592-7791A94AC94E}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -197,8 +203,18 @@ Global
 		{C6E7D0DF-824B-4A57-9BC0-AF7874E0E49B} = {F36B5545-F798-4371-A17C-B0CB5EE1C76B}
 		{4E8FDDAC-4925-4AC3-848D-B9485DA980D4} = {6EA10C36-41FC-4FDF-B3F7-1F2828ABC896}
 		{BC531B27-261D-4168-B717-281CB9C0F4B3} = {6EA10C36-41FC-4FDF-B3F7-1F2828ABC896}
+		{9EA072CA-F336-4701-8592-7791A94AC94E} = {6EA10C36-41FC-4FDF-B3F7-1F2828ABC896}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E21E1431-5EEF-4039-AD8E-29E3E3E49AD0}
+	EndGlobalSection
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		Tests\Comet.Reload.Tests.Shared\Comet.Reload.Tests.Shared.projitems*{18ef3c1f-c3b0-4a4d-8929-86f54e9491aa}*SharedItemsImports = 5
+		Reloadify.IDE\Reloadify.IDE.projitems*{4e8fddac-4925-4ac3-848d-b9485da980d4}*SharedItemsImports = 4
+		Reloadify.IDE\Reloadify.IDE.projitems*{4f101b9a-ef2c-47b6-b7e0-007fe8b97168}*SharedItemsImports = 13
+		Reloadify.IDE\Reloadify.IDE.projitems*{9ea072ca-f336-4701-8592-7791a94ac94e}*SharedItemsImports = 5
+		Reloadify.IDE\Reloadify.IDE.projitems*{bc531b27-261d-4168-b717-281cb9c0f4b3}*SharedItemsImports = 5
+		Tests\Comet.Reload.Tests.Shared\Comet.Reload.Tests.Shared.projitems*{c6e7d0df-824b-4a57-9bc0-af7874e0e49b}*SharedItemsImports = 4
+		Tests\Comet.Reload.Tests.Shared\Comet.Reload.Tests.Shared.projitems*{d7b239b7-2883-4b53-8873-5a3dd82578ac}*SharedItemsImports = 13
 	EndGlobalSection
 EndGlobal
