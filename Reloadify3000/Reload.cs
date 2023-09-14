@@ -218,7 +218,7 @@ namespace Reloadify {
 				var foundTypes = new List<(string, Type)>();
 				foreach(var c in request.Classes)
 				{
-					var fullName = string.IsNullOrWhiteSpace(c.namespace) ? c.className : $"{c.NameSpace}.{c.ClassName}";
+					var fullName = string.IsNullOrWhiteSpace(c.namespace) ? c.ClassName : $"{c.NameSpace}.{c.ClassName}";
 					var type = assmebly.GetType(fullName);
 					foundTypes.Add((fullName, type));
 				}
