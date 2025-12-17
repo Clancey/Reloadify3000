@@ -16,22 +16,18 @@ jobs:
     runs-on: windows-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v6
 
-      - name: Build Reloadify3000
-        run: |
-          dotnet build /r /p:Configuration=Debug Reloadify3000/Reloadify3000.csproj  
-          dotnet msbuild /r /p:Configuration=Debug Reloadify3000.Build/Reloadify3000.Build.Tasks.csproj
-
-      - name: Nuget Pack step
+      - name: Build and Pack Reloadify3000
         shell: bash
         run: |
           MINOR_VERSION=$(( $BASE + $GITHUB_RUN_NUMBER ))
           VERSION=$NUPKG_MAJOR$MINOR_VERSION-beta
           echo "PACKAGE VERSION: $VERSION"
-          nuget pack Reloadify3000.nuspec -version $VERSION -Symbols -SymbolPackageFormat snupkg
+          dotnet build -c Release -p:Version=$VERSION Reloadify3000.Build/Reloadify3000.Build.Tasks.csproj
+          dotnet build -c Release -p:Version=$VERSION Reloadify3000/Reloadify3000.csproj
 
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v6
         name: Upload Nuget Artifact
         with:
           name: nuget-artifact
@@ -39,21 +35,3 @@ jobs:
             **/*.nupkg
             **/*.snupkg
             **/*.symbols.nupkg
-
-  buildOnMac:
-    name: Build on Mac
-    runs-on: macos-latest
-
-    steps:
-      - uses: actions/checkout@v2
-      - name: Build and pack VSMac extension
-        run: |
-          dotnet build /r /p:Configuration=Debug Reloadify3000/Reloadify3000.csproj  
-          dotnet msbuild /r /t:Build /p:Configuration=Debug Reloadify.VSMac/Reloadify.VSMac.csproj /p:CreatePackage=true
-
-      - uses: actions/upload-artifact@v2
-        name: Upload VS Mac extension
-        with:
-          name: VSMac-extension
-          path: |
-            **/*.mpack

@@ -19,9 +19,6 @@ namespace Client {
 			return (true,this);
 		}
 
-		Task<bool> ICommunicator.Send<T> (T obj)
-		{
-			throw new NotImplementedException ();
-		}
+		Task<bool> ICommunicator.Send<T> (T obj) => throw new NotImplementedException ();
 	}
 }

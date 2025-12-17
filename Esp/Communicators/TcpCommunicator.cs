@@ -250,10 +250,7 @@ namespace Esp {
 			return bytesToSend;
 		}
 
-		public async Task SendToClient (TcpClient client, byte [] bytesToSend)
-		{
-			await client.GetStream ().WriteAsync (bytesToSend, 0, bytesToSend.Length);
-		}
+		public async Task SendToClient (TcpClient client, byte [] bytesToSend) => await client.GetStream ().WriteAsync (bytesToSend, 0, bytesToSend.Length);
 
 		protected void Receive (TcpClient client, CancellationToken cancellationToken)
 		{

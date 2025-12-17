@@ -25,10 +25,7 @@ namespace Esp {
 		/// </summary>
 		/// <returns>The object.</returns>
 		/// <param name="json">Json.</param>
-		public static object DeserializeJson(string json)
-		{
-			return DeserializeJson(json, null);
-		}
+		public static object DeserializeJson(string json) => DeserializeJson(json, null);
 
 		/// <summary>
 		/// Deserializes a json string into an object.
@@ -36,10 +33,7 @@ namespace Esp {
 		/// <returns>The object.</returns>
 		/// <param name="json">Json.</param>
 		/// <typeparam name="TType">The type of the object.</typeparam>
-		public static TType DeserializeJson<TType>(string json)
-		{
-			return (TType)DeserializeJson(json, typeof(TType));
-		}
+		public static TType DeserializeJson<TType>(string json) => (TType)DeserializeJson(json, typeof(TType));
 
 		/// <summary>
 		/// Serializes an object to a json string.

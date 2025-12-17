@@ -90,10 +90,7 @@ namespace Reloadify {
 		public string CurrentProjectPath { get; set; }
 		public Solution Solution { get; internal set; }
 
-		public void StartMonitoring ()
-		{
-			StartMonitoring (Constants.DEFAULT_PORT);
-		}
+		public void StartMonitoring () => StartMonitoring (Constants.DEFAULT_PORT);
 
 		internal async void StartMonitoring (int port)
 		{
@@ -101,7 +98,7 @@ namespace Reloadify {
 			{
 				RoslynCodeManager.Shared.StartDebugging();
 				await server.StartListening(port);
-				Log("Listening for clients");
+				Log($"Listening for clients on port {port}");
 			}
 			catch(Exception ex)
 			{
@@ -116,9 +113,6 @@ namespace Reloadify {
 			Log("Server Shutdown");
 		}
 
-		public void Log(string log)
-		{
-			LogAction?.Invoke(log);
-		}
+		public void Log(string log) => LogAction?.Invoke(log);
 	}
 }

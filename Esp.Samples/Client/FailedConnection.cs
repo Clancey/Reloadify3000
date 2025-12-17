@@ -13,15 +13,10 @@ namespace Client {
 
 		public Task Disconnect () => Task.FromResult (true);
 
-		async Task<(bool, ICommunicatorClient)> ICommunicatorClient.Connect (CancellationToken cancellationToken)
-		{
+		async Task<(bool, ICommunicatorClient)> ICommunicatorClient.Connect (CancellationToken cancellationToken) =>
 			//await Task.Delay (1000);
-			return (false,this);
-		}
+			(false,this);
 
-		Task<bool> ICommunicator.Send<T> (T obj)
-		{
-			throw new NotImplementedException ();
-		}
+		Task<bool> ICommunicator.Send<T> (T obj) => throw new NotImplementedException ();
 	}
 }

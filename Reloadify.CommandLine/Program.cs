@@ -13,7 +13,7 @@ namespace Reloadify.CommandLine
 		static async Task Main(string[] args)
 		{
 			string platform = "AnyCPU";
-			string flavor = "";// "net7.0-ios";
+			string flavor = "";// "net9.0-ios";
 			string configuration = "Debug";
 			string rootFolder = "";
 			string csProj = args.FirstOrDefault();
@@ -21,7 +21,7 @@ namespace Reloadify.CommandLine
 
 			var options = new OptionSet {
 				{ "p|Platform=", "Platform (AnyCPU, iPhone, iPhoneSimulator)", x => platform = x },
-				{ "t|target=", "TargetFramework (net7.0-ios,net7.0-android,net7.0-maccatalyst) ", x => flavor = x },
+				{ "t|target=", "TargetFramework (net9.0-ios,net9.0-android,net9.0-maccatalyst,net9.0-macos) ", x => flavor = x },
 				{ "c|configuration=", "Configuration (Debug, Release)", x => configuration = x },
 				{ "f|folder=", "Root folder for the solution (Defaults to the CSProj Folder)", x=> rootFolder = x },
 				{ "h|help", "show this message and exit", h => shouldShowHelp = h != null },
@@ -100,15 +100,19 @@ namespace Reloadify.CommandLine
 		static string cleanseTarget(string target)
 		{
 			if (target.StartsWith("ios", StringComparison.InvariantCultureIgnoreCase)) { 
-				return "net7.0-ios";
+				return "net9.0-ios";
 			}
-			if (target.StartsWith("mac", StringComparison.InvariantCultureIgnoreCase))
+			if (target.StartsWith("macos", StringComparison.InvariantCultureIgnoreCase))
 			{
-				return "net7.0-maccatalyst";
+				return "net9.0-macos";
+			}
+			if (target.StartsWith("maccatalyst", StringComparison.InvariantCultureIgnoreCase))
+			{
+				return "net9.0-maccatalyst";
 			}
 			if (target.StartsWith("android", StringComparison.InvariantCultureIgnoreCase))
 			{
-				return "net7.0-android";
+				return "net9.0-android";
 			}
 			return target;
 		}

@@ -60,14 +60,9 @@ namespace System.Collections.Generic {
 			}
 			items.ForEach ((i) => Remove (i));
 		}
-		public override string ToString ()
-		{
-			return string.Join (Environment.NewLine, queue.Select (x => x).Reverse ());
-		}
-		public string ToString (Func<T, string> format)
-		{
-			return string.Join (Environment.NewLine, queue.Select (x => format (x)).Reverse ());
-		}
+		public override string ToString () => string.Join (Environment.NewLine, queue.Select (x => x).Reverse ());
+
+		public string ToString (Func<T, string> format) => string.Join (Environment.NewLine, queue.Select (x => format (x)).Reverse ());
 		public int IndexOf (T obj) => queue.IndexOf (obj);
 
 		public bool TryGetIndex (int index, out T value)
@@ -87,14 +82,8 @@ namespace System.Collections.Generic {
 
 		}
 
-		public IEnumerator<T> GetEnumerator ()
-		{
-			return queue.GetEnumerator ();
-		}
+		public IEnumerator<T> GetEnumerator () => queue.GetEnumerator ();
 
-		IEnumerator IEnumerable.GetEnumerator ()
-		{
-			return GetEnumerator ();
-		}
+		IEnumerator IEnumerable.GetEnumerator () => GetEnumerator ();
 	}
 }

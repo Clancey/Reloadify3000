@@ -62,10 +62,7 @@ namespace Reloadify.Internal {
 		public object Result;
 		public string Xaml;
 
-		public bool HasErrors {
-			get { return Messages != null && Messages.Any (m => m.MessageType == "error"); }
-		}
-
+		public bool HasErrors => Messages != null && Messages.Any (m => m.MessageType == "error");
 	}
 
 	public class EvalResponse {
@@ -73,9 +70,7 @@ namespace Reloadify.Internal {
 		public Dictionary<string, List<string>> WatchValues;
 		public TimeSpan Duration;
 
-		public bool HasErrors {
-			get { return Messages != null && Messages.Any (m => m.MessageType == "error"); }
-		}
+		public bool HasErrors => Messages != null && Messages.Any (m => m.MessageType == "error");
 	}
 }
 

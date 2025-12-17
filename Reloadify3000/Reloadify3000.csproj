@@ -3,22 +3,52 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <RootNamespace>Reloadify</RootNamespace>
-    <PackOnBuild>true</PackOnBuild>
-    <Authors>James Clancey</Authors>
-    <PackageVersion>1.0</PackageVersion>
+
+    <!-- NuGet Package Metadata -->
     <PackageId>Reloadify3000</PackageId>
+    <Version>1.0.9</Version>
+    <Authors>James Clancey</Authors>
+    <Copyright>James Clancey</Copyright>
+    <Description>Hot Reload plugin for Comet</Description>
+    <PackageProjectUrl>https://github.com/Clancey/Reloadify3000</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/Clancey/Reloadify3000</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+
+    <!-- Pack settings -->
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <IncludeBuildOutput>true</IncludeBuildOutput>
   </PropertyGroup>
 
   <ItemGroup>
-	  <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
   </ItemGroup>
+
   <ItemGroup>
-    <ProjectReference Include="..\Esp\Esp.csproj">
-      <IncludeInPackage>true</IncludeInPackage>
-    </ProjectReference>
-    <ProjectReference Include="..\Esp.Resources\Esp.Resources.csproj">
-      <IncludeInPackage>true</IncludeInPackage>
-    </ProjectReference>
-    <ProjectReference Include="..\Reloadify3000.Core\Reloadify3000.Core.csproj" />
+    <!-- Include project outputs in the package lib folder -->
+    <ProjectReference Include="..\Esp\Esp.csproj" PrivateAssets="all" />
+    <ProjectReference Include="..\Esp.Resources\Esp.Resources.csproj" PrivateAssets="all" />
+    <ProjectReference Include="..\Reloadify3000.Core\Reloadify3000.Core.csproj" PrivateAssets="all" />
   </ItemGroup>
+
+  <!-- Include referenced project DLLs in the package -->
+  <PropertyGroup>
+    <TargetsForTfmSpecificBuildOutput>$(TargetsForTfmSpecificBuildOutput);IncludeProjectReferenceDlls</TargetsForTfmSpecificBuildOutput>
+  </PropertyGroup>
+
+  <Target Name="IncludeProjectReferenceDlls">
+    <ItemGroup>
+      <BuildOutputInPackage Include="$(OutputPath)Esp.dll" />
+      <BuildOutputInPackage Include="$(OutputPath)Esp.Resources.dll" />
+      <BuildOutputInPackage Include="$(OutputPath)Reloadify3000.Core.dll" />
+    </ItemGroup>
+  </Target>
+
+  <!-- Include build tasks in the package build folder -->
+  <ItemGroup>
+    <None Include="..\Reloadify3000.Build\Reloadify3000.targets" Pack="true" PackagePath="build" />
+    <None Include="..\Reloadify3000.Build\bin\$(Configuration)\netstandard2.0\Reloadify3000.Build.Tasks.dll" Pack="true" PackagePath="build" />
+    <None Include="..\Reloadify3000.Build\bin\$(Configuration)\netstandard2.0\Mono.Cecil.dll" Pack="true" PackagePath="build" />
+  </ItemGroup>
+
 </Project>

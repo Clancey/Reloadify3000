@@ -28,10 +28,7 @@ namespace ReloadifySample
 			Console.WriteLine("Goodbye");
 		}
 
-		internal static void FooBar()
-		{
-			Console.WriteLine("Foo Bar was Called!");
-		}
+		internal static void FooBar() => Console.WriteLine("Foo Bar was Called!");
 
 		static async void RunHotReload(string ideIP = null, int idePort = Constants.DEFAULT_PORT)
 		{

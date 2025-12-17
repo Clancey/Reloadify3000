@@ -1,6 +1,13 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Project>
-    <UsingTask TaskName="Reloadify3000.Build.Tasks.AssemblyWeaver" AssemblyFile="$(MSBuildThisFileDirectory)Reloadify3000.Build.Tasks.dll" />
+    <!-- NuGet package: task DLL is in same folder as targets file -->
+    <UsingTask TaskName="Reloadify3000.Build.Tasks.AssemblyWeaver"
+               AssemblyFile="$(MSBuildThisFileDirectory)Reloadify3000.Build.Tasks.dll"
+               Condition="Exists('$(MSBuildThisFileDirectory)Reloadify3000.Build.Tasks.dll')" />
+    <!-- Local development: task DLL is in bin output folder -->
+    <UsingTask TaskName="Reloadify3000.Build.Tasks.AssemblyWeaver"
+               AssemblyFile="$(MSBuildThisFileDirectory)bin\$(Configuration)\netstandard2.0\Reloadify3000.Build.Tasks.dll"
+               Condition="!Exists('$(MSBuildThisFileDirectory)Reloadify3000.Build.Tasks.dll')" />
     <PropertyGroup>
         <EspAssemblyPath>$(MSBuildThisFileDirectory)..\lib\netstandard2.0\Esp.Resources.dll</EspAssemblyPath>
     </PropertyGroup>

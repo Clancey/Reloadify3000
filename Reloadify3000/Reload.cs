@@ -61,10 +61,7 @@ namespace Reloadify {
 			return true;
 		}
 
-		void ResetIDE ()
-		{
-			client.Send (new ResetMessage ());
-		}
+		void ResetIDE () => client.Send (new ResetMessage ());
 
 		string GetIdeIPFromResource ()
 		{

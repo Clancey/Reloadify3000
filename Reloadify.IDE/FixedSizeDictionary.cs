@@ -46,15 +46,9 @@ namespace System.Collections.Generic {
 
 		public bool IsReadOnly => false;
 
-		public void Add (T key, T1 value)
-		{
-			this [key] = value;
-		}
+		public void Add (T key, T1 value) => this [key] = value;
 
-		public void Add (KeyValuePair<T, T1> item)
-		{
-			this [item.Key] = item.Value;
-		}
+		public void Add (KeyValuePair<T, T1> item) => this [item.Key] = item.Value;
 
 		public void Clear ()
 		{

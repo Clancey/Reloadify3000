@@ -2,11 +2,13 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>net9.0</TargetFramework>
+    <SuppressTfmSupportBuildWarnings>true</SuppressTfmSupportBuildWarnings>
   </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Reloadify3000\Reloadify3000.csproj" />
+    <ProjectReference Include="..\Esp.Resources\Esp.Resources.csproj" />
   </ItemGroup>
   <Import Project="..\Reloadify3000.Build\Reloadify3000.targets" />
 </Project>

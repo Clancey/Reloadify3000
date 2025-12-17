@@ -21,12 +21,10 @@ namespace Reloadify {
 		Dictionary<string, List<string>> referencesForProjects = new Dictionary<string, List<string>> ();
 		public async Task<bool> ShouldHotReload (Project project)
 		{
-			if (project.Name == "Reloadify.VS" || project.Name == "Reloadify.VSMac" || project.Name == "Reloadify.CommandLine")
+			if (project.Name is "Reloadify.VS" or "Reloadify.VSMac" or "Reloadify.CommandLine")
 				return false;
-			var shouldRun = (await SymbolFinder.FindDeclarationsAsync(project, "Reloadify", true)).Any();
-			if(!shouldRun)
-				shouldRun = (await SymbolFinder.FindDeclarationsAsync(project, "Comet.Reload", true)).Any();
-			return shouldRun;
+
+			return true;
 		}
 		bool isUnity = false;
 		public void StartDebugging ()
@@ -117,9 +115,21 @@ namespace Reloadify {
 				
 				//On windows sometimes its a file path...
 				var assemblies = projects.Where(x=> !x.AssemblyName.Contains(x.FilePath)).Select(x => x.AssemblyName).Distinct();
-				
+
 				//We are going to build a file, with all the IgnoreAccessChecks so we don't get System.MethodAccessException when we call internal stuff
+				//We must also include the attribute definition since it doesn't exist in netstandard2.1
 				var header = string.Join("\r\n", assemblies.Select(x => $"[assembly: System.Runtime.CompilerServices.IgnoresAccessChecksTo(\"{x}\")]"));
+				header += @"
+namespace System.Runtime.CompilerServices
+{
+	[AttributeUsage(AttributeTargets.Assembly, AllowMultiple = true)]
+	internal class IgnoresAccessChecksToAttribute : Attribute
+	{
+		public IgnoresAccessChecksToAttribute(string assemblyName) => AssemblyName = assemblyName;
+		public string AssemblyName { get; }
+	}
+	internal static class IsExternalInit { }
+}";
 				var newFiles = new List<string>
 				{
 					filePath

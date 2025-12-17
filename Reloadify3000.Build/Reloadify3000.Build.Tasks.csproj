@@ -1,15 +1,15 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0</TargetFrameworks>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.Build.Framework" Version="17.5.0" />
-    <PackageReference Include="Microsoft.Build.Utilities.Core" Version="17.5.0" />
-    <PackageReference Include="Mono.Cecil" Version="0.11.5" />
+    <PackageReference Include="Microsoft.Build.Framework" Version="17.11.31" ExcludeAssets="runtime" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.Build.Utilities.Core" Version="17.11.31" ExcludeAssets="runtime" PrivateAssets="all" />
+    <PackageReference Include="Mono.Cecil" Version="0.11.6" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\Reloadify3000.Core\NetworkUtils.cs"></Compile>
+    <Compile Include="..\Reloadify3000.Core\NetworkUtils.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Esp.Resources\Esp.Resources.csproj" />
